@@ -1,12 +1,12 @@
 ---
-title: "General Guidelines: Introduction"
+title: "공통 가이드라인: 소개"
 keywords: guidelines
 permalink: general_introduction.html
 folder: general
 sidebar: general_sidebar
 ---
 
-The general guidelines are for the benefit of:
+본 공통 가이드라인 문서에서는 다음을 다룹니다:
 
 * Language-specific guidelines authors.
 * Client library designers for languages that have no specific language guidelines.

@@ -1,9 +1,6 @@
 ---
-title: Azure SDK Releases
+title: Azure SDK 한글 문서 & 리소스 모음
 layout: default
-sidebar: releases_sidebar
 ---
-{% include releases/header.md %}
-{% include releases/nav.md %}
-{% include releases/languages.md %}
+{% include info/header.md %}
 {% include refs.md %}

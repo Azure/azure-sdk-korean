@@ -3,9 +3,9 @@ entries:
   levels: one
   folders:
   
-  - title: General Guidelines
+  - title: 공통 가이드라인 (번역중)
     folderitems:
-      - title: Introduction
+      - title: 소개 (번역중)
         url: /general_introduction.html
       - title: Terminology
         url: /general_terminology.html

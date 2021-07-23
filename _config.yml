@@ -1,14 +1,14 @@
-repository: azure/azure-sdk
+repository: azure/azure-sdk-korean
 
 
 tipue_search:
   include:
     pages: true
-    posts: true
+    posts: false
 
 # feed.xml
-title: Azure SDKs
-description: "The design guidelines and policies under which the Azure SDKs are designed and built."
+title: Azure SDK 한글 홈페이지
+description: "Azure SDK에 대한 한글 설명을 담은 홈페이지입니다."
 topnav_title: Azure SDKs
 site_title: Azure SDKs
 company_name: Microsoft Azure
@@ -16,13 +16,13 @@ company_name: Microsoft Azure
 # github_editme_path: azure/azure-sdk/blob/gh-pages/
 # disqus_shortname: azure-sdk
 # google_analytics: <google-analytics-appid>
-app_insights: 5e03f19a-f5b4-4620-97d5-35707cec7fcb
+# app_insights: 5e03f19a-f5b4-4620-97d5-35707cec7fcb
 
 # The preview server settings
 host: 127.0.0.1
 port: 4000
-baseurl: /azure-sdk
-destination: ./_site/azure-sdk
+baseurl: /azure-sdk-korean
+destination: ./_site/azure-sdk-korean
 output: web
 
 plugins:
@@ -54,7 +54,7 @@ social:
   name: Azure SDKs
   links:
     - https://twitter.com/AzureSDK
-    - https://github.com/azure/azure-sdk
+    - https://github.com/azure/azure-sdk-korean
 
 blog_url: https://devblogs.microsoft.com/azure-sdk/
 
@@ -67,7 +67,7 @@ kramdown:
   hard_wrap: false
   syntax_highlighter: rouge
 
-timezone: "US/Pacific"
+timezone: "Seoul/Asia"
 
 relative_links:
   enabled: true

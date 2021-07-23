@@ -1,18 +1,18 @@
 topnav:
 - title: Topnav
   items:
-    - title: Blog
+    - title: SDK 블로그 (영문)
       external_url: https://aka.ms/azsdk/blog
-    - title: Releases
-      url: /releases/latest/
+    - title: Developer Korea 블로그
+      external_url: https://microsoft.github.io/developerkorea/
 
 
 topnav_dropdowns:
   - title: Topnav Dropdowns
     folders:
-      - title: Guidelines
+      - title: 가이드라인 (번역중)
         guidelines: true
-      - title: API References
+      - title: API 레퍼런스 (영문)
         folderitems:
           - title: .NET
             external_url: https://aka.ms/net-docs
