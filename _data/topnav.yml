@@ -1,0 +1,24 @@
+topnav:
+- title: Topnav
+  items:
+    - title: Blog
+      external_url: https://aka.ms/azsdk/blog
+    - title: Releases
+      url: /releases/latest/
+
+
+topnav_dropdowns:
+  - title: Topnav Dropdowns
+    folders:
+      - title: Guidelines
+        guidelines: true
+      - title: API References
+        folderitems:
+          - title: .NET
+            external_url: https://aka.ms/net-docs
+          - title: Java
+            external_url: https://aka.ms/java-docs
+          - title: Python
+            external_url: https://aka.ms/python-docs
+          - title: TypeScript
+            external_url: https://aka.ms/js-docs
