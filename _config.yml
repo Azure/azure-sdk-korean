@@ -4,11 +4,11 @@ repository: azure/azure-sdk-korean
 tipue_search:
   include:
     pages: true
-    posts: false
+    posts: true
 
 # feed.xml
-title: Azure SDK 한글 홈페이지
-description: "Azure SDK에 대한 한글 설명을 담은 홈페이지입니다."
+title: Azure SDKs - Korean documentation
+description: "Korean Azure SDK documentation"
 topnav_title: Azure SDKs
 site_title: Azure SDKs
 company_name: Microsoft Azure
@@ -67,7 +67,7 @@ kramdown:
   hard_wrap: false
   syntax_highlighter: rouge
 
-timezone: "Seoul/Asia"
+timezone: "US/Pacific"
 
 relative_links:
   enabled: true
