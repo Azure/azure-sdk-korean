@@ -1,4 +1,8 @@
-# Azure SDK Contribution Guide
+# Azure SDK Contribution Guide (기여하기)
+
+본 저장소는 [Microsoft Open Source Code of Conduct(Microsoft 오픈 소스 규정)](https://opensource.microsoft.com/codeofconduct/)를 준수합니다.
+자세한 내용은 [준수 사항 FAQ(영문)](https://opensource.microsoft.com/codeofconduct/faq/)를 참조하세요.
+또는 opencode@microsoft.com에 궁금한 사항을 문의하거나 의견을 제시하실 수 있습니다.
 
 The Azure SDK project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
