@@ -1,69 +1,69 @@
 ---
-title: "Policies: Support"
+title: "정책: 지원"
 permalink: policies_support.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-## **Azure SDK lifecycle and support policy**
+## **Azure SDK 수명 주기 및 지원 정책**
 
-Azure SDK Lifecycle and support are governed by the latest [Microsoft Modern Lifecycle Policy](https://docs.microsoft.com/en-US/lifecycle/policies/modern), which will prevail in case of any conflicts with the information below.
+Azure SDK 수명 주기 및 지원은 최신 [최신 수명 주기 정책](https://docs.microsoft.com/ko-kr/lifecycle/policies/modern)이 적용되며, 아래 정보와 불일치할 경우 우선시 됩니다.
 
-### **Package lifecycle**
+### **패키지 수명주기**
 
-Here are the stages of a typical package lifecycle (for major versions)
+다음은 일반적인 패키지 수명 주기의 단계입니다 (주 버전의 경우).
 
-1. **Beta** – A new SDK that is available for early access and feedback purposes and is not recommended for use in production.
-   The beta version support is limited to GitHub issues and response time is not guaranteed. Beta releases live typically for less than 1 year, after which they are either retired or released to GA.
+1. **Beta** – 조기 액세스 및 피드백 용도로 사용할 수 있으며 프로덕션 환경에서 사용하지 않는 것이 권장되는 신규 SDK입니다.
+   베타 버전 지원은 GitHub issues로 제한되며 응답 시간이 보장되지 않습니다. 베타 릴리스는 일반적으로 1년 미만 동안 유지되며, 그 후 사용 중지되거나 GA에 릴리스됩니다.
 
-2. **Active** - The SDKs are generally available and fully supported, will receive new feature updates, as well as bug and security fixes.
-   The major version will remain active for at least 12 months from the release date. Compatible updates for the major release are provided through minor versions, or patch versions.
-   Customers are encouraged to use the latest version as that is the version that will get fixes and updates.
+2. **Active** - SDK는 일반적으로 사용 가능하며 충분히 지원되며 버그 및 보안 수정뿐만 아니라 새로운 기능 업데이트를 받게 됩니다.
+   주 버전은 출시일로부터 최소 12개월 동안 활성 상태를 유지합니다. 주 릴리스에 대한 호환 가능한 업데이트는 부 버전 또는 패치 버전을 통해 제공됩니다.
+   고객은 오류 수정 및 업데이트를 받을 수 있는 최신 버전을 사용하시는 것이 권장됩니다.
 
-3. **Maintenance** - Typically, maintenance mode is announced at the same time as the next major version is transitioned to Active,
-   after which the releases will only address the most critical bug fixes and security fixes for at least another 12 months.
+3. **Maintenance** - 일반적으로 유지보수 모드는 다음 주 버전이 Active로 전환되는 동시에 발표되며,
+   그 이후에는 최소 12개월 동안 가장 중요한 버그 수정 및 보안 수정만 처리합니다.
 
-4. **Community** - SDK will no longer receive updates from Microsoft unless otherwise specified in the separate customer agreement.
-   The package will remain available via public package managers and the GitHub repo, which can be maintained by the community.
+4. **Community** - SDK는 별도의 고객 계약에 달리 명시되지 않는 한 더 이상 Microsoft로부터 업데이트를 받지 않습니다.
+   패키지는 커뮤니티가 관리할 수 있는 공용 패키지 관리자와 GitHub repo를 통해 계속 사용할 수 있습니다.
 
-You can check the lifecycle stage for your package at [this page](https://azure.github.io/azure-sdk/releases/latest/index.html)
+[해당 페이지](https://azure.github.io/azure-sdk/releases/latest/index.html) 에서 패키지의 수명 주기 단계를 확인할 수 있습니다.
 
-### **Azure Clouds**
+### **Azure 클라우드**
 
-By default, the Azure libraries are configured to connect to the Global Azure Cloud.
-Additional cloud target platforms are available, such as Azure Stack, Azure China and Government Cloud.
-Package lifecycle may vary across different target platforms. Refer to the target platform documentation for more information.
+기본적으로 Azure 라이브러리는 글로벌 Azure 클라우드에 연결하도록 구성됩니다.
+Azure Stack, Azure China 또는 Government 클라우드와 같은 추가 클라우드 플랫폼을 사용할 수 있습니다.
+패키지 수명 주기는 대상 플랫폼에 따라 다를 수 있습니다. 자세한 내용은 대상 플랫폼 설명서를 참조하십시오.
 
-### **Azure SDK dependencies**
+### **Azure SDK 종속성**
 
-The Azure SDK libraries depend on Azure Service REST API, programming language runtime, OS, and third-party libraries.
+Azure SDK 라이브러리는 Azure Service REST API, 프로그래밍 언어 런타임, OS 및 타사 라이브러리에 따라 달라집니다.
 
-> The Azure SDK libraries will not be guaranteed to work on platforms and with other dependencies that have reached their end of life. Dropping support for such dependencies may be done without increasing the major version of the Azure SDK libraries. We strongly recommend migration to supported platforms and other dependencies to be eligible for technical support.
+> Azure SDK 라이브러리는 수명이 다한 플랫폼 및 기타 종속성에서는 작동을 보장하지 않습니다. Azure SDK 라이브러리의 주 버전을 늘리지 않고 이러한 종속성에 대한 지원을 중단할 수 있습니다. 기술 지원을 받으려면 지원되는 플랫폼 및 기타 종속성으로 마이그레이션하는 것을 권장드립니다.
 
-Below is a list of supported Azure SDK platforms and runtimes for your reference:
+다음은 참조용으로 지원되는 Azure SDK 플랫폼 및 런타임 목록입니다:
 
-**Operating Systems:** Windows 10, macOS-10.15 , Linux (tested on Ubuntu 18.04)
-For Mobile development, please check the [IOS supported platforms](https://azure.github.io/azure-sdk/ios_design.html#ios-library-support), and the [Android supported platforms](https://azure.github.io/azure-sdk/android_design.html)
+**운영체제:** Windows 10, macOS-10.15 , Linux (Ubuntu 18.04에서 테스트됨)
+모바일 개발의 경우 [IOS 지원 플랫폼](https://azure.github.io/azure-sdk-korean/ios_design.html#ios-library-support), [Android 지원 플랫폼](https://azure.github.io/azure-sdk-korean/android_design.html)을 확인해주세요.
 
-**Runtime:**
+**런타임:**
 
-- Any platforms supporting .NET Standard 2.0. Tested on .NET Framework 4.6.1 and .NET Core 2.1, .NET 5.0
+- .NET Standard 2.0를 지원하는 모든 플랫폼. .NET Framework 4.6.1 및 .NET Core 2.1, .NET 5.0에서 테스트됨
 - Java: Java 8 , Java 11
-- Node.js: [LTS versions of Node.js](https://nodejs.org/about/releases/) including not just the ones in Active status, but also the ones in Maintainence status.
+- Node.js: [Node.js의 LTS 버전](https://nodejs.org/ko/about/releases/)에는 활성 상태뿐만 아니라 유지보수 상태에 있는 버전도 포함됩니다.
 - Python 3.5+, 2.7
-- Go runtime– we support 2 latest major Go releases, refer to https://golang.org/doc/devel/release.html for more details.”
-- For C, refer to the list of supported platforms and compilers [here](https://azure.github.io/azure-sdk/clang_design.html)
+- Go 런타임– 2개의 최신 주요 Go 릴리스를 지원합니다. 자세한 내용은 https://golang.org/doc/devel/release.html 참조하세요.
+- C의 경우 [여기](https://azure.github.io/azure-sdk-korean/clang_design.html)에서 지원되는 플랫폼 및 컴파일러 목록을 참조하십시오.
 
-**Test configurations:**
+**테스트 구성:**
 
-Below are the test configurations covering different operating systems and runtimes. You may see some outgoing versions for which we are dropping support or incoming versions that we don't officially support yet. Please see the details in the previous section for the officially supported set.
+다음은 다양한 운영 체제 및 런타임을 다루는 테스트 구성입니다. 지원을 중단하는 발신 버전이나 아직 공식적으로 지원하지 않는 수신 버전을 볼 수 있습니다. 공식적으로 지원되는 세트에 대한 자세한 내용은 이전 섹션을 참조하십시오.
 
-- [.NET test configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
-- [Java test configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
-- [JavaScript test configuration](https://github.com/Azure/azure-sdk-for-js/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
-- [Python test configuration](https://github.com/Azure/azure-sdk-for-python/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
+- [.NET 테스트 구성](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
+- [Java 테스트 구성](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
+- [JavaScript 테스트 구성](https://github.com/Azure/azure-sdk-for-js/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
+- [Python 테스트 구성](https://github.com/Azure/azure-sdk-for-python/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
 
-### **Support**:
+### **지원**:
 
-Customers with a support plan can open an Azure Support ticket [here](https://azure.microsoft.com/en-us/support/create-ticket/)
-You can open GitHub issues [in the Azure SDK GitHub repositories](https://github.com/Azure/azure-sdk/blob/main/README.md) to track bugs and feature requests. GitHub issues are free, but may take a longer time to process.
+지원 계획이 있는 고객은 [여기](https://azure.microsoft.com/ko-kr/support/create-ticket/)에서 Azure 지원 티켓을 시작할 수 있습니다.
+[Azure SDK GitHub repositories](https://github.com/Azure/azure-sdk/blob/main/README.md)에서 GitHub issues룰 시작하여 버그 및 기능 요청을 추적할 수 있습니다. GitHub issues는 비용이 들지 않지만, 처리하는 데 시간이 더 오래 걸릴 수 있습니다.
