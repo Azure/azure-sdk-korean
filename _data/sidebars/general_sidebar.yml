@@ -42,9 +42,9 @@ entries:
                   external_url: https://azure.github.io/azure-sdk-for-net/storage.html#azurestoragefilesshares
                 - title: Azure.Storage.Queues
                   external_url: https://azure.github.io/azure-sdk-for-net/storage.html#azurestoragequeues
-  - title: Java Guidelines
+  - title: Java 가이드라인 (번역중)
     folderitems:
-      - title: Design
+      - title: 디자인 (번역중)
         url: /java_introduction.html
       - title: Implementation
         url: /java_implementation.html
