@@ -43,7 +43,7 @@ Azure SDK 라이브러리는 Azure Service REST API, 프로그래밍 언어 런�
 다음은 참조용으로 지원되는 Azure SDK 플랫폼 및 런타임 목록입니다:
 
 **운영체제:** Windows 10, macOS-10.15 , Linux (Ubuntu 18.04에서 테스트됨)
-모바일 개발의 경우 [IOS 지원 플랫폼](https://azure.github.io/azure-sdk-korean/ios_design.html#ios-library-support), [Android 지원 플랫폼](https://azure.github.io/azure-sdk-korean/android_design.html)을 확인해주세요.
+모바일 개발의 경우 [IOS 지원 플랫폼](https://azure.github.io/azure-sdk/ios_design.html#ios-library-support), [Android 지원 플랫폼](https://azure.github.io/azure-sdk/android_design.html)을 확인해주세요.
 
 **런타임:**
 
