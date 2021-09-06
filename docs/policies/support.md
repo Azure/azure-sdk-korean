@@ -7,7 +7,7 @@ sidebar: general_sidebar
 
 ## **Azure SDK 수명 주기 및 지원 정책**
 
-Azure SDK 수명 주기 및 지원은 [최신 수명 주기 정책](https://docs.microsoft.com/ko-kr/lifecycle/policies/modern)이 적용되며, 아래 정보와 불일치할 경우 우선시 됩니다.
+Azure SDK 수명 주기 및 지원은 [최신 수명 주기 정책](https://docs.microsoft.com/ko-kr/lifecycle/policies/modern)이 적용되며, 아래 정보와 다르더라도 해당 문서가 우선시 됩니다.
 
 ### **패키지 수명주기**
 
