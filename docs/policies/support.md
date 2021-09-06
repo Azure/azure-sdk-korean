@@ -51,7 +51,7 @@ Azure SDK 라이브러리는 Azure Service REST API, 프로그래밍 언어 런�
 - Java: Java 8 , Java 11
 - Node.js: [Node.js의 LTS 버전](https://nodejs.org/ko/about/releases/)에는 활성 상태뿐만 아니라 유지보수 상태에 있는 버전도 포함됩니다.
 - Python 3.5+, 2.7
-- Go 런타임– 2개의 최신 주요 Go 릴리스를 지원합니다. 자세한 내용은 https://golang.org/doc/devel/release.html 참조하세요.
+- Go 런타임– 2개의 최신 주요 Go 릴리스를 지원합니다. 자세한 내용은 https://golang.org/doc/devel/release.html 문서를 참조하세요.
 - C의 경우 [여기](https://azure.github.io/azure-sdk-korean/clang_design.html)에서 지원되는 플랫폼 및 컴파일러 목록을 참조하십시오.
 
 **테스트 구성:**
