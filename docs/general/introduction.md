@@ -6,54 +6,53 @@ folder: general
 sidebar: general_sidebar
 ---
 
-본 공통 가이드라인 문서에서는 다음을 다룹니다:
+본 공통 가이드라인 문서는 다음과 같은 분들에게 유용합니다:
 
-* Language-specific guidelines authors.
-* Client library designers for languages that have no specific language guidelines.
+* 언어별 가이드라인 작성자
+* 특정 언어 가이드라인이 있지 않은 클라이언트 라이브러리 디자이너
 
-If you are working in a language with no specific language guidelines, please work with the Azure Developer Experience [Architecture Board] more closely to ensure the client library is appropriately designed and the developer experience is exemplary.
+특정 언어 가이드라인이 없는 언어로 작업하는 경우, Azure Developer Experience [Architecture Board]와 더욱 긴밀하게 협력하여 클라이언트 라이브러리가 적절하게 설계되고 개발자 경험이 모범적인지 확인하세요.
 
-## Design principles
+## 디자인 원칙
 
-The Azure SDK should be designed to enhance the productivity of developers connecting to Azure services. Other qualities (such as completeness, extensibility, and performance) are important but secondary. Productivity is achieved by adhering to the principles described below:
+Azure SDK는 Azure 서비스에 연결하는 개발자의 생산성을 증대시켜야 합니다. 완성도, 확장성, 성능과 같은 부분들도 중요하지만 부수적인 것이며, 생산성은 다음과 같은 원칙들을 적용함으로서 이룰 수 있습니다:
 
-### Idiomatic
+### 관습적으로 (Idiomatic)
 
-* The SDK should follow the general design guidelines and conventions for the target language. It should feel natural to a developer in the target language.
-* We embrace the ecosystem with its strengths and its flaws.
-* We work with the ecosystem to improve it for all developers.
+* SDK는 해당 언어의 규칙과 일반적인 디자인 가이드라인을 따라야 합니다. 해당 언어의 개발자가 자연스럽게 받아들일 수 있게 해야 합니다.
+* 우리는 그 생태계의 장단점을 감수해야 합니다.
+* 우리는 모든 개발자를 위해 생태계와 협력해 개선합니다.
 
-### Consistent
+### 일관성있게 (Consistent)
 
-* Client libraries should be consistent within the language, consistent with the service and consistent between all target languages. In cases of conflict, consistency within the language is the highest priority and consistency between all target languages is the lowest priority.
-* Service-agnostic concepts such as logging, HTTP communication, and error handling should be consistent. The developer should not have to relearn service-agnostic concepts as they move between client libraries.
-* Consistency of terminology between the client library and the service is a good thing that aids in diagnosability.
-* All differences between the service and client library must have a good (articulated) reason for existing, rooted in idiomatic usage rather than whim.
-* The Azure SDK for each target language feels like a single product developed by a single team.
-* There should be feature parity across target languages. This is more important than feature parity with the service.
+* 클라이언트 라이브러리는 언어와, 다른 언어와, 서비스 모두에 대해 일관적이어야 합니다. 충돌이 일어날 것을 생각해 언어의 일관성은 가장 높은 우선순위를 가져야 하며, 다른 언어와의 일관성은 비교적 가장 낮은 우선순위를 가집니다.
+* 로깅, HTTP 통신, 에러 핸들링과 같은 서비스와 관련없는 개념들도 일관적이어야 합니다. 개발자가 다른 클라이언트 라이브러리 간 이동할 때 이러한 개념들을 다시 학습할 필요가 없게 해야 합니다.
+* 클라리언트 라이브러리와 그 서비스 간 용어의 일관성은 진단하는 데 도움을 주는 좋은 것입니다.
+* 서비스와 클라이언트 라이브러리 간 모든 차이점들은 일시적인 이유가 아니라 기존의 관습적인 사용을 기반으로 합당한 이유가 있어야할 것입니다.
+* 각각 언어의 Azure SDK은 한 팀에서 하나의 제품이 나오는 것처럼 느껴져야 합니다.
+* 해당 언어 간 동일한 기능이 있어야 합니다. 서비스의 동일한 기능보다 더 중요한 부분입니다.
 
-### Approachable
+### 접근하기쉽게 (Approachable)
 
-* We are experts in the supported technologies so our customers, the developers, don't have to be.
-* Developers should find great documentation (hero tutorial, how to articles, samples, and API documentation) that makes it easy to be successful with the Azure service.
-* Getting off the ground should be easy through the use of predictable defaults that implement best practices. Think about progressive concept disclosure.
-* The SDK should be easily acquired through the most normal mechanisms in the target language and ecosystem.
-* Developers can be overwhelmed when learning new service concepts. The core use cases should be discoverable.
+* 우리는 지원하는 기술의 전문가입니다. 그래서 우리의 고객인 개발자까지 전문적인 지식을 필요로 하지는 않아도 될 것입니다.
+* 개발자들이 튜토리얼, 예제, 아티클, API 문서 등 양질의 문서를 찾아볼 수 있게 해야합니다. 그래서 Azure 서비스를 쉽게 성공할 수 있어야 합니다.
+* 베스트 프랙티스를 적용할 수 있는 예측 가능한 기본값들을 사용해 쉽게 시작할 수 있어야 합니다. 점진적으로 개념을 소개할 수 있게 생각해보세요.
+* SDK는 해당 언어와 생태계의 가장 일반적인 매커니즘을 통해 쉽게 얻을 수 있어야 합니다.
+* 개발자들이 새로운 서비스 개념을 배우는 데 사로잡힐 수 있게 해야 합니다. 핵심 사용 사례를 발견할 수 있어야 합니다.
 
-### Diagnosable
+### 분석가능하게 (Diagnosable)
 
-* The developer should be able to understand what is going on.
-* It should be discoverable when and under what circumstances a network call is made.
-* Defaults are discoverable and their intent is clear.
-* Logging, tracing, and exception handling are fundamental and should be thoughtful.
-* Error messages should be concise, correlated with the service, actionable, and human readable. Ideally, the error message should lead the consumer to a useful action that they can take.
-* Integrating with the preferred debugger for the target language should be easy.
+* 개발자가 어떻게 돌아가는지 쉽게 이해할 수 있게 해야합니다.
+* 어느 상황에서 네트워크 호출이 이루어지는지 인지할 수 있어야 합니다.
+* 기본값들을 알 수 있어야 하며 그 의도 또한 명확해야 합니다.
+* 노깅, 추적, 예외처리는 기본적이며, 신중해야 합니다.
+* 에러 메시지는 간결하고, 서비스과 연관있어야 하고, 이용할 수 있어야 하며 사람이 읽을 수 있게 해야합니다.
+* 해당 언어의 선호되는 디버거들과의 통합이 쉬워야 합니다.
 
-### Dependable
+### 믿음직하게 (Dependable)
 
-* Breaking changes are more harmful to a user's experience than most new features and improvements are beneficial.
-* Incompatibilities should never be introduced deliberately without thorough review and very strong justification.
-* Do not rely on dependencies that can force our hand on compatibility.
-
+* 갑작스러운 변화는 대부분의 새로운 기능보다 사용자 경험에 좋지 않으며 개선사항이 유익합니다.
+* 매우 합당한 이유와 리뷰 없이 호환성을 깨버려서는 안됩니다. 의도적으로라도 이를 막아야 합니다.
+* 호환성에 영향을 줄 수 있는 디펜던시에 의존해서는 안됩니다.
 
 {% include refs.md %}
