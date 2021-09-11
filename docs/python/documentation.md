@@ -1,5 +1,5 @@
 ---
-title: "파이썬 가이드 라인 : 문서"
+title: "파이썬 안내서 : 문서"
 keywords: guidelines python
 permalink: python_documentation.html
 folder: python
@@ -12,14 +12,14 @@ sidebar: general_sidebar
 * `README.md` - SDK 저장소 내 라이브러리 디렉토리의 루트에 위치하며 패키지 설치 및 클라이언트 라이브러리 사용 정보를 포함합니다. ([example][README-EXAMPLE])
 * `API reference` - 코드의 the docstrings에서 생성되며 docs.microsoft.com에 게시됩니다. 
 * `Code snippets` - 라이브러리에서 식별한 시나리오에 대한 단일(원자) 연산을 보여주는 간단한 코드 예입니다. 이는 README, docstrings, and Quickstart 에 사용됩니다. 
-* `Quickstart` - README 와 유사하지만 확장되는 docs.microsoft.com 관련 문서입니다. 일반적으로 서비스 콘텐츠 개발자가 작성합니다.  
-* `Conceptual` - Quickstarts, 튜토리얼, 사용 방법 가이드 및 기타 컨텐츠와 같은 긴 형식의 설명서입니다. 일반적으로 서비스 콘텐츠 개발자가 작성합니다. 
+* `Quickstart` - README 와 유사하지만 확장되는 docs.microsoft.com 관련 기사입니다. 일반적으로 서비스 콘텐츠 개발자가 작성합니다.  
+* `Conceptual` - Quickstarts, 튜토리얼, 사용 방법 안내서 및 기타 컨텐츠와 같은 긴 형식의 설명서입니다. 일반적으로 서비스 콘텐츠 개발자가 작성합니다. 
 
 {% include requirement/MUST id="python-docs-content-dev" %} 서비스의 콘텐츠 개발자를 라이브러리에 대한 임시 보관소 리뷰어로 포함하시오. 함께 작업해야 할 콘텐츠 개발자를 찾으려면 팀의 프로그램 관리자에게 문의하십시오.
 
-{% include requirement/MUST id="python-docs-contributor-guide" %} [Azure SDK Contributors 가이드라인] 을 따르시오. (MICROSOFT INTERNAL)
+{% include requirement/MUST id="python-docs-contributor-guide" %} [Azure SDK Contributors 안내서] 을 따르시오. (MICROSOFT INTERNAL)
 
-{% include requirement/MUST id="python-docs-style-guide" %} 공개 문서를 작성할 때 Microsoft 스타일 가이드에 명시된 사양을 준수하십시오. 이는 README와 같은 긴 양식 설명서와 코드의 docstrings 모두에 적용됩니다 (MICROSOFT INTERNAL).
+{% include requirement/MUST id="python-docs-style-guide" %} 공개 문서를 작성할 때 Microsoft 스타일 안내서에 명시된 사양을 준수하십시오. 이는 README와 같은 긴 양식 설명서와 코드의 docstrings 모두에 적용됩니다(MICROFT INTERNAL).
 
 * [Microsoft 작성 스타일 안내서].
 * [Microsoft 클라우드 스타일 안내서].
@@ -30,12 +30,12 @@ sidebar: general_sidebar
 
 ## Docstrings
 
-{% include requirement/MUST id="python-docstrings-pydocs" %} 이 문서에서 명시적으로 재정의되지 않은 경우 [문서 작성 가이드라인](http://aka.ms/pydocs) 을 따르세요.
+{% include requirement/MUST id="python-docstrings-pydocs" %} 이 문서에서 명시적으로 재정의되지 않은 경우 [문서 작성 안내서](http://aka.ms/pydocs) 을 따르세요.
 
 {% include requirement/MUST id="python-docstrings-all" %} 모든 공용 모듈, 유형 및 메서드에 대한 docstrings를 제공합니다.
 
-{% include requirement/MUST id="python-docstrings-kwargs" %} 메소드에서 직접적으로 사용되는 모든  `**kwargs` 를 문서화하고 [core options](https://aka.ms/azsdk/python/options)에 참조 링크를 추가하여 공유 옵션에 대한 소개를 제공합니다. `**kwargs` 가 전달되면,호출된 메소드의 서명을 참조 할 수 있습니다.
-
+{% include requirement/MUST id="python-docstrings-kwargs" %} 메서드에서 직접적으로 사용되는 모든  `**kwargs` 를 문서화하고 [core options](https://aka.ms/azsdk/python/options)에 참조 링크를 추가하여 공유 옵션에 대한 소개를 제공합니다. `**kwargs` 가 전달되면,호출된 메서드의 서명을 참조 할 수 있습니다.
+드
 예시:
 ```python
 def request(method, url, headers, **kwargs): ...
@@ -51,7 +51,7 @@ def get(*args, **kwargs):
     return request("GET", *args, **kwargs)
 ```
 
-{% include requirement/MUST id="python-docstrings-exceptions" %} 메소드안에 명시적으로 제기될 수 있는 document exceptions 및 호출된 방법에 의해 제기되는 예외입니다.
+{% include requirement/MUST id="python-docstrings-exceptions" %} 메서드안에 명시적으로 제기될 수 있는 document exceptions 및 호출된 방법에 의해 제기되는 예외입니다.
 
 ### Code snippets
 
