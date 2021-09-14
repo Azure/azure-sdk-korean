@@ -1,22 +1,22 @@
 ---
-title: "Policies: Pipelines"
+title: "정책: 파이프라인"
 permalink: policies_pipelines.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-Whilst the Azure SDK is considered a unified set of libraries, each group of libraries ships on a separate cadence with varying levels of change as dictated by the needs of the service that those libraries support.
+Azure SDK는 통합된 라이브러리의 집합으로 여기지만, 각 라이브러리 그룹은 해당 라이브러리가 지원하는 서비스의 요구 사항에 따라 별도의 주기로 다양한 수준의 변경과 함께 제공됩니다.
 
-# Pipeline per "Service"
+# "서비스"별 파이프라인
 
-Our pipelines are derived by the way that we ship our libraries to customers. For example we would generally expect to ship some or all of the storage libraries together, so there is a set of pipelines for PR validation, CI and release which operate on code located in the ```sdk/storage/``` path within the repo.
+파이프라인은 우리가 고객에게 라이브러리를 보내는 방식에 의해 파생됩니다. 예를 들어, 일반적으로 스토리지 라이브러리를 일부 또는 전체를 함께 보내는 것을 예상하므로, PR 유효성 검사, CI 및 배포를 위한 일련의 파이프라인이 repo 내의```sdk/storage/``` 경로에 있는 코드에서 작동합니다.
 
-This means that for each language/runtime mono-repo we have multiple pipelines, with each pipeline focused on building and releasing those packages. The entry point to each pipeline is located at ```sdk/[service]/ci.yml``` which defines any custom variables and selects appropriate templates for that pipeline.
+이는 각 언어/런타임 모노-리포(mono-repo)에 대해 여러 파이프라인이 있음을 의미하며, 각 파이프라인은 해당 패키지를 구축하고 배포하는데 중점을 둡니다. 각 파이프라인의 진입점은 ```sdk/[service]/ci.yml```에 있으며, 이곳에서 모든 사용자 지정 변수를 정의하고 해당 파이프라인에 적합한 템플릿을 선택합니다.
 
-Creation of the pipeline within Azure Pipelines is automated. When a ```ci.yml``` file is added to the repository, an automated process runs (every hour, unless manually triggered) which creates a public and internal pipeline.
+파이프라인은 Azure 파이프라인 내에서 자동으로 생성됩니다. ```ci.yml``` 파일이 저장소에 추가되면, 자동화된 프로세스가 실행되어(수동으로 트리거가 되지 않는 한, 매시간) 공용 및 내부 파이프라인이 생성됩니다.
 
-# Pipeline Optimization and Special Case Pipelines
+# 파이프라인 최적화 및 특수 사례 파이프라인
 
-In general each pipeline that ships a library (or set of libraries) to customers should be optimized to perform necessary build, test and static analysis steps for just that set of libraries. Where it is desirable to run analysis across the entire repository, these tasks should be pulled out into special case pipelines.
+일반적으로 고객에게 라이브러리(또는 라이브러리 집합)를 제공하는 각 파이프라인은 해당 라이브러리 집합에 대해 필요한 빌드, 테스트 및 정적 분석 단계를 수행할 수 있도록 최적화되어야 합니다. 전체 저장소에 대한 분석을 실행하는 것이 바람직한 경우라면, 해당 작업을 특수한 사례인 파이프라인으로 끌어내야 합니다.
 
-The reason for this is that we don't want a static analysis failure in one part of the code base blocking the release of an unrelated library. Additionally, repo-wide analysis steps generally take a long time and it is inappropriate to bog down the pipelines for this activity.
+그 이유는 전체 소스 코드의 한 부분에서 정적 분석 오류가 발생하여 관련 없는 라이브러리의 배포가 차단되는 것을 원하지 않기 때문입니다. 또한, repo-wide 분석 단계에서는 일반적으로 시간이 오래 걸리고 이를 위해 파이프라인을 중단시키는 것은 부적절합니다.
