@@ -1,31 +1,31 @@
 ---
-title: "Java Guidelines: Implementation"
+title: "Java 가이드라인: 구현"
 keywords: guidelines java
 permalink: java_implementation.html
 folder: java
 sidebar: general_sidebar
 ---
 
-## API Implementation
+## API 구현
 
-This section describes guidelines for implementing Azure SDK client libraries. Please note that some of these guidelines are automatically enforced by code generation tools.
+이 문서는 Azure SDK 클라이언트 라이브러리를 구현하기 위한 가이드라인입니다. 이 가이드라인의 일부는 코드 생성 도구에 의해 자동으로 적용된 점을 유의하시기 바랍니다. 
 
-{% include requirement/MUSTNOT id="java-namespaces-implementation" %} allow implementation code (that is, code that doesn't form part of the public API) to be mistaken as public API. There are two valid arrangements for implementation code, which in order of preference are the following:
+{% include requirement/MUSTNOT id="java-namespaces-implementation" %} 구현 코드(즉, 공개 API의 일부를 구성하지 않은 코드)를 공개 API로 오인하지 않도록 하십시오. 구현 코드에는 두 가지 유효한 약정이 있는데, 우선 순위는 다음과 같습니다:
 
-1. Implementation classes can be made package-private and placed within the same package as the consuming class.
-2. Implementation classes can be placed within a subpackage named `implementation`.
+1. 구현 클래스를 패키지-프라이빗으로 만들고, 이를 사용하는 클래스와 같은 패키지 내에 배치할 수 있습니다.
+2. 구현 클래스를 `implementation`으로 명명된 서브패키지 내에 배치할 수 있습니다.
 
-CheckStyle checks ensure that classes within an `implementation` package aren't exposed through public API, but it is better that the API not be public in the first place, so preferring to have package-private is the better approach where practicable.
+CheckStyle 검사는 `implementation` 패키지 내의 클래스가 공개 API를 통해 노출되지 않도록 확인합니다. 하지만 우선 API를 공개 API로 구현하지 않는 것이 좋으므로, 가능하면 패키지-프라이빗을 적용하는 것이 더 낫습니다.
 
-### Service Client
+### 서비스 클라이언트
 
-#### Async Service Client
+#### 비동기 서비스 클라이언트
 
-{% include requirement/MUSTNOT id="java-async-blocking" %} include blocking calls inside async client library code. Use [BlockHound] to detect blocking calls in async APIs.
+{% include requirement/MUSTNOT id="java-async-blocking" %} 비동기 클라이언트 라이브러리 내에 동기 함수 호출을 포함하지 마십시오. 비동기 API 안의 동기 함수 호출을 감지하기 위해 [BlockHound]를 사용하십시오.
 
-#### Annotations
+#### 주석
 
-Include the following annotations on the service client class.  For example, this code sample shows a sample class demonstrating the use of these two annotations:
+서비스 클라이언트 클래스에는 다음의 주석을 포함하십시오. 예를 들어, 이 코드에서는 두 주석을 사용하는 예시 클래스를 볼 수 있습니다:
 
 ```java
 @ServiceClient(builder = ConfigurationAsyncClientBuilder.class, isAsync = true, service = ConfigurationService.class)
@@ -38,34 +38,34 @@ public final class ConfigurationAsyncClient {
 }
 ```
 
-| Annotation | Location | Description |
+| 주석 | 위치  | 설명 |
 |:-----------|:---------|:------------|
-| `@ServiceClient` | Service Client | Specifies the builder responsible for instantiating the service client, whether the API is asynchronous, and a reference back to the service interface (the interface annotated with `@ServiceInterface`). |
-| `@ServiceMethod` | Service Method | Placed on all methods that do network operations, regardless of whether it is a client class or not. |
+| `@ServiceClient` | 서비스 클라이언트 |서비스 클라이언트를 인스턴스화하는 빌더, API가 비동기인지 여부, 서비스 인터페이스(`@ServiceInterface` 주석이 있는 인터페이스)에 대한 참조를 명시합니다.|
+| `@ServiceMethod` | 서비스 메서드 |클라이언트 클래스인지 여부에 관계 없이, 네트워크 작업을 수행하는 모든 메서드에 명시합니다.|
 
-#### Service Client Builder
+#### 서비스 클라이언트 빌더
 
-##### Annotations
+##### 주석
 
-The `@ServiceClientBuilder` annotation should be placed on any class that is responsible for instantiating service clients (that is, instantiating classes annotated with `@ServiceClient`). For example:
+`@ServiceClientBuilder` 주석은 서비스 클라이언트 인스턴스화를 담당하는 클래스에 반드시 명시되어야 합니다. (즉, `@ServiceClient` 주석이 적용된 클래스를 인스턴스화하는 클래스에 배치되어야 합니다.) 예시는 다음과 같습니다:
 
 ```java
 @ServiceClientBuilder(serviceClients = {ConfigurationClient.class, ConfigurationAsyncClient.class})
 public final class ConfigurationClientBuilder { ... }
 ```
 
-This builder states that it can build instances of `ConfigurationClient` and `ConfigurationAsyncClient`.
+위의 빌더는 `ConfigurationClient`와 `ConfigurationAsyncClient`의 인스턴스를 작성할 수 있다고 명시합니다.
 
-### Supporting Types
+### 지원 타입
 
-#### Model Types
+#### 모델 타입
 
-##### Annotations
+##### 주석 
 
-There are two annotations of note that should be applied on model classes, when applicable:
+조건에 해당하는 경우, 모델 클래스에 적용해야 하는 두 가지 주석이 있습니다:
 
-* The `@Fluent` annotation is applied to all model classes that are expected to provide a fluent API to end users.
-* The `@Immutable` annotation is applied to all immutable classes.
+* `@Fluent` 주석은 최종 사용자에게 Fluent API를 제공할 것으로 예상되는 모든 모델 클래스에 적용됩니다.
+* `@Immutable` 주석은 변경할 수 없는 모든 클래스에 적용됩니다.
 
 ## SDK Feature Implementation
 
