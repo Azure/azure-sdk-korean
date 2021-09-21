@@ -6,7 +6,7 @@ folder: java
 sidebar: general_sidebar
 ---
 
-스프링 생태계에 최상의 환경을 제공하는 것은 매우 중요합니다. 아래 가이드라인은  [자바 표준 디자인 가이드라인](https://azure.github.io/azure-sdk/java_introduction.html) 의 지침을 적절히 재정의하여 확장한 것 입니다. 
+스프링 생태계에 최상의 환경을 제공하는 것은 매우 중요합니다. 아래 가이드라인은  [자바 표준 디자인 가이드라인](https://azure.github.io/azure-sdk/java_introduction.html) 의 지침을 적절히 재정의하여 확장한 것입니다. 
 
 ## 네임스페이스
 
@@ -24,7 +24,7 @@ sidebar: general_sidebar
 스프링 데이터 추상화의 경우, `artifactId`는 `azure-spring-data-<group>-<service>[-<feature>]`와 같은 형식이어야 합니다.
 스프링 클라우드 스타터의 경우, `artifactId`는 `azure-spring-cloud-starter-<group>-<service>[-<feature>]`와 같은 형식이어야 합니다.
 
-{% include requirement/MUST id="java-spring-azure-sdk-bom" %} Azure 스프링 라이브러리를 사용하는 사용자가 버젼을 선택할 필요 없이 다른 Azure 자바 클라이언트 라이브러리에서 추가적인 종속성들을 가져올 수 있도록 `dependencyManagement` 종속성을 Azure 자바 SDK BOM에 포함합니다.
+{% include requirement/MUST id="java-spring-azure-sdk-bom" %} Azure 스프링 라이브러리를 사용하는 사용자가 버전을 선택할 필요 없이 다른 Azure 자바 클라이언트 라이브러리에서 추가적인 종속성들을 가져올 수 있도록 `dependencyManagement` 종속성을 Azure 자바 SDK BOM에 포함합니다.
 
 ## 버전 관리
 
