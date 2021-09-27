@@ -67,15 +67,16 @@ public final class ConfigurationClientBuilder { ... }
 * `@Fluent` 주석은 최종 사용자에게 Fluent API를 제공할 것으로 예상되는 모든 모델 클래스에 적용됩니다.
 * `@Immutable` 주석은 변경할 수 없는 모든 클래스에 적용됩니다.
 
-## SDK Feature Implementation
+## SDK 기능 구현
 
-### Logging
+### 로깅
 
-Client libraries must make use of the robust logging mechanisms in azure core, so that the consumers can adequately diagnose issues with method calls and quickly determine whether the issue is in the consumer code, client library code, or service.
+클라이언트 라이브러리는 Azure Core의 강력한 로깅 메커니즘을 사용해야 합니다. 이는 소비자가 메서드 호출의 문제를 적절하게 진단하고, 그 문제가 개발자 코드, 클라이언트 라이브러리 코드, 서비스 중 어디에서 발생했는지 확인할 수 있도록 하기 위함입니다.
 
-{% include requirement/MUST id="java-logging-clientlogger" %} use the `ClientLogger` API provided within Azure Core as the sole logging API throughout all client libraries. Internally, `ClientLogger` wraps [SLF4J], so all external configuration that is offered through SLF4J is valid.  We encourage you to expose the SLF4J configuration to end users. For more information, see the [SLF4J user manual].
 
-{% include requirement/MUST id="java-logging-new-clientlogger" %} create a new instance of a `ClientLogger` per instance of all relevant classes, except in situations where performance is critical, the instances are short-lived (and therefore the cost of unique loggers is excessive), or in static-only classes (where there is no instantiation of the class allowed). In these cases, it is acceptable to have a shared (or static) logger instance. For example, the code below will create a `ClientLogger` instance for the `ConfigurationAsyncClient`:
+{% include requirement/MUST id="java-logging-clientlogger" %} 모든 클라이언트 라이브러리에서는 Azure Core가 제공하는 `ClientLogger` API를 유일한 로깅 API로 사용하십시오. 내부적으로, `ClientLogger`는 [SLF4J]를 감싸고 있으므로, SLF4J를 통해 제공되는 모든 외부 구성이 유효합니다. 최종 사용자에게 SLF4J 구성을 노출하기를 권장합니다. 자세한 내용은 [SLF4J user manual]을 참조하십시오.
+
+{% include requirement/MUST id="java-logging-new-clientlogger" %} 모든 관련 클래스에 `ClientLogger` 인스턴스를 생성하십시오. 단, 성능이 매우 중요하거나, 인스턴스의 수명이 짧아 고유한 로거를 사용하기에 비용이 과하거나, 클래스 인스턴스화가 허용되지 않는 static-only 클래스는 예외입니다. 이러한 예외의 경우, 공유 (또는 static) 로거 인스턴스가 허용됩니다. 예를 들어, 아래 코드는 `ConfigurationAsyncClient`에 대한 `ClientLogger` 인스턴스를 생성합니다:
 
 ```java
 public final class ConfigurationAsyncClient {
@@ -92,51 +93,52 @@ public final class ConfigurationAsyncClient {
 }
 ```
 
-Note that static loggers are shared among all client library instances running in a JVM instance. Static loggers should be used carefully and in short-lived cases only.
+Static 로거는 JVM 인스턴스에서 실행되는 모든 클라이언트 라이브러리 인스턴스 간에 공유된다는 점을 참고하십시오. Static 로거는 인스턴스 수명이 짧은 경우에만 신중히 사용해야 합니다.
 
-{% include requirement/MUST id="java-logging-levels" %} use one of the following log levels when emitting logs: `Verbose` (details), `Informational` (things happened), `Warning` (might be a problem or not), and `Error`.
+{% include requirement/MUST id="java-logging-levels" %} 로그를 내보낼 때는 다음 로그 레벨 중 하나를 사용하십시오: `Verbose`(상세 정보), `Informational`(발생한 상황), `Warning`(문제일 수 있는 상황), `Error`.
 
-{% include requirement/MUST id="java-logging-errors" %} use the `Error` logging level for failures that the application is unlikely to recover from (out of memory, etc.).
+{% include requirement/MUST id="java-logging-errors" %} `Error` 레벨은 응용 프로그램이 복구될 가능성이 거의 없는 오류(메모리 부족 등)에 사용하십시오.
 
-{% include requirement/MUST id="java-logging-warn" %} use the `Warning` logging level when a function fails to perform its intended task. This generally means that the function will raise an exception.  Do not include occurrences of self-healing events (for example, when a request will be automatically retried).
+{% include requirement/MUST id="java-logging-warn" %} `Warning` 레벨은 함수가 의도한 작업을 수행하지 못한 경우 사용하십시오. 이는 일반적으로 함수가 예외를 발생시킨다는 것을 의미합니다. 스스로 복구하는 이벤트 발생(예를 들어, 요청이 자동으로 재시도되는 경우)은 포함하지 마십시오.
 
-{% include requirement/MAY id="java-logging-slowlinks" %} log the request and response (see below) at the `Warning` logging level when a request/response cycle (to the start of the response body) exceeds a service-defined threshold.  The threshold should be chosen to minimize false-positives and identify service issues.
 
-{% include requirement/MUST id="java-logging-info" %} use the `Informational` logging level when a function operates normally.
+{% include requirement/MAY id="java-logging-slowlinks" %} 요청/응답 주기(응답 본문 시작까지)가 서비스 정의 임계계 값을 초과할 때, `Warning` 수준에서 요청 및 응답(아래 참조)을 기록할 수 있습니다. 임계 값은 거짓-긍정(false-positives)을 최소화하고, 서비스 문제를 식별하기 위해 선택되어야 합니다.
 
-{% include requirement/MUST id="java-logging-verbose" %} use the `Verbose` logging level for detailed troubleshooting scenarios. This is primarily intended for developers or system administrators to diagnose specific failures.
+{% include requirement/MUST id="java-logging-info" %} `Informational` 레벨은 함수가 정상적으로 작동할 때 사용하십시오.
 
-{% include requirement/MUST id="java-logging-no-sensitive-info" %} only log headers and query parameters that are in a service-provided "allow-list" of approved headers and query parameters.  All other headers and query parameters must have their values redacted.
+{% include requirement/MUST id="java-logging-verbose" %} `Verbose` 레벨은 자세한 문제 해결 시나리오를 위해 사용하십시오. 이는 주로 개발자 혹은 시스템 관리자가 특정 오류를 진단하기 위한 것입니다.
 
-{% include requirement/MUST id="java-logging-requests" %} log request line and headers as an `Informational` message. The log should include the following information:
+{% include requirement/MUST id="java-logging-no-sensitive-info" %} 승인된 헤더와 쿼리 파라미터의 서비스 제공 "허용 목록"에 있는 헤더 및 쿼리 파라미터만 로그로 기록하십시오. 다른 모든 헤더와 쿼리 파라미터는 해당 값을 수정해야 합니다.
 
-* The HTTP method.
-* The URL.
-* The query parameters (redacted if not in the allow-list).
-* The request headers (redacted if not in the allow-list).
-* An SDK provided request ID for correlation purposes.
-* The number of times this request has been attempted.
+{% include requirement/MUST id="java-logging-requests" %} `Informational` 메시지로 요청 라인과 헤더를 로그에 남기십시오. 로그는 다음의 정보를 포함해야 합니다:
 
-This happens within azure-core by default, but users can configure this through the builder `httpLogOptions` configuration setting.
+* HTTP 메서드
+* URL
+* 쿼리 파라미터(허용 목록에 없는 경우 수정)
+* 요청 헤더(허용 목록에 없는 경우 수정)
+* SDK가 상관 광계 목적을 위해 제공하는 요청 ID
+* 요청이 시도된 횟수
 
-{% include requirement/MUST id="java-logging-responses" %} log response line and headers as an `Informational` message.  The format of the log should be the following:
+이는 기본적으로 azure-core 내에서 수행하지만, 사용자가 `httpLogOptions` 구성 빌더를 통해 설정할 수 있습니다.
 
-* The SDK provided request ID (see above).
-* The status code.
-* Any message provided with the status code.
-* The response headers (redacted if not in the allow-list).
-* The time period between the first attempt of the request and the first byte of the body.
+{% include requirement/MUST id="java-logging-responses" %} `Informational` 메시지로 응답 행과 헤더를 로그에 남기십시오. 로그 형식은 다음과 같아야 합니다:
 
-{% include requirement/MUST id="java-logging-cancellations" %} log an `Informational` message if a service call is cancelled.  The log should include:
+* SDK에서 제공한 요청 ID(위 참조)
+* 상태 코드
+* 상태 코드와 함께 제공된 메시지
+* 응답 헤더(허용 목록에 없는 경우 수정)
+* 요청의 첫 번째 시도와 본문의 첫 번째 바이트 사이의 기간
 
-* The SDK provided request ID (see above).
-* The reason for the cancellation (if available).
+{% include requirement/MUST id="java-logging-cancellations" %} 서비스 요청이 취소된 경우 `Informational` 로그를 기록하십시오. 로그에는 다음이 포함되어야 합니다:
 
-{% include requirement/MUST id="java-logging-exceptions" %} log exceptions thrown as a `Warning` level message. If the log level set to `Verbose`, append stack trace information to the message.
+* SDK에서 제공한 요청 ID(위 참조)
+* 취소 사유(가능한 경우)
 
-{% include requirement/MUST id="java-logging-log-and-throw" %} throw all exceptions created within the client library code through one of the logger APIs - `ClientLogger.logThrowableAsError()`, `ClientLogger.logThrowableAsWarning()`, `ClientLogger.logExceptionAsError()` or `ClientLogger.logExceptionAsWarning()`.
+{% include requirement/MUST id="java-logging-exceptions" %} 예외는 `Warning` 레벨 메시지로 기록하십시오. 로그 레벨이 `Verbose`로 설정된 경우, 스택 추적 정보를 메시지에 포함하십시오.
 
-For example:
+{% include requirement/MUST id="java-logging-log-and-throw" %} 클라이언트 라이브러리 코드 내에서 발생한 모든 예외는 다음 로거 API 중 하나를 통해 발생시킵시오 - `ClientLogger.logThrowableAsError()`, `ClientLogger.logThrowableAsWarning()`, `ClientLogger.logExceptionAsError()` 혹은 `ClientLogger.logExceptionAsWarning()`.
+
+아래 예시가 있습니다:
 
 ```java
 // NO!!!!
@@ -167,15 +169,15 @@ if (numberOfAttempts < retryPolicy.getMaxRetryCount()) {
 }
 ```
 
-### Distributed tracing
+### 분산 추적
 
-Distributed tracing mechanisms allow the consumer to trace their code from frontend to backend.  Distributed tracing libraries creates spans - units of unique work.  Each span is in a parent-child relationship.  As you go deeper into the hierarchy of code, you create more spans.  These spans can then be exported to a suitable receiver as needed.  To keep track of the spans, a _distributed tracing context_ (called a context in the remainder of this section) is passed into each successive layer.  For more information on this topic, visit the [OpenTelemetry] topic on tracing.
+분산 추적 메커니즘을 통해 소비자는 그들의 코드를 프론트엔드부터 백엔드까지 추적할 수 있습니다. 분산 추적 라이브러리는 고유한 작업 단위인 범위를 생성합니다. 각각의 범위는 부모-자식 관계에 있습니다. 코드 계층 구조에 더 깊이 들어갈수록 더 많은 범위가 생성됩니다. 이러한 범위는 필요에 따라 적합한 수신자로 내보내질 수 있습니다. 범위를 추적하기 위해, _분산 추적 컨텍스트_(이하 컨텍스트)는 각 연속 계층으로 전달됩니다. 자세한 정보는 [OpenTelemetry]의 추적 항목을 참조하십시오.
 
-The Azure core library provides a service provider interface (SPI) for adding pipeline policies at runtime. The pipeline policy is used to enable tracing on consumer deployments. Pluggable pipeline policies must be supported in all client libraries to enable distributed tracing. Additional metadata can be specified on a per-service-method basis to provide a richer tracing experience for consumers.  
+Azure Core 라이브러리는 런타임 시점에 파이프라인 정책을 추가하기 위한 Service Provider Interface (SPI)를 제공합니다. 파이프라인 정책은 소비자 배포에서 추적을 활성화하는 데 사용됩니다. 분산 추적을 사용하려면 모든 클라이언트 라이브러리에서 플러그형 파이프라인 정책을 지원해야 합니다. 추가 메타데이터는 서비스별 메서드에 따라 지정하여 소비자에게 더 풍부한 추적 경험을 제공할 수 있습니다.
 
-{% include requirement/MUST id="java-tracing-pluggable" %} support pluggable pipeline policies as part of the HTTP pipeline instantiation. This enables developers to include a tracing plugin and have its pipeline policy automatically injected into all client libraries that they are using.
+{% include requirement/MUST id="java-tracing-pluggable" %} HTTP 파이프라인 인스턴스화의 일부로써 플러그형 파이프라인 정책을 지원하십시오. 이를 통해 개발자는 추적 플러그인을 포함하고, 해당 파이프라인 정책을 사용 중인 모든 클라이언트 라이브러리에 자동으로 주입할 수 있습니다.
 
-Review the code sample below, in which a service client builder creates an `HttpPipeline` from its set of policies.  At the same time, the builder allows plugins to add 'before retry' and 'after retry' policies with the lines `HttpPolicyProviders.addBeforeRetryPolicies(policies)` and `HttpPolicyProviders.addAfterRetryPolicies(policies)`:
+아래의 예시 코드를 검토해보십시오. 이 코드에서는 서비스 클라이언트 빌더가 해당 정책에 `HttpPipeline`을 생성하고 있습니다. 동시에, 빌더는 `HttpPolicyProviders.addBeforeRetryPolicies(policies)` 및 `HttpPolicyProviders.addAfterRetryPolicies(policies)` 행을 사용하여 플러그인이 ‘before retry’와 ‘after retry’ 정책을 추가할 수 있도록 허용합니다:
 
 ```java
 public ConfigurationAsyncClient build() {
@@ -198,13 +200,13 @@ public ConfigurationAsyncClient build() {
 }
 ```
 
-{%include requirement/MUST id="java-tracing-tracerproxy" %} use the Azure core `TracerProxy` API to set additional metadata that should be supplied along with the tracing span. In particular, use the `setAttribute(String key, String value, Context context)` method to set a new key/value pair on the tracing context.
+{%include requirement/MUST id="java-tracing-tracerproxy" %} 추적 범위와 함께 제공해야 하는 추가 메타데이터를 설정하려면 Azure Core `TracerProxy` API를 사용하십시오. 특히 `setAttribute(String key, String value, Context context)` 메서드를 사용하여 추적 컨텍스트에서 새 키/값 쌍을 설정합니다.
 
-{%include requirement/MUST id="java-tracing-tracing-context" %} pass all `Context` objects received as service method arguments through to the generated service interface methods in all cases.
+{%include requirement/MUST id="java-tracing-tracing-context" %} 서비스 메서드 인수로 받은 `Context` 객체 전부를 모든 경우에 생성된 서비스 인터페이스 메서드로 전달하십시오.
 
-## Testing
+## 테스팅
 
-{% include requirement/MUST id="java-testing-params" %} parameterize all applicable unit tests to make use of all available HTTP clients and service versions. Parameterized runs of all tests must occur as part of live tests. Shorter runs, consisting of just Netty and the latest service version, can be run whenever PR validation occurs.
+{% include requirement/MUST id="java-testing-params" %} 사용 가능한 모든 HTTP 클라이언트와 서비스 버전을 사용하려면, 적용 가능한 모든 단위 테스트를 매개변수화하십시오. 모든 테스트의 매개변수화된 실행은 라이브 테스트의 일부로 이루어져야 합니다. Netty와 최신 서비스 버전으로 구성된 더 짧은 실행은 PR 유효성 검사가 발생할 때마다 실행할 수 있습니다.
 
 > TODO refer to cases where this is done in Java today
 
