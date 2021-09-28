@@ -1,32 +1,32 @@
 ---
-title: "Spring Guidelines"
+title: "스프링 가이드라인"
 keywords: guidelines java spring
 permalink: java_spring.html
 folder: java
 sidebar: general_sidebar
 ---
 
-Providing the Spring ecosystem with a first-class experience is of the utmost importance. The guidelines below are in addition to the [standard Java design guidelines](https://azure.github.io/azure-sdk/java_introduction.html), overriding the guidance as appropriate.
+스프링 생태계에 최상의 환경을 제공하는 것은 매우 중요합니다. 아래 가이드라인은  [자바 표준 디자인 가이드라인](https://azure.github.io/azure-sdk/java_introduction.html) 의 지침을 적절히 재정의하여 확장한 것입니다. 
 
-## Namespaces
+## 네임스페이스
 
-{% include requirement/MUST id="java-spring-namespaces" %} ensure all Java packages are named using the form `com.azure.spring.<group>.<service>[.<feature>]`.
+{% include requirement/MUST id="java-spring-namespaces" %} 모든 자바 패키지들은  `com.azure.spring.<group>.<service>[.<feature>]`과 같은 형식으로 명명되어야 합니다.
 
-{% include requirement/MUST id="java-spring-same-group" %} use the same group, service, and feature naming as is used by the underlying Java client library.
+{% include requirement/MUST id="java-spring-same-group" %} 그룹, 서비스, 기능은 자바 기본 클라이언트 라이브러리에 사용되는 것과 동일하게 명명합니다.  
 
-{% include requirement/MUST id="java-spring-implementation" %} put all non-public API under an `implementation` package under the root namespace.
+{% include requirement/MUST id="java-spring-implementation" %} 모든 논-퍼블릭 API는 루트 네임스페이스에 속한 `implementation` 패키지에 위치시킵니다.
 
 ### Maven
 
-{% include requirement/MUST id="java-spring-maven-groupid" %} use the group ID of `com.azure.spring`.
+{% include requirement/MUST id="java-spring-maven-groupid" %} 그룹 ID는 `com.azure.spring`를 사용합니다.
 
-{% include requirement/MUST id="java-spring-maven-artifactid" %} specify the `artifactId` to be of the form `azure-spring-boot-starter-<group>-<service>[-<feature>]`, for example, `azure-spring-boot-starter-storage-blob` or `azure-spring-boot-starter-security-keyvault-secrets`. 
-For Spring data abstraction, the `artifactId` should be of the form `azure-spring-data-<group>-<service>[-<feature>]`.
-For Spring cloud starters, the `artifactId` should be of the form `azure-spring-cloud-starter-<group>-<service>[-<feature>]`.
+{% include requirement/MUST id="java-spring-maven-artifactid" %} `artifactId` 는  `azure-spring-boot-starter-<group>-<service>[-<feature>]`의 형태로 지정합니다. `azure-spring-boot-starter-storage-blob` 또는 `azure-spring-boot-starter-security-keyvault-secrets`와 같은 예시가 있습니다. 
+스프링 데이터 추상화의 경우, `artifactId`는 `azure-spring-data-<group>-<service>[-<feature>]`와 같은 형식이어야 합니다.
+스프링 클라우드 스타터의 경우, `artifactId`는 `azure-spring-cloud-starter-<group>-<service>[-<feature>]`와 같은 형식이어야 합니다.
 
-{% include requirement/MUST id="java-spring-azure-sdk-bom" %} include a `dependencyManagement` dependency on the Azure Java SDK BOM, so that users who use Azure Spring libraries can bring in additional dependencies on other Azure Java client libraries without needing to choose versions.
+{% include requirement/MUST id="java-spring-azure-sdk-bom" %} Azure 스프링 라이브러리를 사용하는 사용자가 버전을 선택할 필요 없이 다른 Azure 자바 클라이언트 라이브러리에서 추가적인 종속성들을 가져올 수 있도록 `dependencyManagement` 종속성을 Azure 자바 SDK BOM에 포함합니다.
 
-## Versioning
+## 버전 관리
 
 Spring integration modules must be versioned in a way that enables the following goals:
 
@@ -44,7 +44,7 @@ Spring integration modules must be versioned in a way that enables the following
 
 {% include requirement/MUST id="java-spring-bom-docs" %} encourage users to use the Spring integration modules BOM for their chosen version of Spring rather than specific versions of each Spring integration module, such that they need not worry about Maven classifiers and other versioning issues.
 
-## Dependencies
+## 종속성
 
 {% include requirement/MUSTNOT id="java-spring-dependency-approval" %} introduce dependencies on libraries, or change dependency versions, without discussion with the Java architect. Each dependency must receive explicit approval and be added to the dependency allow list before it may be used.
 
@@ -54,16 +54,16 @@ Spring integration modules must be versioned in a way that enables the following
 
 {% include requirement/MUST id="java-spring-dependency-minimal" %} keep dependencies to the minimal required set.
 
-## Logging
+## 로깅
 
 {% include requirement/MUSTNOT id="java-spring-logging" %} use the `ClientLogger` logging APIs.
 
-## Tracing
+## 추적
 
 {% include requirement/MUST id="java-spring-tracing" %} ensure that all Azure Spring libraries fully integrate with the tracing capabilities available in the Azure Java client libraries.
 
 {% include requirement/MUST id="java-spring-tracing-sleuth" %} ensure that all Azure Spring libraries work appropriately with Spring Sleuth, and that tracing information is appropriately exported.
 
-## Performance
+## 성능
 
 {% include requirement/MUST id="java-spring-performance-baseline" %} ensure, through appropriate benchmarks (developed in conjuction with the Java SDK team) that performance of all Spring libraries is at an equivalent level to the same operation being performed directly through the Java client library.
