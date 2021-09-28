@@ -35,7 +35,7 @@ sidebar: general_sidebar
 {% include requirement/MUST id="python-docstrings-all" %} 모든 공용 모듈, 유형 및 메서드에 대한 docstrings를 제공합니다.
 
 {% include requirement/MUST id="python-docstrings-kwargs" %} 메서드에서 직접적으로 사용되는 모든  `**kwargs` 를 문서화하고 [core options](https://aka.ms/azsdk/python/options)에 참조 링크를 추가하여 공유 옵션에 대한 소개를 제공합니다. `**kwargs` 가 전달되면,호출된 메서드의 서명을 참조 할 수 있습니다.
-드
+
 예시:
 ```python
 def request(method, url, headers, **kwargs): ...
