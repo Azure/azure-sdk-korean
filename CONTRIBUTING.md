@@ -12,7 +12,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 Here's the general contribution process:
 
-1. Fork this repo
+1. Fork this reposssss
 1. Create a new branch
 1. Commit your changes to that branch
 1. Do a PR from your fork/branch to azure-sdk-korean/main.
