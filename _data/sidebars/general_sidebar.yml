@@ -46,7 +46,7 @@ entries:
     folderitems:
       - title: 디자인 (번역중)
         url: /java_introduction.html
-      - title: Implementation
+      - title: 구현 (번역중)
         url: /java_implementation.html
       - title: Spring Guidelines
         url: /java_spring.html 
