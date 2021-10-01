@@ -1,18 +1,18 @@
 ---
-title: "General Guidelines: Azure Core"
+title: "공통 가이드라인: Azure Core"
 keywords: guidelines
 permalink: general_azurecore.html
 folder: general
 sidebar: general_sidebar
 ---
 
-Azure Core is a library that provides cross-cutting services to other client libraries.  These services include:
+Azure Core 라이브러리는 다른 클라이언트 라이브러리에 교차 서비스를 제공합니다. 이러한 서비스는 다음과 같습니다:
 
-* The HTTP pipeline
-* Global configuration
-* Credentials
+* HTTP 파이프라인
+* 전역 구성 
+* 자격 증명 
 
-The following sections define the requirements for the Azure Core library.  If you are implementing a client library in a language that already has an Azure Core library, you do not need to read this section.  It is primarily targeted at developers who work on the Azure Core library.
+다음 절에서는 Azure Core 라이브러리에 대한 요구 사항을 정의합니다. Azure Core 라이브러리를 이미 갖고 있는 언어로 클라이언트 라이브러리를 구현하는 경우, 이 섹션을 읽을 필요가 없습니다. 주로 Azure Core 라이브러리에서 일하는 개발자를 대상으로 합니다.
 
 ## The HTTP pipeline
 
