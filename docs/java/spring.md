@@ -28,21 +28,22 @@ sidebar: general_sidebar
 
 ## 버전 관리
 
-Spring integration modules must be versioned in a way that enables the following goals:
+스프링 인티그레이션 모듈 버전 관리는 아래 목표들을 실현하도록 이뤄져야 합니다.
 
-1. Each Spring integration module must be able to release at different release cadences.
-2. Each Spring integration module must have full semantic versioning for major, minor, and patch versions, in all releases. Versioning must not be tied to the Spring dependency version as in earlier iterations of the Azure Spring integration modules.
-3. Allow developers to easily choose Spring integration modules which work together.
+1. 각각의 스프링 인티그레이션 모듈은 다른 릴리스 케이던스에서도 릴리스가 가능해야 합니다.
+2. 각각의 스프링 인티그레이션 모듈은 모든 릴리스에서 주 버전, 부 버전, 패치 버전이 모두 포함된 유의적 버전을 가져야 합니다. Azure 스프링 인티그레이션 모듈에서 그랬던 것처럼, 버전 관리가 스프링 종속성 버전에 연결되어 이뤄지면 안 됩니다.
+3. 개발자들이 사용할 스프링 인티그레이션 모듈을 쉽게 선택할 수 있도록 해야 합니다.
 
-{% include requirement/MUST id="java-spring-supported-versions" %} ensure that all releases of a Spring integration module support all active versions (as of the time of release) of the corresponding Spring API.
+{% include requirement/MUST id="java-spring-supported-versions" %} 모든 스프링 인티그레이션 모듈은, 릴리스 시점을 기준으로, 상응하는 모든 스프링 API 활성 버전들을 지원해야 합니다.
 
-{% include requirement/MUST id="java-spring-deps" %} add latest release version of Spring API dependencies in the Spring integration module POM files, it is the users responsibility to override the Spring API version via Spring BOM.
+{% include requirement/MUST id="java-spring-deps" %} 최신 릴리스 버전의 스프링 API 종속성을 스프링 인티그레이션 모듈 POM 파일에 추가해야 합니다. 사용자들은 스스로 스프링 BOM을 통해 스프링 API 버전을 재정의해야 합니다.
 
-{% include requirement/MUST id="java-spring-classifiers" %} add Maven classifiers to releases if a Spring integration module cannot support all active versions of the corresponding Spring API. For example, if a Spring integration module needs to support Spring Boot 2.2.x and 2.3.x, but cannot due to technical contraints, two versions of the Spring integration module must be released, with classifiers `springboot_2_2` and `springboot_2_3`.
+{% include requirement/MUST id="java-spring-classifiers" %} 스프링 인티그레이션 모듈이 모든 스프링 API 활성 버전들을 지원할 수 없는 경우 릴리스에 메이븐 분류자를 추가합니다. 예를 들어 스프링 인티그레이션 모듈이 Spring Boot 2.2x와 2.3.x을 지원해야 하지만 기술적인 제약으로 지원하지 못하는 경우
+`springboot_2_2`와 `springboot_2_3` 분류자가 있는 두 가지 버전의 스프링 인티그레이션 모듈이 릴리스 돼야 합니다.
 
-{% include requirement/MUST id="java-spring-bom" %} provide a Spring integration modules BOM for users. This BOM must contain versions of all Spring integration modules that are known to work together (and have a single set of dependency versions). It must also include appropriate references to Azure Java SDK.
+{% include requirement/MUST id="java-spring-bom" %} 사용자들을 위해 스프링 인티그레이션 모듈 BOM을 제공해야 합니다. 이 BOM은 같이 동작하는 것으로 알려진 모든 스프링 인티그레이션 모듈들의 버전을 반드시 포함해야 합니다(종속성 버전들에 대한 단일 집합을 포함해야 합니다). 또한 Azure 자바 SDK에 대한 적절한 참조 역시 포함돼야 합니다.
 
-{% include requirement/MUST id="java-spring-bom-docs" %} encourage users to use the Spring integration modules BOM for their chosen version of Spring rather than specific versions of each Spring integration module, such that they need not worry about Maven classifiers and other versioning issues.
+{% include requirement/MUST id="java-spring-bom-docs" %} 사용자들이 메이븐 분류자나 기타 버전 관리 문제들을 신경쓰지 않도록 그들이 선택한 스프링 버전에 대해, 특정 버전의 스프링 인트그레이션 모듈을 사용하기 보다는, 스프링 인티그레이션 모듈 BOM을 사용할 것을 권장해야 합니다.
 
 ## 종속성
 
@@ -56,7 +57,7 @@ Spring integration modules must be versioned in a way that enables the following
 
 ## 로깅
 
-{% include requirement/MUSTNOT id="java-spring-logging" %} use the `ClientLogger` logging APIs.
+{% include requirement/MUSTNOT id="java-spring-logging" %} `ClientLogger` 로깅 API를 사용해야 합니다.
 
 ## 추적
 
