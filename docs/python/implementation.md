@@ -121,7 +121,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 
 #### 구성
 
-{% include requirement/MUST id="python-envvars-global" %} honor the following environment variables for global configuration settings:
+{% include requirement/MUST id="python-envvars-global" %} 전역 구성 설정에 대해 다음 환경 변수를 :
 
 {% include tables/environment_variables.md %}
 
