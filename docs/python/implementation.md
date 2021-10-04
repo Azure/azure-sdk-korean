@@ -98,7 +98,7 @@ class ExampleClient(object):
 
 ### 지원 타입
 
-{% include requirement/MUST id="python-models-repr" %} 모델 타입에 대해 `__repr__`을 구현하십시오. The representation **must** include the type name and any key properties (that is, properties that help identify the model instance).
+{% include requirement/MUST id="python-models-repr" %} 모델 타입에 대해 `__repr__`을 구현하십시오. 표시에는 **꼭** 유형의 이름과 모든 키 속성(즉, 모델 인스턴스를 식별하는데 도움이 되는 속성)이 포함되어야 합니다.
 
 {% include requirement/MUST id="python-models-repr-length" %} `__repr__`의 출력내용이 1024자를 넘길 경우 출력을 잘라내십시오.
 
@@ -131,7 +131,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 
 {% include requirement/MUST id="python-logging-nameed-logger" %} 라이브러리에 대해 이름이 지정된 로거를 사용하십시오
 
-The logger for your package **must** use the name of the module. The library may provide additional child loggers. If child loggers are provided, document them.
+패키지의 로거는 **꼭** 모듈 이름을 사용해야합니다. 라이브러리는 추가적으로 자식 로거를 제공할 수 있습니다. 자식 로거가 제공된 경우 기록하십시오.
 
 예를 들어:
 - Package 이름: `azure-someservice`
@@ -219,38 +219,39 @@ Any other keys that are used should be common across all client libraries for a 
 
 {% include requirement/SHOULD id="python-testing-async" %} 비동기 코드 테스트로 [pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio)를 사용하십시오.
 
-{% include requirement/MUST id="python-testing-live" %} make your scenario tests runnable against live services. Strongly consider using the [Python Azure-DevTools](https://github.com/Azure/azure-sdk-for-python/tree/main/tools/azure-devtools) package for scenario tests.
+{% include requirement/MUST id="python-testing-live" %} 실시간 서비스에 대하여 시나리오 테스트를 실행할 수 있도록 하십시오. 시나리오 테스트에 [Python Azure-DevTools](https://github.com/Azure/azure-sdk-for-python/tree/main/tools/azure-devtools)을 사용하는 것을 강력히 권장합니다.
 
-{% include requirement/MUST id="python-testing-record" %} provide recordings to allow running tests offline/without an Azure subscription
+{% include requirement/MUST id="python-testing-record" %} Azure 구독 없이 오프라인에서 테스트를 실행할 수 있는 레코딩을 제공하십시오.
 
-{% include requirement/MUST id="python-testing-parallel" %} support simultaneous test runs in the same subscription.
+{% include requirement/MUST id="python-testing-parallel" %} 동일한 구독에서 동시 테스트 실행을 지원하십시오.
 
-{% include requirement/MUST id="python-testing-independent" %} make each test case independent of other tests.
+{% include requirement/MUST id="python-testing-independent" %} 테스트 사례를 다른 테스트와 독립적으로 만드십시오.
 
-## Code Analysis and Style Tools
+## 코드 분석과 스타일 도구
 
 {% include requirement/MUST id="python-tooling-pylint" %} [pylint](https://www.pylint.org/)를 사용하십시오. [root of the repository](https://github.com/Azure/azure-sdk-for-python/blob/main/pylintrc)에서 pylintrc을 사용하십시오.
 
 {% include requirement/MUST id="python-tooling-flake8" %} [flake8-docstrings](https://gitlab.com/pycqa/flake8-docstrings)를 사용하여 문서 주석을 확인하십시오.
 
 {% include requirement/MUST id="python-tooling-black" %} 코드 서식을 지정하려면 [Black](https://black.readthedocs.io/en/stable/)을 사용해주십시오.
+
 {% include requirement/SHOULD id="python-tooling-mypy" %} [MyPy](https://mypy.readthedocs.io/en/latest/)를 사용하여 라이브러리의 공개 코드 영역을 정적으로 확인하십시오.
 
 테스트 등의 non-shipping 코드에서는 확인할 필요는 없습니다.
 
-## Making use of Azure Core
+## Azure Core 활용
 
-The `azure-core` package provides common functionality for client libraries. Documentation and usage examples can be found in the [azure/azure-sdk-for-python] repository.
+`azure-core`패키지는 클라이언트 라이브러리에 대한 일반적인 기능을 제공합니다. 설명서 및 예제는 [azure/azure-sdk-for-python] 저장소에서 확인하십시오.
 
-### HTTP pipeline
+### HTTP 파이프라인
 
-The HTTP pipeline is an HTTP transport that is wrapped by multiple policies. Each policy is a control point that can modify either the request or response. A default set of policies is provided to standardize how client libraries interact with Azure services.
+HTTP 파이프라인은 여러 정책들에 의해 구성된 HTTP 전송입니다. 각 정책은 요청 또는 응답을 수정할 수 있는 제어점입니다. 클라이언트 라이브러리가 Azure 서비스와 상호 작용하는 방식을 표준화하기 위한 기본 정책 집합이 제공됩니다.
 
-For more information on the Python implementation of the pipeline, see the [documentation](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core).
+파이프라인의 python 구현에 대해 더 자세히 알고 싶다면 [documentation](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core)을 참고하십시오.
 
-### Protocols
+### 프로토콜
 
-Many of the protocols mandated by the design guidelines have default implementations in `azure-core`.
+디자인 가이드라인에서 요구되는 많은 프로토콜은 `azure-core`에서 기본 구현되어있습니다.
 
 #### LROPoller
 
@@ -284,7 +285,7 @@ class LROPoller(Protocol):
         ...
 ```
 
-`azure.core.polling.LROPoller` implements the `LROPoller` protocol.
+`azure.core.polling.LROPoller`는 `LROPoller` 프로토콜을 구현합니다.
 
 #### ItemPaged
 
@@ -299,9 +300,9 @@ class ItemPaged(Protocol, Iterable[T]):
     def by_page(self) -> ByPagePaged[T] ...
 ```
 
-`azure.core.ItemPaged` implements the `ItemPaged` protocol.
+`azure.core.ItemPaged`는 `ItemPaged` 프로토콜을 구현합니다.
 
-See the [ItemPaged](#PythonPagingDesign) protocol for additional information.
+프로토콜에 대한 더 많은 정보를 알고 싶다면 [ItemPaged](#PythonPagingDesign)를 참고하십시오.
 
 #### DiagnosticsResponseHook
 
@@ -312,7 +313,7 @@ class ResponseHook(Protocol):
 
 ```
 
-## Python language and code style
+## 파이썬 언어와 코드스타일
 
 {% include requirement/MUST id="python-codestyle-pep8" %} follow the general guidelines in [PEP8](https://www.python.org/dev/peps/pep-0008/) unless explicitly overridden in this document.
 
