@@ -4,7 +4,7 @@ keywords: guidelines
 permalink: general_documentation.html
 folder: general
 sidebar: general_sidebar
----햣
+---
 
 클라이언트 라이브러리에 반드시 포함되거나 함께 제공돼야 하는 몇 가지의 문서들이 있습니다. 코드 내(Docstrings)에 포함된 완전하고 유용한 API 설명서 외에도, 훌륭한 README 및 기타 지원 설명들이 필요합니다.
 
@@ -33,9 +33,7 @@ sidebar: general_sidebar
 
 {% include requirement/MUST id="general-docs-build-snippets" %} 저장소의 연속 통합(CI)을 이용해 코드 조각들을 빌드하고 테스트하여 기능이 유지되고 있는지 확인합니다.
 
-{% include requirement/MUST id="general-docs-snippets-in-docstrings" %} 예제 코드 조각들을 라이브러리 Docstrings에 포함시켜 API 참조에 표시합니다
-언어나 해당 도구가 이를 지원하는 경우, 이 코드 조각들을 Docstrings에서 API 참조로 직접 수집합니다.
-예를 들어, Python Docstrings의 'literalinclude' 지시어를 사용하여 Sphinx가 [코드 조각을 자동으로 수집][1]하도록 지시합니다.
+{% include requirement/MUST id="general-docs-snippets-in-docstrings" %} 예제 코드 조각들을 라이브러리 Docstrings에 포함시켜 API 참조에 표시합니다. 언어나 해당 도구가 이를 지원하는 경우, 이 코드 조각들을 Docstrings에서 API 참조로 직접 수집합니다. 예를 들어, Python Docstrings의 'literalinclude' 지시어를 사용하여 Sphinx가 [코드 조각을 자동으로 수집][1]하도록 지시합니다.
 
 {% include requirement/MUSTNOT id="general-docs-operation-combinations" %} 형식이나 멤버를 보여주는데 필요하지 않거나 원자성 작업을 보여주는 기존 코드 조각에 *추가*되지 않는 한 코드 조각에서 하나 보다 많은 작업을 결합합니다. 예를 들어, 하나의 Cosmos DB 코드 조각에는 계정과 컨테이너를 생성하는 작업이 동시 포함되어서는 안 됩니다--코드 조각을 계정 생성용으로 하나, 컨테이너 생성용으로 하나 총 두 개를 만들어야 합니다.
 
