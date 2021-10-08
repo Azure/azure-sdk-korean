@@ -4,15 +4,15 @@ keywords: guidelines
 permalink: general_documentation.html
 folder: general
 sidebar: general_sidebar
----
+---햣
 
 클라이언트 라이브러리에 반드시 포함되거나 함께 제공돼야 하는 몇 가지의 문서들이 있습니다. 코드 내(Docstrings)에 포함된 완전하고 유용한 API 설명서 외에도, 훌륭한 README 및 기타 지원 설명들이 필요합니다.
 
 * `README.md` - SDK 저장소 내 라이브러리의 루트 디렉토리에 위치합니다; 패키지 설치, 클라이언트 라이브러리 사용 정보가 포함합니다. ([예시][README-EXAMPLE])
-* `API reference` - 코드 내의 Docstrings에서 생성됩니다; docs.microsoft.com에 게시됩니다. 
-* `Code snippets` - 라이브러리에 대해 식별된 대표 시나리오의 단일(원자성) 작업을 보여주기 위한 짧은 샘플 코드가 README, Docstrings, 빠른 시작에 포함됩니다. 
-* `Quickstart` -  README의 내용과 유사하지만 확장된 내용의 docs.microsoft.com에서의 항목. 일반적으로 서비스 콘텐츠 개발자가 작성합니다.
-* `Conceptual` - 빠른 시작, 자습서, 사용법 가이드 및 docs.microsoft.com의 기타 콘텐츠 같은 장문의 설명서; 일반적으로 서비스 콘텐츠 개발자가 작성합니다. 
+* `API 참조` - 코드 내의 Docstrings에서 생성됩니다; docs.microsoft.com에 게시됩니다. 
+* `코드 조각` - 라이브러리에 대해 식별된 대표 시나리오의 단일(원자성) 작업을 보여주기 위한 짧은 샘플 코드가 README, Docstrings, 빠른 시작에 포함됩니다. 
+* `빠른 시작` -  README의 내용과 유사하지만 확장된 내용의 docs.microsoft.com에서의 항목. 일반적으로 서비스 콘텐츠 개발자가 작성합니다.
+* `개념` - 빠른 시작, 자습서, 사용법 가이드 및 docs.microsoft.com의 기타 콘텐츠 같은 장문의 설명서; 일반적으로 서비스 콘텐츠 개발자가 작성합니다. 
 
 {% include requirement/MUST id="general-docs-contentdev" %} 라이브러리의 아키텍처 보드 리뷰에 서비스 콘텐츠 개발자를 포함시킵니다. 함께 작업해야 할 콘텐츠 개발자를 찾으려면 해당 팀의 프로그램 관리자에게 문의하십시오.
 
