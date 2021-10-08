@@ -10,7 +10,7 @@ sidebar: general_sidebar
 
 * `README.md` - SDK 저장소 내 라이브러리의 루트 디렉토리에 위치합니다; 패키지 설치, 클라이언트 라이브러리 사용 정보가 포함합니다. ([예시][README-EXAMPLE])
 * `API reference` - 코드 내의 Docstrings에서 생성됩니다; docs.microsoft.com에 게시됩니다. 
-* `Code snippets` - 라이브러리에 대해 식별된 우수한 시나리오의 단일(원자성) 작업을 보여주기 위한 짧은 샘플 코드가 README, Docstrings, 빠른 시작에 포함됩니다. 
+* `Code snippets` - 라이브러리에 대해 식별된 대표 시나리오의 단일(원자성) 작업을 보여주기 위한 짧은 샘플 코드가 README, Docstrings, 빠른 시작에 포함됩니다. 
 * `Quickstart` -  README의 내용과 유사하지만 확장된 내용의 docs.microsoft.com에서의 항목. 일반적으로 서비스 콘텐츠 개발자가 작성합니다.
 * `Conceptual` - 빠른 시작, 자습서, 사용법 가이드 및 docs.microsoft.com의 기타 콘텐츠 같은 장문의 설명서; 일반적으로 서비스 콘텐츠 개발자가 작성합니다. 
 
@@ -29,15 +29,17 @@ sidebar: general_sidebar
 
 ### 코드 조각
 
-{% include requirement/MUST id="general-docs-include-snippets" %} include example code snippets alongside your library's code within the repository. The snippets should clearly and succinctly demonstrate the operations most developers need to perform with your library. Include snippets for every common operation, and especially for those that are complex or might otherwise be difficult for new users of your library. At a bare minimum, include snippets for the champion scenarios you've identified for the library.
+{% include requirement/MUST id="general-docs-include-snippets" %} 저장소 내에 라이브러리 코드와 함께 예제 코드 조각들을 포함하십시오.  코드 조각들은 대부분의 개발자가 라이브러리로 수행해야 하는 작업들을 명확하고 간결하게 설명해야 합니다. 코드 조각들은 모든 공통 작업, 특히 라이브러리를 처음 사용하는 이용자에게 복잡하거나 어려울 수 있는 작업들을 포함해야 합니다. 최소한, 라이브러리에 대해 식별한 대표 시나리오에 대한 코드 조각을 포함합니다.
 
-{% include requirement/MUST id="general-docs-build-snippets" %} build and test your example code snippets using the repository's continuous integration (CI) to ensure they remain functional.
+{% include requirement/MUST id="general-docs-build-snippets" %} 저장소의 연속 통합(CI)을 이용해 코드 조각들을 빌드하고 테스트하여 기능이 유지되고 있는지 확인합니다.
 
-{% include requirement/MUST id="general-docs-snippets-in-docstrings" %} include the example code snippets in your library's docstrings so they appear in its API reference. If the language and its tools support it, ingest these snippets directly into the API reference from within the docstrings. For example, use the the `literalinclude` directive in Python docstrings to instruct Sphinx to [ingest the snippets automatically][1].
+{% include requirement/MUST id="general-docs-snippets-in-docstrings" %} 예제 코드 조각들을 라이브러리 Docstrings에 포함시켜 API 참조에 표시합니다
+언어나 해당 도구가 이를 지원하는 경우, 이 코드 조각들을 Docstrings에서 API 참조로 직접 수집합니다.
+예를 들어, Python Docstrings의 'literalinclude' 지시어를 사용하여 Sphinx가 [코드 조각을 자동으로 수집][1]하도록 지시합니다.
 
-{% include requirement/MUSTNOT id="general-docs-operation-combinations" %} combine more than one operation in a code snippet unless it's required for demonstrating the type or member, or it's *in addition to* existing snippets that demonstrate atomic operations. For example, a Cosmos DB code snippet should not include both account and container creation operations--create two different snippets, one for account creation, and one for container creation.
+{% include requirement/MUSTNOT id="general-docs-operation-combinations" %} 형식이나 멤버를 보여주는데 필요하지 않거나 원자성 작업을 보여주는 기존 코드 조각에 *추가*되지 않는 한 코드 조각에서 하나 보다 많은 작업을 결합합니다. 예를 들어, 하나의 Cosmos DB 코드 조각에는 계정과 컨테이너를 생성하는 작업이 동시 포함되어서는 안 됩니다--코드 조각을 계정 생성용으로 하나, 컨테이너 생성용으로 하나 총 두 개를 만들어야 합니다.
 
-Combined operations cause unnecessary friction for a library consumer by requiring knowledge of additional operations which might be outside their current focus. It requires them to first understand the tangential code surrounding the operation they're working on, then carefully extract just the code they need for their task. The developer can no longer simply copy and paste the code snippet into their project.
+결합된 작업들은 라이브러리 소비자에게 현재 초점에서 벗어날 수 있는 추가 작업에 대한 지식을 요구하여 불필요한 마찰을 야기합니다. 결합된 작업들은 라이브러리 소비자들이 먼저 작업 중인 작업의 주변 접선 코드를 파악한 다음, 다음 작업에 필요한 코드만 신중하게 추출할 것을 요구합니다. 따라서 개발자는 더는 코드 조각을 복사하여 프로젝트에 붙여넣기 할 수 없습니다.
 
 {% include refs.md %}
 [1]: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html?highlight=literalinclude#directive-literalinclude
