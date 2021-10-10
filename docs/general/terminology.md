@@ -41,7 +41,6 @@ Docstrings
 ## 요구사항
 
 이 문서의 요구사항들은 라벨로 표시되어 있고 상대적 중요성을 나타내기 위해 색상으로 구분되어 있습니다. 중요도가 높은 순으로 작성되었습니다:
-Each requirement in this document is labelled and color-coded to show the relative importance.  In order from highest importance to lowest importance:
 
 {% include requirement/MUST %} 클라이언트 라이브러리에 요구사항을 사용해주세요. 만약 예외가 필요하다면 구현전에 [Architecture Board]와 상의해주세요.
 
