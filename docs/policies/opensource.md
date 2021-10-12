@@ -40,7 +40,7 @@ Licensed under the MIT license.
 
 이 프로젝트는 컨트리뷰션과 제안을 환영합니다. 컨트리뷰션 대부분은 여러분이 컨트리뷰션을 할 권리가 있고, 실제로 하고 있으며 여러분의 컨트리뷰션을 사용한다는 권리를 우리에게 보장하는 컨트리뷰터 라이언스 약관 (CLA) 동의를 필요로 합니다. 자세한 정보는 https://cla.microsoft.com 에서 살펴 봅니다.
 
-풀 리퀘스트를 제출하면 CLA 봇이 자동으로 여러분이 CLA를 제공하였는지 여부를 결정하모, PR에 대해 적절하게 관리되고 있는지 (예: 라벨, 코멘트) 여부를 결정합니다. 단순히, 봇이 제공하는 안내에 따르면 됩니다. 제공되는 CLA 작업은 모든 저장소에 걸쳐 한 번만 수행하면 됩니다.
+풀 리퀘스트를 제출하면 CLA 봇이 자동으로 여러분이 CLA를 제공하였는지 여부를 결정하며, PR에 대해 적절하게 관리되고 있는지 (예: 라벨, 코멘트) 여부를 결정합니다. 단순히, 봇이 제공하는 안내에 따르면 됩니다. 제공되는 CLA 작업은 모든 저장소에 걸쳐 한 번만 수행하면 됩니다.
 
 이 프로젝트는 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/)를 채택하였습니다. 보다 자세한 정보는 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)를 살펴 보거나 추가적인 질문 또는 코멘트가 있을 경우에는 [opencode@microsoft.com](mailto:opencode@microsoft.com)로 문의해 주세요.
 ```
