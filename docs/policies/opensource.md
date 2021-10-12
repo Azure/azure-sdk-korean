@@ -16,7 +16,7 @@ sidebar: general_sidebar
 
 {% include requirement/MUST %} GitHub에서 적극적으로 임해주세요. 여러분의 클라이언트 라이브러리는 개발자 커뮤니티에서 주된 접점이 되므로, 활동을 계속 이어가는 것이 중요합니다. 이슈와 풀 리퀘스트는 제출이 이루어지고 나서 1주일 이내에 신뢰할 수 있는 코멘트가 있어야 합니다.
 
-{% include requirement/MUST %} 건강한 오픈 소스 커뮤니티를 지향하기 위한 보다 자세한 정보에 대해서는 Microsoft Open Source Guidelines에 있는 [커뮤니티 섹션](https://docs.opensource.microsoft.com/releasing/foster-your-community.html)을 살펴 봅니다.
+{% include requirement/MUST %} 건강한 오픈 소스 커뮤니티를 지향하기 위한 보다 자세한 정보에 대해서는 Microsoft Open Source Guidelines에 있는 [커뮤니티 섹션](https://docs.opensource.microsoft.com/releasing/foster-your-community.html)을 살펴봅니다.
 
 {% include requirement/MUST %} [Microsoft CLA](https://cla.opensource.microsoft.com/)를 사용합니다. Microsoft에서는 [cla-assistant](https://cla-assistant.io/)에 대해 상당한 기여를 하고 있습니다. 이는 모든 컨트리뷰터들이 CLA를 서명하였는지 확인하는 가장 쉬운 방법입니다.
 
