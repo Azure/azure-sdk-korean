@@ -1,56 +1,56 @@
 ---
-title: "General Guidelines: Terminology"
+title: "공통 가이드라인: 용어"
 keywords: guidelines
 permalink: general_terminology.html
 folder: general
 sidebar: general_sidebar
 ---
 
-Throughout the guidelines, the following terms should be understood:
+가이드라인을 통해 다음의 용어들을 이해할 수 있습니다:
 
-Architecture Board
-: The Azure Developer Experience [Architecture Board] is comprised of language experts who advise and review client libraries used for accessing Azure services.
+아키텍처 보드
+: Azure Developer Experience [Architecture Board]는 애저 서비스를 액세스하는 데 사용되는 클라이언트 라이브러리를 조언하고 리뷰하는 언어 전문가로 이루어져 있습니다.
 
-Azure SDK
-: The collection of _client libraries_ for a single target language, used for accessing Azure services.
+애저 SDK
+: 애저 서비스에 액세스할 때 사용되는 단일 대상 언어에 대한 _client libraries_ 모음입니다.
 
-Azure Core
-: A dependency of many client libraries.  The Azure Core library provides access to the HTTP pipeline, common credential types, and other types that are appropriate to the Azure SDK as a whole.
+애저 코어
+: 많은 클라이언트 라이브러리의 종속성입니다. 애저 코어 라이브러리는 애저 SDK에 전체적으로 적합한 파이프라인, 일반적인 자격 증명 형식, 그리고 다른 유형에 대한 액세스를 제공합니다.
 
-Client Library
-: A library (and associated tools, documentation, and samples) that _consumers_ use to ease working with an Azure service.  There is generally a client library per Azure service and per target language.  Sometimes a single client library will contain the ability to connect to multiple services.
+클라이언트 라이브러리
+: 애저 서비스 작업을 쉽게하기 위해 _consumers_가 사용하는 라이브러리(및 관련 도구, 문서, 샘플). 일반적으로 애저 서비스 그리고 대상 언어 당 하나의 클라이언트 라이브러리가 있습니다. 가끔 단일 클라이언트 라이브러리는 다수의 서비스를 연결할 수 있는 기능을 포함합니다.
 
-Consumer
-: Where appropriate to disambiguate between the various types of developers, we use the term _consumer_ to indicate the developer who is using a client library in an app to connect to an Azure service.
+소비자
+: 다양한 유형의 개발자들을 구분하기 위해 우리는 앱에서 클라이언트 라이브러리를 사용하여 애저 서비스에 연결하는 개발자를 표시하기 위해 _consumer_라는 용어를 사용합니다. 
 
 Docstrings
-: The comments embedded within the code that describe the API surface being implemented.  The _docstrings_ are extracted and post-processed during the build to generate API reference documentation.
+: 구현중인 API 표면을 설명하는 코드에 포함된 주석입니다. 빌드 중에 _docstrings_를 추출하고 사전 처리하여 API 참조 문서를 생성합니다.
 
-Library Developer
-: Where appropriate to disambiguate between the various types of developers, we use the term _library developer_ to indicate the developer who is writing a client library.
+라이브러리 개발자
+: 다양한 유형의 개발자들을 구분하기 위해 우리는 클라이언트 라이브러리를 작성하는 개발자를 표시하기 위해 _library developer_라는 용어를 사용합니다.
 
-Package
-: A client library after it has been packaged for distribution to consumers.  Packages are generally installed using a package manager from a package repository.
+패키지
+: 소비자들에게 배포할 수 있도록 패키지된 클라이언트 라이브러리입니다. 패키지는 일반적으로 패키지 리포지토리의 패키지 관리자를 사용하여 설치됩니다.
 
-Package Repository
-: Each client library is published separately to the appropriate language-specific package repository.  For example, we distribute JavaScript libraries to [npmjs.org](https://npmjs.org) (also known as the NPM Registry), and Python libraries to [PyPI](https://pypi.org/).  These releases are performed exclusively by the Azure SDK engineering systems team.  Consumers install packages using a package manager.  For example, a JavaScript consumer might use yarn, npm, or similar, whereas a Python consumer will use `pip` to install packages into their project.
+패키지 리포지토리
+: 각 클라이언트 라이브러리는 해당 언어별 패키지 리포지토리에 별도로 게시됩니다. 예를 들어, [npmjs.org](https://npmjs.org)에는 자바스크립트 라이브러리(NPM Registry)를, [PyPI](https://pypi.org/)에서는 파이썬 라이브러리를 배포합니다. 이러한 릴리스는 애저 SDK 엔지니어링 팀만이 수행합니다. 소비자는 패키지 관리자를 통하여 패키지를 설치합니다. 예를 들어 자바스크립트는 yarn, npm등을 사용할 수 있고 파이썬 소비자는 `pip`을 사용하여 프로젝트에 패키지를 설치할 수 있습니다.
 
-Progressive Concept Disclosure
-: The first interaction with the client library should not rely on advanced service concepts.  As the consumer of the library becomes more adept, we expose the concepts necessary at the point at which the consumer needs those concepts for implementation. [Progressive Disclosure] was first discussed by the Nielson Norman Group as an approach to designing better user interfaces.
+프로그레시브 컨셉 공개
+: 클라이언트 라이브러리와의 첫 번째 상호 작용은 고급 서비스 컨셉들에 의지해서는 안됩니다. 라이브러리의 소비자가 더 능숙해짐에 따라, 우리는 소비자가 구현을 위해 그러한 개념을 필요로 하는 시점에 필요한 개념을 공개합니다. [Progressive Disclosure]는 Nielson Norman Group이 더 좋은 사용자 인터페이스를 설계하기 위한 접근으로 처음 논의되었습니다. 
 
-## Requirements
+## 요구사항
 
-Each requirement in this document is labelled and color-coded to show the relative importance.  In order from highest importance to lowest importance:
+이 문서의 요구사항들은 라벨로 표시되어 있고 상대적 중요성을 나타내기 위해 색상으로 구분되어 있습니다. 중요도가 높은 순으로 작성되었습니다:
 
-{% include requirement/MUST %} adopt this requirement for the client library.  If you feel you need an exception, engage with the [Architecture Board] prior to implementation.
+{% include requirement/MUST %} 클라이언트 라이브러리에 요구사항을 사용해주세요. 만약 예외가 필요하다면 구현전에 [Architecture Board]와 상의해주세요.
 
-{% include requirement/MUSTNOT %} adopt this requirement for the client library.  If you feel you need an exception, engage with the [Architecture Board] prior to implementation.
+{% include requirement/MUSTNOT %} 클라이언트 라이브러리에 요구사항을 사용하지 말아주세요. 만약 예외가 필요하다면 구현전에 [Architecture Board]와 상의해주세요.
 
-{% include requirement/SHOULD %} strongly consider this requirement for the client library.  If not following this advice, you **MUST** disclose the variance during the [Architecture Board] design review. 
+{% include requirement/SHOULD %} 클라이언트 라이브러리에 요구사항을 강력하게 고려해야합니다. 만약 이 권장사항을 따르지 않을 경우, **반드시** [Architecture Board] 디자인 리뷰를 할 때 차이를 공개해야합니다.
 
-{% include requirement/SHOULDNOT %} strongly consider this requirement for the client library.  If not following this advice, you **MUST** disclose the variance during the [Architecture Board] design review.
+{% include requirement/SHOULDNOT %} 클라이언트 라이브러리에 요구사항을 강력하게 고려하지 말아야합니다. 만약 이 권장사항을 따르지 않을 경우, **반드시** [Architecture Board] 디자인 리뷰를 할 때 차이를 공개해야합니다.
 
-{% include requirement/MAY %} consider this advice if appropriate to your situation.  No notification to the architecture board is required.
+{% include requirement/MAY %} 만약 여러분의 상황에 적절할 경우 이 권장사항을 고려해야합니다. 아키텍처 보드에 통보할 필요가 없습니다. 
 
 {% include refs.md %}
 
