@@ -3,30 +3,30 @@ entries:
   levels: one
   folders:
   
-  - title: 공통 가이드라인 (번역중)
+  - title: 공통 가이드라인
     folderitems:
-      - title: 소개 (번역중)
+      - title: 소개
         url: /general_introduction.html
-      - title: Terminology
+      - title: 용어
         url: /general_terminology.html
-      - title: API Design
+      - title: API Design (영문)
         url: /general_design.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /general_implementation.html
-      - title: Documentation
+      - title: 설명서
         url: /general_documentation.html
       - title: Azure Core
         url: /general_azurecore.html
-      - title: Contribution Guidelines
+      - title: 오픈소스 정책
         url: /policies_opensource.html
   - title: .NET Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /dotnet_introduction.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /dotnet_implementation.html
         subfolders:
-            - title: API Documentation
+            - title: API 문서
               subfolderitems:
                 - title: Microsoft.Azure.Cosmos
                   external_url: https://docs.microsoft.com/dotnet/api/microsoft.azure.cosmos
@@ -42,16 +42,16 @@ entries:
                   external_url: https://azure.github.io/azure-sdk-for-net/storage.html#azurestoragefilesshares
                 - title: Azure.Storage.Queues
                   external_url: https://azure.github.io/azure-sdk-for-net/storage.html#azurestoragequeues
-  - title: Java 가이드라인 (번역중)
+  - title: Java 가이드라인
     folderitems:
-      - title: 디자인 (번역중)
+      - title: Design (영문)
         url: /java_introduction.html
-      - title: 구현 (번역중)
+      - title: 구현
         url: /java_implementation.html
-      - title: Spring Guidelines
+      - title: 스프링 가이드라인
         url: /java_spring.html 
         subfolders:
-            - title: API Documentation
+            - title: API 문서
               subfolderitems:
                 - title: azure-data-appconfiguration
                   external_url: https://azure.github.io/azure-sdk-for-java/appconfiguration.html#azure-data-appconfiguration
@@ -71,14 +71,14 @@ entries:
                   external_url: https://azure.github.io/azure-sdk-for-java/storage.html#azure-storage-queue
   - title: Python Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /python_design.html
-      - title: Implementation
+      - title: 구현 (번역중)
         url: /python_implementation.html
-      - title: Documentation
+      - title: 문서
         url: /python_documentation.html
         subfolders:
-        - title: API Documentation
+        - title: API 문서
           subfolderitems:
             - title: azure-cosmos
               external_url: https://azure.github.io/azure-sdk-for-python/cosmosdb.html#azure-cosmos
@@ -96,16 +96,16 @@ entries:
               external_url: https://azure.github.io/azure-sdk-for-python/storage.html#azure-storage-queue
   - title: TypeScript Guidelines
     folderitems:
-      - title: Introduction
+      - title: Introduction (영문)
         url: /typescript_introduction.html
-      - title: API Design
+      - title: API Design (영문)
         url: /typescript_design.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /typescript_implementation.html
-      - title: Documentation
+      - title: Documentation (영문)
         url: /typescript_documentation.html
         subfolders:
-        - title: API Documentation
+        - title: API 문서
           subfolderitems:
             - title: "@azure/cosmos"
               external_url: https://azure.github.io/azure-cosmos-js/
@@ -123,35 +123,35 @@ entries:
               external_url: https://azure.github.io/azure-sdk-for-js/storage.html#azure-storage-queue
   - title: Android Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /android_design.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /android_implementation.html
   - title: iOS Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /ios_design.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /ios_implementation.html
   - title: C Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /clang_design.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /clang_implementation.html
         subfolders:
-            - title: API Documentation
+            - title: API 문서
               subfolderitems:
                 - title: az_iot
                   external_url: https://azure.github.io/azure-sdk-for-c/iot.html#az_iot
   - title: C++ Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /cpp_introduction.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /cpp_implementation.html
         subfolders:
-            - title: API Documentation
+            - title: API 문서
               subfolderitems:
                 - title: azure-storage-blob
                   external_url: https://azure.github.io/azure-sdk-for-cpp/storage.html#azure-storage-blob
@@ -161,27 +161,27 @@ entries:
                   external_url: https://azure.github.io/azure-sdk-for-cpp/storage.html#azure-storage-file-shares
   - title: Go Guidelines
     folderitems:
-      - title: Design
+      - title: Design (영문)
         url: /golang_introduction.html
-      - title: Implementation
+      - title: Implementation (영문)
         url: /golang_implementation.html
   - title: Github Repos
     folderitems:
-      - title: Guidelines Contributions
+      - title: Guidelines Contributions (영문)
         url: /policies_adoption.html
-      - title: Repository structure
+      - title: Repository structure (영문)
         url: /policies_repostructure.html
-      - title: Repository branching
+      - title: Repository branching (영문)
         url: /policies_repobranching.html
-      - title: Pipelines
+      - title: 파이프라인
         url: /policies_pipelines.html
   - title: Policies
     folderitems:
-      - title: Review Process
+      - title: Review Process (영문)
         url: /policies_reviewprocess.html
-      - title: Releases
+      - title: Releases (영문)
         url: /policies_releases.html
-      - title: Release notes
+      - title: Release notes (영문)
         url: /policies_releasenotes.html
-      - title: Support
+      - title: Support (영문)
         url: /policies_support.html
