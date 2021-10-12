@@ -20,7 +20,7 @@ sidebar: general_sidebar
 
 {% include requirement/MUST %} [Microsoft CLA](https://cla.opensource.microsoft.com/)를 사용합니다. Microsoft에서는 [cla-assistant](https://cla-assistant.io/)에 대해 상당한 기여를 하고 있습니다. 이는 모든 컨트리뷰터들이 CLA를 서명하였는지 확인하는 가장 쉬운 방법입니다.
 
-{% include requirement/MUST %} 모든 소스 파일 (샘플 포함) 상단에 저작권(copyright) 헤더를 포함합니다. 다양한 언어에 대한 헤더 예제로 [Microsoft Open Source Guidelines](https://docs.opensource.microsoft.com/releasing/copyright-headers.html)을 살펴 봅니다.
+{% include requirement/MUST %} 모든 소스 파일 (샘플 포함) 상단에 저작권(copyright) 헤더를 포함합니다. 다양한 언어에 대한 헤더 예제로 [Microsoft Open Source Guidelines](https://docs.opensource.microsoft.com/releasing/copyright-headers.html)을 살펴봅니다.
 
 예상되는 저작권 헤더는 다음과 같습니다:
 
