@@ -1,61 +1,61 @@
 ---
-title: "General Guidelines: API Design"
+title: "공통 가이드라인: API 디자인"
 keywords: guidelines
 permalink: general_design.html
 folder: general
 sidebar: general_sidebar
 ---
 
-The API surface of your client library must have the most thought as it is the primary interaction that the consumer has with your service.
+클라이언트 라이브러리의 API 표면은 소비자가 서비스와 갖는 주요 상호 작용이기 때문에 가장 많이 고려해야 합니다.
 
-## Namespaces
+## 네임스페이스
 
-Some languages have a concept of namespaces to group related types.  Grouping services within a cloud infrastructure is common since it aids discoverability and provides structure to the reference documentation.
+일부 언어에는 관련 유형을 그룹화하기 위한 네임스페이스 개념이 있습니다. 클라우드 인프라 내에서 서비스를 그룹화하는 것은 검색 가능성을 지원하고 참조 문서에 구조를 제공하기 때문에 일반적입니다.
 
-{% include requirement/SHOULD id="general-namespaces-support" %} support namespaces if namespace usage is common within the language ecosystem.
+{% include requirement/SHOULD id="general-namespaces-support" %} 언어 생태계에서 네임스페이스 사용이 일반적인 경우 네임스페이스를 지원해야 합니다.
 
-{% include requirement/MUST id="general-namespaces-naming" %} use a root namespace of the form `<AZURE>.<group>.<service>`.  All consumer-facing APIs that are commonly used should exist within this namespace.  The namespace is comprised of three parts:
+{% include requirement/MUST id="general-namespaces-naming" %} `<AZURE>.<group>.<service>` 형식의 루트 네임스페이스를 사용하십시오. 일반적으로 사용되는 모든 소비자 대면 API는 이 네임스페이스 내에 있어야 합니다. 네임스페이스는 세 부분으로 구성됩니다:
 
-- `<AZURE>` indicates a common prefix for all Azure services.  This may be `Azure` or `com.azure` or similiar, depending on the common form within the language.
-- `<group>` is the group for the service.  See the list below.
-- `<service>` is the shortened service name.
+- `<AZURE>`는 모든 Azure 서비스에 대한 공통 접두사를 나타냅니다. 이는 언어 내 공통 형식에 따라 `Azure` 또는 `com.azure`이거나 이와 유사할 수 있습니다.
+- `<group>`은 서비스의 그룹입니다. 아래의 리스트를 보십시오.
+- `<service>`는  줄여 쓴 서비스 이름입니다.
 
-{% include requirement/MUST id="general-namespaces-shortened-name" %} pick a shortened service name that allows the consumer to tie the package to the service being used.  As a default, use the compressed service name.  The namespace does **NOT** change when the branding of the product changes, so avoid the use of marketing names that may change.
+{% include requirement/MUST id="general-namespaces-shortened-name" %} 소비자가 패키지를 사용 중인 서비스에 연결할 수 있도록 단축된 서비스 이름을 선택하십시오. 기본적으로, 줄여서 쓴 서비스 이름을 사용합니다. 네임스페이스는 제품 브랜딩이 변경될 때 변경되지 **않습니다**. 따라서 변경될 수 있는 마케팅 이름의 사용을 피하세요.
 
-A compressed service name is the service name without spaces.  It may further be shortened if the shortened version is well known in the community.  For example, "Azure Media Analytics" would have a compressed service name of `MediaAnalytics`, whereas "Azure Service Bus" would become `ServiceBus`.
+줄여 쓴 서비스 이름은 공백이 없는 서비스 이름입니다. 커뮤니티에서 줄여 쓴 이름이 잘 알려진 경우, 더 줄여 쓸 수 있습니다. 예를 들어, "Azure Media Analytics"는 줄여 쓴 서비스 이름이 `MediaAnalytics`인 한편, "Azure Service Bus"는 `ServiceBus`가 됩니다.
 
-{% include requirement/MUST id="general-namespaces-approved-list" %} use the following list as the group of services (if the target language supports namespaces):
+{% include requirement/MUST id="general-namespaces-approved-list" %} (대상 언어가 네임스페이스를 지원하는 경우) 다음 목록을 서비스 그룹으로 사용하십시오:
 
 {% include tables/data_namespaces.md %}
 
-If the client library does not seem to fit into the group list, contact the [Architecture Board] to discuss the namespace requirements.
+클라이언트 라이브러리가 그룹 목록에 맞지 않는 경우, [Architecture Board]에 문의하여 네임스페이스 요구 사항에 대해 논의하십시오.
 
-{% include requirement/MUST id="general-namespaces-mgmt" %} place the management (Azure Resource Manager) API in the `management` group.  Use the grouping `<AZURE>.management.<group>.<service>` for the namespace. Since more services require control plane APIs than data plane APIs, other namespaces may be used explicitly for control plane only.  Data plane usage is by exception only.  Additional namespaces that can be used for control plane SDKs include:
+{% include requirement/MUST id="general-namespaces-mgmt" %} 관리(Azure 리소스 관리자) API를 `management` 그룹에 배치하십시오. 네임스페이스에 대해 `<AZURE>.management.<group>.<service>` 그룹을 사용하십시오. 더 많은 서비스가 컨트롤 플레인 API를 필요로 하기 때문에, 다른 네임스페이스는 제어 플레인에만 명시적으로 사용할 수 있습니다. 데이터 플레인 사용은 예외입니다. 컨트롤 플레인 SDK에 사용할 수 있는 추가 네임스페이스는 다음과 같습니다:
 
 {% include tables/mgmt_namespaces.md %}
 
-Many `management` APIs do not have a data plane because they deal with management of the Azure account. Place the management library in the `<AZURE>.management` namespace.  For example, use `azure.management.costanalysis` instead of `azure.management.management.costanalysis`.
+많은 `management` API는 Azure 계정 관리를 처리하기 때문에 데이터 플레인이 없습니다. 관리 라이브러리를 `<AZURE>.management` 네임스페이스에 배치하십시오. 예를 들어, 'azure.management.management.costanalysis' 대신 'azure.management.costanalysis'를 사용하십시오.
 
-{% include requirement/MUSTNOT id="general-namespaces-similar-names" %} choose similar names for clients that do different things.
+{% include requirement/MUSTNOT id="general-namespaces-similar-names" %} 서로 다른 작업을 수행하는 클라이언트에 대해 유사한 이름을 선택하지 마십시오.
 
-{% include requirement/MUST id="general-namespaces-registration" %} register the chosen namespace with the [Architecture Board].  Open an issue to request the namespace.  See [the registered namespace list](registered_namespaces.html) for a list of the currently registered namespaces.
+{% include requirement/MUST id="general-namespaces-registration" %} 선택한 네임스페이스를 [Architecture Board]에 등록하십시오. 네임스페이스를 요청하려면 이슈를 생성하십시오. 현재 등록된 네임스페이스 목록은 [등록된 네임스페이스 목록](registered_namespaces.html)을 참조하세요.
 
-### Example Namespaces
+### 네임스페이스 예시
 
-Here are some examples of namespaces that meet these guidelines:
+다음은 이러한 지침을 충족하는 네임스페이스의 몇 가지 예입니다:
 
 - `Azure.Data.Cosmos`
 - `Azure.Identity.ActiveDirectory`
 - `Azure.IoT.DeviceProvisioning`
 - `Azure.Storage.Blobs`
-- `Azure.Messaging.NotificationHubs` (the client library for Notification Hubs)
-- `Azure.Management.Messaging.NotificationHubs` (the management library for Notification Hubs)
+- `Azure.Messaging.NotificationHubs` (Notification Hubs를 위한 클라이언트 라이브러리)
+- `Azure.Management.Messaging.NotificationHubs` (Notification Hubs를 위한 관리 라이브러리)
 
-Here are some namespaces that do not meet the guidelines:
+다음은 지침에 맞지 않는 몇 가지 네임스페이스입니다.
 
-- `Microsoft.Azure.CosmosDB` (not in the `Azure` namespace and does not use grouping)
-- `Azure.MixedReality.Kinect` (the grouping is not in the approved list)
-- `Azure.IoT.IoTHub.DeviceProvisioning` (too many levels in the group)
+- `Microsoft.Azure.CosmosDB` (`Azure` 네임스페이스에 속하지 않으며, 그룹핑을 사용하지 않음)
+- `Azure.MixedReality.Kinect` (그룹이 승인된 목록에 없음)
+- `Azure.IoT.IoTHub.DeviceProvisioning` (그룹에 너무 많은 단계가 있음)
 
 ## Client interface
 
