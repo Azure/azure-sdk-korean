@@ -57,29 +57,29 @@ sidebar: general_sidebar
 - `Azure.MixedReality.Kinect` (그룹이 승인된 목록에 없음)
 - `Azure.IoT.IoTHub.DeviceProvisioning` (그룹에 너무 많은 단계가 있음)
 
-## Client interface
+## 클라이언트 인터페이스
 
-The API surface will consist of one of more _service clients_ that the consumer will instantiate to connect to your service, plus a set of supporting types.
+API 표면은 소비자가 서비스에 연결하기 위해 인스턴스화하는 하나 이상의 _service clients_ 및 지원 유형의 집합으로 구성됩니다.
 
-{% include requirement/MUST id="general-client-naming" %} name service client types with the `client` suffix.
+{% include requirement/MUST id="general-client-naming" %} `client` 접미사를 사용하여 서비스 클라이언트 유형의 이름을 지정하십시오.
 
-There are times when operations require the addition of optional data, provided in what is colloquially known as an "options bag".  Libraries should strive for consistent naming.
+선택적 데이터, 즉 구어체로는 "옵션 백(options bag)"으로 알려진 것 안에 제공되는 데이터를 작업에서 추가해야 하는 경우가 있습니다.  라이브러리는 일관된 이름을 지정하기 위해 노력해야 합니다.
 
-{% include requirement/SHOULD id="general-client-options-naming" %} name the type for service client option bags with the `client_options` suffix.
+{% include requirement/SHOULD id="general-client-options-naming" %} `client_options` 접미사를 사용하여 서비스 클라이언트 옵션 백의 유형 이름을 지정해야 합니다.
 
-{% include requirement/SHOULD id="general-client-options-param-naming" %} name operation option bag types with the `options` suffix.  For example, if the operation is `get_secret`, then the type of the options bag would be called `get_secret_options`.
+{% include requirement/SHOULD id="general-client-options-param-naming" %} `option` 접미사를 사용하여 작업 옵션 백 유형의 이름을 지정해야 합니다. 예를 들어, 작업이 `get_secret`인 경우 옵션 백의 유형은 `get_secret_options`이라고 명명됩니다. 
 
-{% include requirement/MUST id="general-client-in-namespace" %} place service client types that the consumer is most likely to interact with in the root namespace of the client library (assuming namespaces are supported in the target language).  Specialized service clients may be placed in sub-namespaces.
+{% include requirement/MUST id="general-client-in-namespace" %} 소비자가 상호 작용할 가능성이 가장 높은 서비스 클라이언트 유형을 클라이언트 라이브러리의 루트 네임스페이스에 배치하십시오(네임스페이스가 대상 언어에서 지원된다고 가정). 특수 서비스 클라이언트는 하위 네임스페이스에 배치할 수 있습니다.
 
-{% include requirement/MUST id="general-client-minimal-constructor" %} allow the consumer to construct a service client with the minimal information needed to connect and authenticate to the service.
+{% include requirement/MUST id="general-client-minimal-constructor" %} 소비자가 서비스에 연결하고 인증하는 데 필요한 최소한의 정보로 서비스 클라이언트를 구성할 수 있도록 허용하십시오.
 
-{% include requirement/MUST id="general-client-standardize-verbs" %} standardize verb prefixes within a set of client libraries for a service.  The service must be able to speak about a specific operation in a cross-language manner within outbound materials (such as documentation, blogs, and public speaking).  They cannot do this if the same operation is referred to by different verbs in different languages.
+{% include requirement/MUST id="general-client-standardize-verbs" %} 서비스에 대한 클라이언트 라이브러리 세트 내에서 동사 접두사를 표준화하십시오. 서비스는 아웃바운드 자료(예시: 문서, 블로그 및 대중 연설) 내에서 교차 언어 간 방식으로 특정 작업에 대해 말할 수 있어야 합니다. 동일한 작업이 다른 언어의 다른 동사에 의해 참조되는 경우에는 이 작업을 수행할 수 없습니다.
 
-The following are standard verb prefixes.  You should have a good (articulated) reason to have an alternate verb for one of these operations.  For example, .NET uses `Get<noun>s` instead of `List<noun>s` since it is idiomatic to the language.
+다음은 표준 동사 접두사입니다. 이러한 작업 중 하나에 대해 대체 동사가 있어야 하는 타당한(명확한) 이유가 있어야 합니다. 예를 들어, .NET은 언어에 관용적이기 때문에 `List<noun>s` 대신 `Get<noun>s`를 사용합니다.
 
 {% include tables/standard_verbs.md %}
 
-{% include requirement/MUST id="general-client-feature-support" %} support 100% of the features provided by the Azure service the client library represents. Gaps in functionality cause confusion and frustration among developers.
+{% include requirement/MUST id="general-client-feature-support" %} 클라이언트 라이브러리가 나타내는 Azure 서비스에서 제공하는 기능을 100% 지원하십시오. 기능상의 격차는 개발자들 사이에 혼란과 좌절을 야기합니다.
 
 ## Service API versions
 
