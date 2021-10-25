@@ -81,31 +81,31 @@ API 표면은 소비자가 서비스에 연결하기 위해 인스턴스화하�
 
 {% include requirement/MUST id="general-client-feature-support" %} 클라이언트 라이브러리가 나타내는 Azure 서비스에서 제공하는 기능을 100% 지원하십시오. 기능상의 격차는 개발자들 사이에 혼란과 좌절을 야기합니다.
 
-## Service API versions
+## 서비스 API 버전
 
-The purposes of the client library is to communicate with an Azure service.  Azure services support multiple API versions.  To understand the capabilities of the service, the client library must be able to support multiple service API versions.
+클라이언트 라이브러리의 목적은 Azure 서비스와 통신하는 것입니다. Azure 서비스는 여러 API 버전을 지원합니다. 서비스의 기능을 이해하려면, 클라이언트 라이브러리가 여러 서비스 API 버전을 지원할 수 있어야 합니다.
 
-{% include requirement/MUST id="general-service-apiversion-1" %} only target generally available service API versions when releasing a GA version of the client library.
+{% include requirement/MUST id="general-service-apiversion-1" %} 클라이언트 라이브러리의 GA 버전을 출시할 때는 일반적으로 사용 가능한 서비스 API 버전만 대상으로 하십시오.
 
-{% include requirement/MUST id="general-service-apiversion-2" %} target the latest generally available service API version by default in GA versions of the client library.
+{% include requirement/MUST id="general-service-apiversion-2" %} 클라이언트 라이브러리의 GA 버전에서는 기본적으로 일반적으로 사용 가능한 최신 서비스 API 버전을 대상으로 하십시오.
 
-{% include requirement/MUST id="general-service-apiversion-5" %} document the service API version that is used by default.
+{% include requirement/MUST id="general-service-apiversion-5" %} 기본적으로 사용되는 서비스 API 버전을 문서화하십시오.
 
-{% include requirement/MUST id="general-service-apiversion-3" %} target the latest public preview API version by default when releasing a public beta version of the client library.
+{% include requirement/MUST id="general-service-apiversion-3" %} 클라이언트 라이브러리의 공개(public) 베타 버전을 출시할 때는 기본적으로 최신 공개 미리 보기 API 버전을 대상으로 하십시오.
 
-{% include requirement/MUST id="general-service-apiversion-4" %} include all service API versions that are supported by the client library in a `ServiceVersion` enumerated value.
+{% include requirement/MUST id="general-service-apiversion-4" %} `ServiceVersion` 열거(enumerated) 값에 클라이언트 라이브러리에서 지원하는 모든 서비스 API 버전을 포함하십시오. 
 
-{% include requirement/MUST id="general-service-apiversion-6" %} ensure that the values of the `ServiceVersion` enumerated value "match" the version strings in the service Swagger definition.
+{% include requirement/MUST id="general-service-apiversion-6" %} `ServiceVersion` 열거 값의 값이 서비스 Swagger 정의의 버전 문자열과 "일치"하는지 확인하십시오.
 
-For the purposes of this requirement, semantic changes are allowed.  For instance, many version strings are based on SemVer, which allows dots and dashes.  However, these characters are not allowed in identifiers.  The developer **MUST** be able to clearly understand what service API version will be used when the service version is set to each value in the `ServiceVersion` enumerated value.
+이 요구 사항의 목적을 위해 의미론적(semantic) 변경이 허용됩니다. 예를 들어, 많은 버전 문자열은 점과 대시를 허용하는 SemVer를 기반으로 합니다. 그러나 이러한 문자는 식별자에서는 허용되지 않습니다. 개발자는 서비스의 버전이 `ServiceVersion` 열거 값의 각 값으로 설정될 때, 어떤 서비스 API 버전이 사용될지 **반드시** 명확하게 이해할 수 있어야 합니다.
 
-## Model types
+## 모델 형식
 
-Client libraries represent entities transferred to and from Azure services as model types.   Certain types are used for round-trips to the service.  They can be sent to the service (as an addition or update operation) and retrieved from the service (as a get operation).  These should be named according to the type.  For example, a `ConfigurationSetting` in App Configuration, or an `Event` on Event Grid.
+클라이언트 라이브러리는 Azure 서비스와 주고받는 엔터티를 모델 형식으로 나타냅니다. 특정 형식은 서비스 왕복(round-trips)에 사용됩니다. 그것들은 (추가 또는 업데이트 작업으로) 서비스에 보내지고 (가져오기 작업으로) 서비스에서 검색될 수 있습니다. 그들은 형식에 따라 이름 지어져야 합니다. 예를 들어, 앱 구성(App Configuration)의 `ConfigurationSetting`, 또는 이벤트 그리드(Event Grid)의 `Event`입니다.
 
-Data within the model type can generally be split into two parts - data used to support one of the champion scenarios for the service, and less important data.  Given a type `Foo`, the less important details can be gathered in a type called `FooDetails` and attached to `Foo` as the `details` property.
+모델 형식 내에 데이터는 일반적으로 두 부분으로 나눌 수 있습니다 - 서비스에 대한 최상의 시나리오 중 하나를 지원하는 데 사용되는 데이터와 덜 중요한 데이터입니다. `Foo` 형식이 주어지면, 덜 중요한 세부 정보를 `FooDetails`라는 유형으로 수집하고, `details`속성으로 `Foo`에 첨부할 수 있습니다.
 
-For example:
+예시:
 
 {% highlight csharp %}
 class ConfigurationSettingDetails {
@@ -121,22 +121,22 @@ class ConfigurationSetting {
 }
 {% endhighlight %}
 
-Optional parameters and settings to an operation should be collected into an options bag named `<operation>Options`. For example, the `GetConfigurationSetting` method might take a `GetConfigurationSettingOptions` class for specifying optional parameters.
+작업에 대한 선택적 매개변수 및 설정은 `<operation>Options`라는 옵션 백에 수집해야 합니다. 예를 들어 `GetConfigurationSetting` 메서드는 선택적 매개 변수를 지정하기 위해 `GetConfigurationSettingOptions` 클래스를 사용할 수 있습니다.
 
-Results should use the model type (e.g. `ConfigurationSetting`) where the return value is a complete set of data for the model.  However, in cases where a partial schema is returned, use the following types:
+결과는 반환 값이 모델에 대한 완전한 데이터 세트인 모델 형식(예: `ConfigurationSetting`)을 사용해야 합니다. 그러나 부분 스키마가 반환되는 경우, 다음 형식을 사용합니다:
 
-* `<model>Item` for each item in an enumeration if the enumeration returns a partial schema for the model.  For example, `GetBlobs()` return an enumeration of `BlobItem`, which contains the blob name and metadata, but not the content of the blob.
-* `<operation>Result` for the result of an operation.  The `<operation>` is tied to a specific service operation.  If the same result can be used for multiple operations, use a suitable noun-verb phrase instead.  For example, use `UploadBlobResult` for the result from `UploadBlob`, but `ContainerChangeResult` for results from the various methods that change a blob container.
+* `<model>Item`: 열거(enumeration)가 모델에 대한 부분 스키마를 반환하는 경우, 열거의 각 항목에 대한 `<model>Item`를 사용합니다. 예를 들어, `GetBlobs()`은 Blob의 이름과 메타데이터를 포함하지만 Blob의 내용은 포함하지 않는 `BlobItem`의 열거를 반환합니다.
+* `<operation>Result`: 작업의 결과를 위해 `<operation>Result`를 사용합니다. `<operation>`은 특정 서비스 작업에 연결됩니다. 여러 작업에 동일한 결과를 사용할 수 있는 경우, 적절한 명사-동사구를 대신 사용하십시오. 예를 들어, `UploadBlob`의 결과에는 `UploadBlobResult`를 사용하되, Blob 컨테이너를 변경하는 다양한 메서드의 결과에는 `ContainerChangeResult`를 사용합니다.
 
-The following table enumerates the various models you might create:
+다음 표에는 생성할 수 있는 다양한 모델이 나열되어 있습니다:
 
-| Type | Example | Usage |
-| `<model>` | `Secret` | The full data for a resource |
-| `<model>Details` | `SecretDetails` | Less important details about a resource.  Attached to `<model>.details` |
-| `<model>Item` | `SecretItem` | A partial set of data returned for enumeration |
-| `<operation>Options` | `AddSecretOptions` | Optional parameters to a single operation |
-| `<operation>Result` | `AddSecretResult` | A partial or different set of data for a single operation |
-| `<model><verb>Result` | `SecretChangeResult` | A partial or different set of data for multiple operations on a model |
+| 형식 | 예시 | 사용 |
+| `<model>` | `Secret` | 리소스의 전체 데이터. |
+| `<model>Details` | `SecretDetails` | 리소스에 대한 덜 중요한 세부정보. `<model>.details`에 첨부됨.|
+| `<model>Item` | `SecretItem` | 열거에 대해 반환된 데이터의 부분 집합. |
+| `<operation>Options` | `AddSecretOptions` | 단일 작업에 대한 선택적 매개변수. |
+| `<operation>Result` | `AddSecretResult` | 단일 작업에 대한 부분 또는 다른 데이터 집합. |
+| `<model><verb>Result` | `SecretChangeResult` | 모델에 대한 여러 작업에 대한 부분적 또는 다른 데이터 집합.  |
 
 ## Network requests
 
