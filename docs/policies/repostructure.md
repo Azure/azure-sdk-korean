@@ -1,17 +1,20 @@
 ---
-title: "Policies: Repository Structure"
+title: "정책: 레포지토리 구조"
 permalink: policies_repostructure.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-To help make our repos more consistent and easier to approach from our team as well as the community we should have a consistent structure. That structure should avoid putting a lot of stuff in the root of the repo to make it appear neater and allow folks visiting the repo to quickly see the root README.md without needing to scroll. The directory structure should look like:
+Repo들을 더욱 일관성 있게 유지하고 우리 뿐만 아니라 커뮤니티가 더 쉽게 접근할 수 있도록 돕기 위해 우리는 일관성 있는 구조를 갖추어야 합니다. 해당 구조는 repo의 root에 많은 것을 포함시키는 것을 피하여 단정한 모습을 갖추어야 하고, repo를 방문하는 많은 이들이 스크롤 내릴 필요 없이 한눈에 root README.md를 볼 수 있도록 해야 합니다. 디렉토리 구조는 이와 같아야 합니다:
 
-- `common` - Will contain source code or projects that are not shipping artifacts but are shared and used by our sdk libraries. Things like common test projects or shared test or source code.
-- `doc` - Contains documentation, usually in markdown files, for anything in the repo. It should also contain a README.md that states the purposes of all the folders under `doc`.  ([Example](https://github.com/Azure/azure-sdk-for-python/blob/main/doc/README.md))
-  - `doc\dev` - Contains the set of documentation needed for developers that are contributing to the repository.
-- `eng` - Used to contain things needed by the engineering system to build, test, or perform other related tasks. It will usually contain configure files, build definitions, scripts and other tools (generally not checked in binaries).
-- `sdk` - Primary directory which will contain our sdk library source code. See below for more details on its layout.
+- `common` - artifact를 포함하지 않으나 sdk 라이브러리에 의해 사용되고 공유되는 소스 코드나 프로젝트를 포함합니다. 이 예시는 test projects, shared test 또는 source code와 같습니다.
+
+- `doc` - repo에 존재하는 어떠한 것들을 위해, 주로 markdown 파일로 작성된 문서를 포함합니다. `doc` 하위 모든 폴더의 용도가 명시된 README.md 파일을 포함해야 합니다. ([예시](https://github.com/Azure/azure-sdk-for-python/blob/main/doc/README.md))
+
+- `doc\dev` - 저장소에 기여하는 개발자들을 위한 문서 집합을 포함합니다.
+
+- `eng` - 공학 체계에서 빌드, 테스트, 기타 연관된 기능을 수행해야 할 때 필요한 것들을 포함합니다. 이는 주로 설정 파일, 빌드 정의, 스크립트 또는 기타 도구 (대게 바이너리로 확인되지 않는 것)들을 포함합니다. 
+- `sdk` - sdk 라이브러리 소스 코드를 포함하는 주요 디렉토리입니다. 레이아웃의 자세한 설명은 아래를 참조하시오. 
 
 
  To accomplish that every azure-sdk language repo will put a README.md and a `sdk` folder in the root that will contain a folder for each service which will then contain a folder for each package associated with the service. It will be `sdk`, singular as opposed to plural, because we want developers to realize we only have one azure sdk and not many.
