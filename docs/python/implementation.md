@@ -131,7 +131,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 
 {% include requirement/MUST id="python-logging-nameed-logger" %} 라이브러리에 대해 이름이 지정된 로거를 사용하십시오
 
-패키지의 로거는 **꼭** 모듈 이름을 사용해야합니다. 라이브러리는 추가적으로 자식 로거를 제공할 수 있습니다. 자식 로거가 제공된 경우 기록하십시오.
+패키지의 로거는 **꼭** 모듈 이름을 사용해야합니다. 라이브러리는 추가적으로 하위 로거를 제공할 수 있습니다. 하위 로거가 제공된 경우 그것을 명시하십시오.
 
 예를 들어:
 - Package 이름: `azure-someservice`
