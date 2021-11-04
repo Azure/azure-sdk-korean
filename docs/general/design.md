@@ -171,62 +171,62 @@ class ConfigurationSetting {
 
 {% include requirement/MUSTNOT id="general-network-no-leakage" %} 기본 프로토콜 전송 구현 세부 정보를 소비자에게 누설하지 마십시오. 프로토콜 전송 구현의 모든 유형은 적절하게 추상화되어야 합니다.
 
-## Authentication
-Azure services use a variety of different authentication schemes to allow clients to access the service.  Conceptually, there are two entities responsible in this process: a credential and an authentication policy.  Credentials provide confidential authentication data.  Authentication policies use the data provided by a credential to authenticate requests to the service.
+## 인증
+Azure 서비스는 클라이언트가 서비스에 액세스할 수 있도록 다양한 인증 체계를 사용합니다. 개념적으로 이 프로세스에는 자격 증명과 인증 정책이라는 두 가지 엔터티가 있습니다. 자격 증명은 기밀 인증 데이터를 제공합니다. 인증 정책은 자격 증명에서 제공한 데이터를 사용하여 서비스에 대한 요청을 인증합니다.
 
-Primarily, all Azure services should support Azure Active Directory OAuth token authentication, and all clients must support authenticating requests in this manner.
+기본적으로 모든 Azure 서비스는 Azure Active Directory OAuth 토큰 인증을 지원해야 하며 모든 클라이언트는 이러한 방식으로 인증 요청을 지원해야 합니다.
 
-{% include requirement/MUST id="general-auth-provide-token-client-constructor" %} provide a service client constructor or factory that accepts an instance of the TokenCredential abstraction from Azure Core.
+{% include requirement/MUST id="general-auth-provide-token-client-constructor" %} Azure Core에서 TokenCredential 추상화 인스턴스를 허용하는 서비스 클라이언트 생성자 또는 팩토리를 제공하십시오.
 
-{% include requirement/MUSTNOT id="auth-client-no-token-persistence" %} persist, cache, or reuse tokens returned from the token credential. This is __CRITICAL__ as credentials generally have a short validity period and the token credential is responsible for refreshing these.
+{% include requirement/MUSTNOT id="auth-client-no-token-persistence" %} 토큰 자격 증명에서 반환된 토큰을 유지, 캐시 또는 재사용하지 마십시오. 일반적으로 자격 증명의 유효 기간이 짧고, 토큰 자격 증명이 이러한 자격 증명을 갱신하는 역할을 담당하기 때문에 이는 __매우 중요합니다__.
 
-{% include requirement/MUST id="general-auth-use-core" %} use authentication policy implementations from the Azure Core library where available.
+{% include requirement/MUST id="general-auth-use-core" %} 사용 가능한 경우 Azure Core 라이브러리의 인증 정책 구현을 사용하십시오.
 
-{% include requirement/MUST id="general-auth-reserve-when-not-suported" %} reserve the API surface needed for TokenCredential authentication, in the rare case that a service does not yet support Azure Active Directory authentication.
+{% include requirement/MUST id="general-auth-reserve-when-not-suported" %} 서비스가 아직 Azure Active Directory 인증을 지원하지 않는 경우가 드물지만, 이러한 경우 TokenCredential 인증에 필요한 API 표면을 유지하십시오.
 
-In addition to Azure Active Directory OAuth, services may provide custom authentication schemes. In this case the following guidelines apply.
+Azure Active Directory OAuth 외에도 서비스는 사용자 지정 인증 체계를 제공할 수 있습니다. 이 경우 다음 지침이 적용됩니다.
 
-{% include requirement/MUST id="general-auth-support" %} support all authentication schemes that the service supports.
+{% include requirement/MUST id="general-auth-support" %} 서비스가 지원하는 모든 인증 체계를 지원하십시오.
 
-{% include requirement/MUST id="general-auth-provide-credential-types" %} define a public custom credential type which enables clients to authenticate requests using the custom scheme.
+{% include requirement/MUST id="general-auth-provide-credential-types" %} 클라이언트가 사용자 지정 체계를 사용하여 요청을 인증할 수 있도록 하는 공개 사용자 지정 자격 증명 유형을 정의하십시오.
 
-{% include requirement/SHOULDNOT id="general-auth-credential-type-base" %} define custom credential types extending or implementing the TokenCredential abstraction from Azure Core. This is especially true in type safe languages where extending or implementing this abstraction would break the type safety of other service clients, allowing users to instantiate them with the custom credential of the wrong service.
+{% include requirement/SHOULDNOT id="general-auth-credential-type-base" %} Azure Core에서 TokenCredential 추상화를 확장하거나 구현하는 사용자 지정 자격 증명 형식을 정의하면 안 됩니다. 이는 특히 이러한 추상화를 확장하거나 구현하면 다른 서비스 클라이언트의 형식 안전성이 훼손되어 사용자가 잘못된 서비스에 대한 사용자 정의 자격 증명으로 해당 클라이언트를 인스턴스화할 수 있는 타입 세이프(type safe) 언어에서 더욱 그렇습니다.
 
-{% include requirement/MUST id="general-auth-credential-type-placement" %} define custom credential types in the same namespace and package as the client, or in a service group namespace and shared package, not in Azure Core or Azure Identity.
+{% include requirement/MUST id="general-auth-credential-type-placement" %} 사용자 지정 자격 증명 형식은 Azure Core나 Azure Identity가 아닌, 클라이언트와 동일한 네임 스페이스 및 패키지 또는 서비스 그룹 네임스페이스와 공유 패키지 에서 지정하십시오.
 
-{% include requirement/MUST id="general-auth-credential-type-prefix" %} prepend custom credential type names with the service name or service group name to provide clear context to its intended scope and usage.
+{% include requirement/MUST id="general-auth-credential-type-prefix" %} 서비스 이름 또는 서비스 그룹 이름에 사용자 지정 자격 증명 유형 이름을 추가하여 의도한 범위 및 사용에 대한 명확한 컨텍스트를 제공하십시오.
 
-{% include requirement/MUST id="general-auth-credential-type-suffix" %} append Credential to the end of the custom credential type name. Note this must be singular not plural.
+{% include requirement/MUST id="general-auth-credential-type-suffix" %} 사용자 지정 자격 증명 유형 이름 끝에 자격 증명(Credential)을 추가하십시오. 이것은 복수가 아닌 단수여야 합니다.
 
-{% include requirement/MUST id="general-auth-provide-credential-constructor" %} define a constructor or factory for the custom credential type which takes in ALL data needed for the custom authentication protocol.
+{% include requirement/MUST id="general-auth-provide-credential-constructor" %} 사용자 정의 인증 프로토콜에 필요한 모든 데이터를 가져오는 사용자 정의 자격 증명 유형에 대한 생성자 또는 팩토리를 정의하십시오.
 
-{% include requirement/MUST id="general-auth-provide-update-method" %} define an update method which accepts all mutable credential data, and updates the credential in an atomic, thread safe manner.
+{% include requirement/MUST id="general-auth-provide-update-method" %} 변경 가능한 모든 자격 증명 데이터를 허용하고, 원자적인 스레드 안전 방식으로 자격 증명을 갱신하는 업데이트 메서드를 정의하십시오.
 
-{% include requirement/MUSTNOT id="general-auth-credential-set-properties" %} define public settable properties or fields which allow users to update the authentication data directly in a non-atomic manner.
+{% include requirement/MUSTNOT id="general-auth-credential-set-properties" %} 사용자가 인증 데이터를 비원자적 방식으로 직접 업데이트할 수 있도록 공개 설정 가능한 속성 또는 필드를 정의하지 마십시오.
 
-{% include requirement/SHOULDNOT id="general-auth-credential-get-properties" %} define public properties or fields which allow users to access the authentication data directly. They are most often not needed by end users, and are difficult to use in a thread safe manner. In the case that exposing the authentication data is necessary, all the data needed to authenticate requests should be returned from a single API which guarantees the data returned is in a consistent state.
+{% include requirement/SHOULDNOT id="general-auth-credential-get-properties" %} 사용자가 인증 데이터에 직접 접근할 수 있도록 허용하는 공용 속성 또는 필드를 정의하면 안 됩니다. 이는 최종 사용자가 필요로 하지 않는 경우가 대부분이며, 스레드로부터 안전한 방식으로 사용하기 어렵습니다. 인증 데이터를 노출해야 하는 경우, 요청을 인증하는 데 필요한 모든 데이터는 반환된 데이터가 일관된 상태임을 보장하는 단일 API에서 반환되어야 합니다.
 
-{% include requirement/MUST id="general-auth-provide-client-constructor" %} provide service client constructors or factories that accept all supported credential types.
+{% include requirement/MUST id="general-auth-provide-client-constructor" %} 지원되는 모든 자격 증명 유형을 허용하는 서비스 클라이언트 생성자 또는 팩토리를 제공하십시오.
 
-Client libraries may support providing credential data via a connection string __ONLY IF__ the service provides a connection string to users via the portal or other tooling.   Connection strings are generally good for getting started as they are easily integrated into an application by copy/paste from the portal.  However, connection strings are considered a lesser form of authentication because the credentials cannot be rotated within a running process.
+클라이언트 라이브러리는 서비스가 포털 또는 기타 도구를 통해 사용자에게 연결 문자열(connection string)을 제공하는 __경우에만__ 연결 문자열을 통한 자격 증명 데이터 제공을 지원할 수 있습니다. 연결 문자열은 일반적으로 포털에서 복사/붙여넣기를 통해 애플리케이션에 쉽게 통합되므로 시작하기에 좋습니다. 그러나 연결 문자열은 실행 중인 프로세스 내에서 자격 증명을 교체할 수 없기 때문에, 덜 인증된 형식으로 간주됩니다.
 
-{% include requirement/MUSTNOT id="general-auth-connection-strings" %} support constructing a service client with a connection string unless such connection string is available within tooling (for copy/paste operations).
+{% include requirement/MUSTNOT id="general-auth-connection-strings" %} 도구 내에서 (복사/붙여넣기 작업 용으로) 이러한 연결 문자열을 사용할 수 있는 경우가 아니라면, 연결 문자열로 서비스 클라이언트를 구성하는 것을 지원하지 마십시오.
 
-## Response formats
+## 응답 형식
 
-Requests to the service fall into two basic groups - methods that make a single logical request, or a deterministic sequence of requests.  An example of a *single logical request* is a request that may be retried inside the operation.  An example of a *deterministic sequence of requests* is a paged operation.
+서비스에 대한 요청은 두 가지 기본 그룹, 즉 단일 논리적(single logical) 요청을 만드는 메서드 또는 요청의 결정론적 시퀀스(deterministic sequence)로 나뉩니다. *단일 논리적 요청*의 예는 작업 내에서 재시도할 수 있는 요청입니다. *결정론적 요청 시퀀스*의 예로는 페이징 작업이 있습니다.
 
-The *logical entity* is a protocol neutral representation of a response. For HTTP, the logical entity may combine data from headers, body and the status line. A common example is exposing an ETag header as a property on the logical entity in addition to any deserialized content from the body.
+*논리적 엔티티*는 응답의 프로토콜 중립적 표현입니다. HTTP의 경우, 논리적 엔터티는 헤더, 본문 및 상태 표시줄의 데이터를 결합할 수 있습니다. 일반적인 예로는 본문에서 역직렬화된 내용 외에도 ETag 헤더를 논리적 엔티티의 속성으로 노출하는 것입니다.
 
-{% include requirement/MUST id="general-response-logical-entity" %} optimize for returning the logical entity for a given request. The logical entity must represent the information needed in the 99%+ case.
+{% include requirement/MUST id="general-response-logical-entity" %} 주어진 요청에 대한 논리적 엔터티를 반환하도록 최적화하십시오. 논리적 엔터티는 99% 이상의 경우에 필요한 정보를 나타내야 합니다. 
 
-{% include requirement/MUST id="general-response-complete" %} allow a consumer to access the complete response, including the status line, headers and body. The client library must follow the language specific guidance for accomplishing this.
+{% include requirement/MUST id="general-response-complete" %} 소비자가 상태 표시줄, 헤더 및 본문을 포함하여 전체 응답에 접근할 수 있도록 허용하십시오. 클라이언트 라이브러리는 이를 수행하기 위해 언어별 지침을 따라야 합니다.
 
-{% include requirement/MUST id="general-response-streaming" %} provide examples on how to access the raw and streamed response for a given request, where exposed by the client library.  We do not expect all methods to expose a streamed response.
+{% include requirement/MUST id="general-response-streaming" %} 클라이언트 라이브러리에 의해 노출되는 주어진 요청에 대한 원시 및 스트림 응답에 액세스하는 방법의 예시를 제공하십시오. 모든 메서드가 스트림된 응답을 노출할 것으로 기대하지는 않습니다.
 
-{% include requirement/MUST id="general-response-enumeration" %} provide a language idiomatic way to enumerate all logical entities for a paged operation, automatically fetching new pages as needed.
+{% include requirement/MUST id="general-response-enumeration" %} 필요에 따라 새 페이지를 자동으로 가져오는 페이징 작업에 대한 모든 논리적 엔터티를 열거하는 언어 관용적 방법을 제공하십시오.
 
-For example, in Python:
+예를 들어, 파이썬은 다음과 같습니다:
 
 ```python
 # Yes:
@@ -243,18 +243,18 @@ while not done:
     done = next_page is None
 ```
 
-For methods that combine multiple requests into a single call:
+여러 요청을 단일 호출로 결합하는 메서드의 경우:
 
-{% include requirement/MUST id="general-response-return-headers" %} return headers and other per-request metadata unless it is obvious as to which specific HTTP request the methods return value corresponds to.
+{% include requirement/MUST id="general-response-return-headers" %} 메서드 반환 값이 어떤 특정 HTTP 요청에 해당하는지 명확하지 않은 경우 헤더 및 기타 요청별 메타데이터를 반환하십시오.
 
-{% include requirement/MUST id="general-response-failure-cases" %} provide enough information in failure cases for an application to take appropriate corrective action.
+{% include requirement/MUST id="general-response-failure-cases" %} 실패 시 애플리케이션이 적절한 시정 조치를 취할 수 있도록 충분한 정보를 제공하십시오.
 
-{% include requirement/SHOULDNOT id="general-response-no-reserved-words" %} use common reserved words as a property name within the models returned within the logical entity.  For example:
+{% include requirement/SHOULDNOT id="general-response-no-reserved-words" %} 논리 엔터티 내에 반환된 모델 내에서 공통 예약 단어를 속성 이름으로 사용하면 안 됩니다. 예를 들어:
 
 - `object`
 - `value`
 
-Such usage can cause confusion and will inevitably have to be changed on a per-language basis, which can cause consistency problems.
+이러한 사용법은 혼동을 일으킬 수 있으며, 언어별로 반드시 변경해야 하므로 일관성 문제가 발생할 수 있습니다.
 
 ## Conditional requests
 
