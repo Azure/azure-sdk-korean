@@ -138,38 +138,38 @@ class ConfigurationSetting {
 | `<operation>Result` | `AddSecretResult` | 단일 작업에 대한 부분 또는 다른 데이터 집합. |
 | `<model><verb>Result` | `SecretChangeResult` | 모델에 대한 여러 작업에 대한 부분적 또는 다른 데이터 집합.  |
 
-## Network requests
+## 네트워크 요청
 
-Since the client library generally wraps one or more HTTP requests, it is important to support standard network capabilities.  Asynchronous programming techniques are not widely understood, although such techniques are essential in developing scalable web services and required in certain environments (such as mobile or Node environments).  Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology.  In addition, consumers have come to expect certain capabilities in a network stack - capabilities such as call cancellation, automatic retry, and logging.
+클라이언트 라이브러리는 일반적으로 하나 이상의 HTTP 요청을 래핑하므로, 표준 네트워크 기능을 지원하는 것이 중요합니다. 비동기 프로그래밍 기법은 널리 이해되지는 않지만, 이러한 기법은 확장 가능한 웹 서비스 개발에 필수적이며 특정 환경(모바일 또는 노드 환경)에서 필요합니다. 많은 개발자들은 기술 사용법을 배울 때 쉬운 의미론(semantics) 때문에 동기식 메서드 호출을 선호합니다. 또한 소비자는 네트워크 스택에서 호출 취소, 자동 재시도, 로깅과 같은 특정 기능을 기대하게 되었습니다.
 
-{% include requirement/MUST id="general-network-support-sync-and-async" %} support both synchronous and asynchronous method calls, except where the language or default runtime does not support one or the other.
+{% include requirement/MUST id="general-network-support-sync-and-async" %}  동기 및 비동기 메서드 호출을 모두 지원하십시오. 언어 또는 기본 런타임이 둘 중 하나를 지원하지 않는 경우는 예외입니다.
 
-{% include requirement/MUST id="general-network-identify-sync-methods" %} ensure that the consumer can identify which methods are async and which are synchronous.
+{% include requirement/MUST id="general-network-identify-sync-methods" %} 소비자가 어떤 메서드가 비동기식이고, 어떤 메서드가 동기식인지 식별할 수 있는지 확인하십시오.
 
-When an application makes a network request, the network infrastructure (like routers) and the called service may take a long time to respond and, in fact, may never respond. A well-written application SHOULD NEVER give up its control to the network infrastucture or service. Here are some examples as to why this is so important:
+애플리케이션이 네트워크 요청을 할 때, (라우터와 같은) 네트워크 인프라와 호출된 서비스가 응답하는 데 오랜 시간이 걸릴 수 있으며, 실제로는 아예 응답하지 않을 수 있습니다. 잘 작성된 애플리케이션은 네트워크 인프라나 서비스에 대한 제어를 절대 포기해서는 안 됩니다. 이것이 왜 중요한지에 대한 몇 가지 예는 다음과 같습니다:
 
-- When an orchestrator needs to terminate a service (due to scale in, reconfiguration, or upgrading to a new version), the orchestrator typically notifies a running service instance by sending the Posix SIGINT. When the service receives this signal, it should terminate as quickly and gracefully as possible by setting a cancellation mechanism which is honored by all network operations that are currently in progress.
-- When a consumer's web server receives a request, it may set a time limit indicating how much time it is allowing before it must give a response to the user.
-- When a consumer's GUI application makes a request to an Azure service via our SDK, the GUI might offer a cancel button so that the end user can indicate that they are no longer in waiting for an operation or operations to complete.
+- 오케스트레이터가 (스케일 인, 재구성 또는 새 버전으로 업그레이드하기 위해) 서비스를 종료해야 하는 경우, 일반적으로 오케스트레이터는 Posix SIGINT를 전송하여 실행 중인 서비스 인스턴스에 알립니다. 서비스가 이 신호를 수신하면, 현재 진행 중인 모든 네트워크 작업에 적용되는 취소 메커니즘을 설정하여 최대한 빠르고 정상적으로(gracefully) 종료해야 합니다.
+- 소비자의 웹 서버가 요청을 수신하면, 사용자에게 응답을 제공해야 하기 전에 허용되는 시간을 나타내는 시간 제한을 설정할 수 있습니다.
+- 소비자의 GUI 애플리케이션이 당사의 SDK를 통해 Azure 서비스에 요청할 때, GUI에서 취소 버튼을 제공하여 최종 사용자가 더 이상 작업이 완료되기를 기다리고 있지 않음을 나타낼 수 있습니다.
 
-The best way for consumers to work with cancellation is to think of cancellation objects as forming a tree. For example:
+소비자가 취소 작업을 수행하는 가장 좋은 방법은 취소 객체를 트리를 형성하는 것으로 생각하는 것입니다. 예를 들어:
 
-- Cancelling a parent automatically cancels its children.
-- Children can time out sooner than their parent but cannot extend the total time.
-- Cancellation can happen due to timeout or due to a manual/explicit cancel.
+- 부모 항목을 취소하면 자식 항목이 자동으로 취소됩니다.
+- 자식 항목은 부모보다 일찍 타임아웃할 수 있지만 총 시간을 연장할 수는 없습니다.
+- 취소는 시간 초과 또는 수동/명시적 취소로 인해 발생할 수 있습니다.
 
-Here is an example of how an application would use the tree of cancellations:
+다음은 애플리케이션이 취소 트리를 사용하는 방법의 예입니다:
 
-- When an application starts, it should create a cancellation object that represents the entire application; this object is explicitly terminated in response to the application receiving a SIGINT notification.
-- When a web server receives an incoming request, it would create a new cancellation object that is a child of the application node. The new cancellation object would specify a maximum time that the web server is allowed to operate on the request.
-- As part of operating on the incoming request, the web server might need to make multiple requests to other services (like a database). If these requests can be made serially or in parallel, then they might share the previously created cancellation object. However, if the web server wants to limit the time spent on 1 or more of the requests, it can create a new cancellation object (with the desired timeout value) and make this object a child of the incoming node; this way, the individual request times out either when the overall request times out or when the maximum time for this operation is exceeded - whichever happens first.
-- Note that if multiple requests are made in parallel, it is common for the consumer to want to cancel all of them if any one of them fails. This should be a supported scenario.
+- 애플리케이션이 시작되면, 전체 애플리케이션을 나타내는 취소 객체를 만들어야 합니다. 이 객체는 SIGINT 알림을 받는 애플리케이션에 대한 응답으로 명시적으로 종료됩니다.
+- 웹 서버가 수신 요청을 받으면, 애플리케이션 노드의 하위 항목인 새 취소 객체를 만듭니다. 새 취소 객체는 웹 서버가 요청에 대해 작업할 수 있는 최대 시간을 지정합니다.
+- 수신 요청에 대한 작업의 일부로 웹 서버는 (데이터베이스와 같은) 다른 서비스에 여러 요청을 해야 할 수 있습니다. 이러한 요청을 직렬 또는 병렬로 수행할 수 있는 경우, 이전에 생성된 취소 객체를 공유할 수 있습니다. 그러나 웹 서버가 하나 이상의 요청에 소요되는 시간을 제한하려는 경우, (원하는 시간 초과 값으로) 새 취소 객체를 만들고, 이 객체를 들어오는 노드의 자식 객체로 만들 수 있습니다. 이렇게 하면 전체 요청 시간이 초과되거나 이 작업의 최대 시간이 초과될 때(둘 중 먼저 발생하는 경우) 개별 요청 시간이 초과됩니다.
+- 여러 요청이 병렬로 이루어진 경우, 일반적으로 소비자는 그 중 하나가 실패하면 모든 요청을 취소하고자 합니다. 이것은 지원되는 시나리오여야 합니다.
 
-{% include requirement/MUST id="general-network-accept-cancellation" %} accept platform-native cancellation tokens (that implement a timeout) on all asynchronous calls.
+{% include requirement/MUST id="general-network-accept-cancellation" %} 모든 비동기식 호출에서 (시간 초과를 구현하는) 플랫폼 고유(platform-native) 취소 토큰을 수락하십시오.
 
-{% include requirement/SHOULD id="general-network-check-cancellation" %} check cancellation tokens only on I/O calls (such as network requests and file loads).  Do not check cancellation tokens in between I/O calls within the client library (for example, when processing data between I/O calls).
+{% include requirement/SHOULD id="general-network-check-cancellation" %} 취소 토큰은 I/O 통화(예시: 네트워크 요청 및 파일 로드)에서만 확인해야 합니다. 클라이언트 라이브러리 내에서 I/O 호출 사이에 취소 토큰을 확인하지 마십시오(예: I/O 호출 간에 데이터를 처리할 때). 취소 토큰은 I/O 통화(예: 네트워크 요청 및 파일 로드)에서만 확인해야 합니다. 클라이언트 라이브러리 내에서 I/O 호출 사이에 취소 토큰을 확인하지 마십시오(예시: I/O 호출 간에 데이터를 처리할 때).
 
-{% include requirement/MUSTNOT id="general-network-no-leakage" %} leak the underlying protocol transport implementation details to the consumer.  All types from the protocol transport implementation must be appropriately abstracted.
+{% include requirement/MUSTNOT id="general-network-no-leakage" %} 기본 프로토콜 전송 구현 세부 정보를 소비자에게 누설하지 마십시오. 프로토콜 전송 구현의 모든 유형은 적절하게 추상화되어야 합니다.
 
 ## Authentication
 Azure services use a variety of different authentication schemes to allow clients to access the service.  Conceptually, there are two entities responsible in this process: a credential and an authentication policy.  Credentials provide confidential authentication data.  Authentication policies use the data provided by a credential to authenticate requests to the service.
