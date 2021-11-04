@@ -256,58 +256,58 @@ while not done:
 
 이러한 사용법은 혼동을 일으킬 수 있으며, 언어별로 반드시 변경해야 하므로 일관성 문제가 발생할 수 있습니다.
 
-## Conditional requests
+## 조건부 요청
 
-[Conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests) are normally performed using HTTP headers.  The primary usage provides headers that match the `ETag` to some known value.  The `ETag` is an opaque identifier that represents a single version of a resource. For example, adding the following header will translate to "if the record's version, specified by the `ETag`, is not the same".
+[HTTP 조건부 요청](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests)은 일반적으로 HTTP 헤더를 사용하여 수행됩니다. 기본 사용법은 알려진 값에 `ETag`와 일치시키는 헤더를 제공합니다. `ETag`는 단일 버전의 리소스를 나타내는 불투명한 식별자입니다. 예를 들어 다음 헤더를 추가하면 "`ETag`로 지정된 레코드 버전이 동일하지 않은 경우"로 변환됩니다.
 
 {% highlight text %}
 If-Not-Match: "etag-value"
 {% endhighlight %}
 
-With headers, tests are possible for the following:
+헤더를 사용하여 다음을 테스트할 수 있습니다:
 
-* Unconditionally (no additional headers)
-* If (not) modified since a version (`If-Match` and `If-Not-Match`)
-* If (not) modified since a date (`If-Modified-Since` and `If-Unmodified-Since`)
-* If (not) present (`If-Match` and `If-Not-Match` with a `ETag=*` value)
+* 조건 없음 (추가 헤더 없음)
+* 버전 이후 수정(안)한 경우 (`If-Match` 및 `If-Not-Match`)
+* 날짜 이후 수정(안)한 경우 (`If-Modified-Since` 및 `If-Unmodified-Since`)
+* 존재하는(하지 않는) 경우 (`ETag=*` 값이 있는 `If-Match` 및 `If-Not-Match`)
 
-Not all services support all of these semantics, and may not support any of them.  Developers have varying levels of understanding of the `ETag` and conditional requests, so it is best to abstract this concept from the API surface.  There are two types of conditional requests we need to be concerned with:
+모든 서비스가 이러한 의미 체계를 모두 지원하는 것은 아니며, 어느 것도 지원하지 않을 수 있습니다. 개발자는 `ETag` 및 조건부 요청에 대한 이해 수준이 다양하므로 API 표면에서 이 개념을 추상화하는 것이 가장 좋습니다. 우리가 고려해야 할 조건부 요청에는 두 가지 유형이 있습니다.
 
-**Safe conditional requests** (e.g. GET)
+**안전한(Safe) 조건부 요청** (예시: GET)
 
-These are typically used to save bandwidth in an "update cache" scenario, i.e. I have a cached value, only send me the data if what the service has is newer than my copy. These return either a 200 or a 304 status code, indicating the value was not modified, which tells the caller that their cached value is up to date.
+이는 일반적으로 "캐시 업데이트" 시나리오에서 대역폭을 절약하는 데 사용됩니다. (예시: 나에게 캐시된 값이 있습니다. 서비스에 있는 데이터가 내 복사본보다 최신인 경우에만 데이터를 보내주십시오.) 이 경우 값이 수정되지 않았음을 나타내는 200 또는 304 상태 코드가 반환되며, 호출자에게 캐시된 값이 최신 상태임을 알 수 있습니다.
 
-**Unsafe conditional requests** (e.g. POST, PUT, or DELETE)
+**안전하지 않은(Unsafe) 조건부 요청** (예시 POST, PUT, DELETE)
 
-These are typically used to prevent losing updates in an optimistic concurrency scenario, i.e. I've modified the cached value I'm holding, but don't update the service version unless it has the same copy I've got. These return either a success or a 412 error status code, indicating the value was modified, to indicate to the caller that they'll need to retry their update if they want it to succeed.
+이는 일반적으로 낙관적 동시성(optimistic concurrency) 시나리오에서 업데이트 손실을 방지하는 데 사용됩니다. (예시: 나는 현재 보유하고 있는 캐시된 값을 수정했습니다. 하지만 동일한 복사본이 없으면 서비스 버전을 업데이트하지 마십시오.) 이 경우 성공 혹은 값이 수정되었음을 나타내는 412 오류 상태 코드를 반환하여, 호출자에게 업데이트가 성공하려면 업데이트를 다시 시도해야 함을 나타냅니다.
 
-These two cases are handled differently in client libraries.  However, the form of the call is the same in both cases.  The signature of the method should be:
+이 두 경우는 클라이언트 라이브러리에서 다르게 처리됩니다. 그러나 호출 형식은 두 경우 모두 동일합니다. 메서드의 서명은 다음과 같아야 합니다:
 
 {% highlight text %}
 client.<method>(<item>, requestOptions)
 {% endhighlight %}
 
-The `requestOptions` field provides preconditions to the HTTP request.  The `Etag` value will be retrieved from the item that is passed into the method where possible, and method arguments where not possible. The form of the method will be modified based on idiomatic usage patterns in the language of choice.  In cases where the `ETag` value is not known, the operation cannot be conditional.
-If the library developer doens't need to support advanced usage of precondition headers, they can add a boolean parameter that is set to true to establish the condition.  For example, use one of the following boolean names instead of the conditions operator:
+`requestOptions` 필드는 HTTP 요청에 대한 전제 조건을 제공합니다. `Etag` 값은 가능한 경우 메서드에 전달된 항목에서 검색되고, 불가능한 경우 메서드 인수에서 검색됩니다. 메서드의 형식은 선택한 언어의 관용적 사용 패턴을 기반으로 수정됩니다. `ETag` 값을 모르는 경우 작업은 조건부일 수 없습니다.
+라이브러리 개발자가 사전 조건 헤더의 고급 사용을 지원할 필요가 없는 경우, 조건을 설정하기 위해 true로 설정된 부울(boolean) 매개변수를 추가할 수 있습니다.  예를 들어, 조건 연산자 대신 다음 부울 이름 중 하나를 사용합니다.
 
 * `onlyIfChanged`
 * `onlyIfUnchanged`
 * `onlyIfMissing`
 * `onlyIfPresent`
 
-In all cases, the conditional expression is "opt-in", and the default is to perform the operation unconditionally.
+모든 경우에 조건식은 "옵트인(opt-in)"이며 기본값은 작업을 무조건 수행하는 것입니다.
 
-The return value from a conditional operation must be carefully considered.  For safe operators (e.g. GET), return a response that will throw if the value is accessed (or follow the same convention used fro a `204 No Content` response), since there is no value in the body to reference.  For unsafe operators (e.g. PUT, DELETE, or POST), throw a specific error when a `Precondition Failed` or `Conflict` result is received.  This allows the consumer to do something different in the case of conflicting results.
+조건부 연산의 반환 값은 신중하게 고려해야 합니다. 안전한 연산자(예: GET)의 경우 본문에 참조할 값이 없으므로, 값에 접근하면(또는 `204 No Content` 응답에 사용된 것과 동일한 규칙을 따름) 던져지는 응답을 반환합니다. 안전하지 않은 연산자(예: PUT, DELETE 또는 POST)의 경우 `Precondition Failed` 또는 `Conflict` 결과가 수신되면 특정 오류를 발생시킵니다. 이렇게 하면 결과가 충돌되는 경우 소비자가 다른 작업을 수행할 수 있습니다.
 
-{% include requirement/SHOULD %} accept a `conditions` parameter (which takes an enumerated type) on service methods that allow a conditional check on the service.
+{% include requirement/SHOULD %} 서비스에 대한 조건부 검사를 허용하는 서비스 메소드에 대한 (열거형 유형의) `conditions` 매개변수를 수락해야 합니다.
 
-{% include requirement/SHOULD %} accept an additional boolean or enum parameter on service methods as necessary to enable conditional checks using `ETag`.
+{% include requirement/SHOULD %} `ETag`를 사용하여 조건부 검사를 활성화하려면 필요에 따라 서비스 메서드에 대한 추가 부울 또는 열거형 매개변수를 수락해야 합니다.
 
-{% include requirement/SHOULD %} include the `ETag` field as part of the object model when conditional operations are supported.
+{% include requirement/SHOULD %} 조건부 연산이 지원되는 경우 `ETag` 필드를 객체 모델의 일부로 포함해야 합니다.
 
-{% include requirement/SHOULDNOT %} throw an error when a `304 Not Modified` response is received from the service, unless such errors are idiomatic to the language.
+{% include requirement/SHOULDNOT %} 서비스로부터 `304 Not Modified` 응답이 수신되었을 때, 이러한 오류가 언어에 관용적이지 않은 한 오류를 발생시켜서는 안 됩니다.
 
-{% include requirement/SHOULD %} throw a distinct error when a `412 Precondition Failed` response or a `409 Conflict` response is received from the service due to a conditional check.
+{% include requirement/SHOULD %} 조건부 확인으로 인해 서비스로부터 `412 Precondition Failed` 응답 또는 `409 Conflict` 응답이 수신되면 고유한 오류를 발생시켜야 합니다.
 
 ## Pagination
 
