@@ -309,70 +309,70 @@ client.<method>(<item>, requestOptions)
 
 {% include requirement/SHOULD %} 조건부 확인으로 인해 서비스로부터 `412 Precondition Failed` 응답 또는 `409 Conflict` 응답이 수신되면 고유한 오류를 발생시켜야 합니다.
 
-## Pagination
+## 페이지 매김(Pagination)
 
-Azure client libraries eschew low-level pagination APIs in favor of high-level abstractions that implement per-item iterators. High-level APIs are easy for developers to use for the majority of use cases but can be more confusing when finer-grained control is required (for example, over-quota/throttling) and debugging when things go wrong. Other guidelines in this document work to mitigate this limitation, for example by providing robust logging, tracing, and pipeline customization options.
+Azure 클라이언트 라이브러리는 항목별 반복기(iterator)를 구현하는 높은 수준의 추상화를 위해 낮은 수준의 페이지 매김 API를 사용하지 않습니다. 고수준 API는 대부분의 사용 사례에 대해 개발자가 사용하기 쉽지만, 보다 세분화된 제어(예시: 할당량 초과/제한)가 필요할 때 그리고 문제가 발생하여 디버깅이 필요할 때 더 혼란스러울 수 있습니다. 이 문서의 다른 지침은 예를 들어 강력한 로깅, 추적 및 파이프라인 사용자 지정 옵션을 제공하여 이러한 제한을 완화합니다.
 
-{% include requirement/MUST id="general-pagination-use-async-iterators" %} expose paginated collections using language-canonical iterators over items within pages. The APIs used to expose the async iterators are language-dependent but should align with any existing common practices in your ecosystem.
+{% include requirement/MUST id="general-pagination-use-async-iterators" %} 페이지 내의 항목에 대해 언어 표준 반복자를 사용하여 페이지를 매긴 컬렉션을 노출하십시오. 비동기 반복기를 노출하는 데 사용되는 API는 언어에 따라 다르지만, 에코시스템의 기존 일반적인 관행과 일치해야 합니다.
 
-{% include requirement/MUST id="general-pagination-use-iterators" %} expose paginated collections using an iterator or cursor pattern if async iterators aren't a built-in feature of your language.
+{% include requirement/MUST id="general-pagination-use-iterators" %} 비동기 반복기가 해당 언어의 기본 기능이 아닌 경우, 반복기 또는 커서 패턴을 사용하여 페이지가 매겨진 컬렉션을 노출하십시오.
 
-{% include requirement/MUST id="general-pagination-expose-lists-equally" %} expose non-paginated list endpoints identically to paginated list endpoints. Users shouldn't need to appreciate the difference.
+{% include requirement/MUST id="general-pagination-expose-lists-equally" %} 페이지가 매겨지지 않은 목록 끝점을 페이지가 매겨진 목록 끝점과 동일하게 노출하십시오. 사용자는 그 차이를 인식할 필요가 없습니다.
 
-{% include requirement/MUST id="general-pagination-use-distinct-types" %} use distinct types for entities in a list endpoint and an entity returned from a get endpoint if these are different types, and otherwise you must use the same types in these situations.
+{% include requirement/MUST id="general-pagination-use-distinct-types" %} 목록 끝점의 엔터티와 가져오기(get) 끝점에서 반환된 엔터티가 서로 다른 유형인 경우 고유한 유형을 사용하고, 그렇지 않으면 이러한 상황에서 동일한 유형을 사용해야 합니다.
 
-{% include important.html content="Services should refrain from having a difference between the type of a particular entity as it exists in a list versus the result of a GET request for that individual item as it makes the client library's surface area simpler." %}
+{% include important.html content="서비스는 목록에 존재하는 특정 엔티티 형식과 해당 개별 항목에 대한 GET 요청의 결과 간의 차이가 발생하지 않도록 해야 하는데, 이는 클라이언트 라이브러리의 노출 영역을 더욱 단순하게 만들기 때문입니다." %}
 
-{% include requirement/MUSTNOT id="general-pagination-expose-individual-items" %} expose an iterator over each individual item if getting each item requires a corresponding GET request to the service. One GET per item is often too expensive and so not an action we want to take on behalf of users.
+{% include requirement/MUSTNOT id="general-pagination-expose-individual-items" %} 각 항목을 가져오려면 해당 GET 요청이 서비스에 필요한 경우 각 개별 항목에 대해 반복기를 노출하지 마십시오. 항목당 하나의 GET는 너무 비싸기 때문에 사용자를 대신하여 수행할 작업이 아닙니다.
 
-{% include requirement/MUSTNOT id="general-pagination-no-arrays" %} expose an API to get a paginated collection into an array. This is a dangerous capability for services which may return many pages.
+{% include requirement/MUSTNOT id="general-pagination-no-arrays" %} 페이지가 매겨진 컬렉션을 배열로 가져오기 위해 API를 노출하지 마십시오. 이는 여러 페이지를 반환할 수 있는 서비스에 위험한 기능입니다.
 
-{% include requirement/MUST id="general-pagination-expose-paging-apis" %} expose paging APIs when iterating over a collection. Paging APIs must accept a continuation token (from a prior run) and a maximum number of items to return, and must return a continuation token as part of the response so that the iterator may continue, potentially on a different machine.
+{% include requirement/MUST id="general-pagination-expose-paging-apis" %} 컬렉션을 반복할 때 페이징 API를 노출하십시오. 페이징 API는 (이전 실행에서 반환할) 연속 토큰과 최대 항목 수를 수락해야 하며, 반복기가 잠재적으로 다른 시스템에서 계속될 수 있도록 응답의 일부로 연속 토큰을 반환해야 합니다.
 
-## Long running operations
+## 장기 실행 작업
 
-Long-running operations are operations which consist of an initial request to start the operation followed by polling to determine when the operation has completed or failed. Long-running operations in Azure tend to follow the [REST API guidelines for Long-running Operations][rest-lro], but there are exceptions.
+장기 실행 작업은 작업을 시작하기 위한 초기 요청과 작업이 완료되었는지 또는 실패했는지 여부를 확인하기 위한 폴링에 이은 작업으로 구성됩니다. Azure의 장기 실행 작업은 [장기 실행 작업에 대한 REST API 지침][rest-lro]을 따르는 경향이 있지만 예외가 있습니다. 
 
-{% include requirement/MUST id="general-lro-expose-poller" %} represent long-running operations with some object that encapsulates the polling and the operation status. This object, called a *poller*, must provide APIs for:
+{% include requirement/MUST id="general-lro-expose-poller" %} 폴링 및 작업 상태를 캡슐화하는 일부 객체로 장기 실행 작업을 나타내십시오. *poller*라고 하는 이 객체는 다음에 대한 API를 제공해야 합니다:
 
-1. querying the current operation state (either asynchronously, which may consult the service, or synchronously which must not)
-2. requesting an asynchronous notification when the operation has completed
-3. cancelling the operation if cancellation is supported by the service
-4. registering disinterest in the operation so polling stops
-5. triggering a poll operation manually (automatic polling must be disabled)
-6. progress reporting (if supported by the service)
+1. 현재 작업 상태 쿼리 (서비스를 참조할 수 있는 비동기식 또는 동기화해서는 안 되는 비동기식)
+2. 작업이 완료되었을 때 비동기 알림 요청
+3. 서비스에서 취소를 지원하는 경우 작업 취소
+4. 폴링이 중지되도록 작업에 무관심 등록
+5. 수동으로 폴링 작업 트리거 (자동 폴링을 비활성화해야 함)
+6. 진행 상황 보고 (서비스에서 지원하는 경우)
 
-{% include requirement/MUST id="general-lro-polling-config" %} support the following polling configuration options:
+{% include requirement/MUST id="general-lro-polling-config" %} 다음 폴링 구성 옵션을 지원하십시오:
 
 * `pollInterval`
 
-Polling configuration may be used only in the absence of relevant retry-after headers from service, and otherwise should be ignored.
+폴링 구성은 서비스에서 관련 재시도 후 헤더가 없는 경우에만 사용할 수 있으며, 그렇지 않은 경우 무시해야 합니다.
 
-{% include requirement/MUST id="general-lro-prefix" %} prefix method names which return a poller with either `begin` or `start`.  Language-specific guidelines will dictate which verb to use.
+{% include requirement/MUST id="general-lro-prefix" %} `begin` 또는 `start`를 사용하여 폴러를 반환하는 접두사 메서드 이름을 지정하십시오. 언어별 지침에 따라 사용할 동사가 지정됩니다.
 
-{% include requirement/MUST id="general-lro-continuation" %} provide a way to instantiate a poller with the serialized state of another poller to begin where it left off, for example by passing the state as a parameter to the same method which started the operation, or by directly instantiating a poller with that state.
+{% include requirement/MUST id="general-lro-continuation" %} 다른 폴러의 직렬화된 상태로 폴러를 인스턴스화하는 방법을 제공하십시오. 예를 들어 상태를 작업을 시작한 동일한 메소드에 매개변수로 전달하거나 해당 상태로 폴러를 직접 인스턴스화하여 중단된 위치에서 시작합니다.
 
-{% include requirement/MUSTNOT id="general-lro-cancellation" %} cancel the long-running operation when cancellation is requested via a cancellation token. The cancellation token is cancelling the polling operation and should not have any effect on the service.
+{% include requirement/MUSTNOT id="general-lro-cancellation" %} 취소 토큰을 통해 취소를 요청한 경우 장기 실행 작업을 취소하지 마십시오. 취소 토큰이 폴링 작업을 취소하고 있으므로 서비스에 영향을 미치지 않아야 합니다.
 
-{% include requirement/MUST id="general-lro-logging" %} log polling status at the `Info` level (including time to next retry)
+{% include requirement/MUST id="general-lro-logging" %} `Info` 수준에서 폴링 상태를 기록하십시오(다음 재시도 시간 포함). 
 
-{% include requirement/MUST id="general-lro-progress-reporting" %} expose a progress reporting mechanism to the consumer if the service reports progress as part of the polling operation.  Language-dependent guidelines will present additional guidance on how to expose progress reporting in this case.
+{% include requirement/MUST id="general-lro-progress-reporting" %} 서비스가 폴링 작업의 일부로 진행 상황을 보고하는 경우, 진행률 보고 메커니즘을 소비자에게 노출하십시오. 언어 의존적 지침은 이 경우에 진행 상황 보고를 노출하는 방법에 대한 추가 지침을 제시합니다.
 
-## Support for non-HTTP protocols
+## HTTP가 아닌 프로토콜 지원
 
-Most Azure services expose a RESTful API over HTTPS.  However, a few services use other protocols, such as [AMQP](https://www.amqp.org/), [MQTT](http://mqtt.org/), or [WebRTC](https://webrtc.org/). In these cases, the operation of the protocol can be split into two phases:
+대부분의 Azure 서비스는 HTTPS를 통해 RESTful API를 노출합니다. 그러나 일부 서비스는 [AMQP](https://www.amqp.org/), [MQTT](http://mqtt.org/), 또는 [WebRTC](https://webrtc.org/)와 같은 다른 프로토콜을 사용합니다. 이러한 경우 프로토콜 작동은 두 단계로 나눌 수 있습니다:
 
-* Per-connection (surrounding when the connection is initiated and terminated)
-* Per-operation (surrounding when an operation is sent through the open connection)
+* 연결별(per-connection, 연결 시작하고 종료될 때를 둘러쌈)
+* 작업별(per-operation, 열린 연결을 통해 작업이 전송될 때를 둘러쌈)
 
-The policies that are added to a HTTP request/response (authentication, unique request ID, telemetry, distributed tracing, and logging) are still valid on both a per-connection and per-operation basis.  However, the methods by which these policies are implemented are protocol dependent.
+HTTP 요청/응답에 추가된 정책(인증, 고유한 요청 ID, 원격 측정, 분산 추적 및 로깅)은 여전히 연결별 및 작업별로 모두 유효합니다. 그러나 이러한 정책을 구현하는 방법은 프로토콜에 따라 다릅니다.
 
-{% include requirement/MUST id="general-proto-policies" %} implement as many of the policies as possible on a per-connection and per-operation basis.
+{% include requirement/MUST id="general-proto-policies" %} 연결 및 작업별로 가능한 한 많은 정책을 구현하십시오.
 
-For example, MQTT over WebSockets provides the ability to add headers during the initiation of the WebSockets connection, so this is a good place to add authentication, telemetry, and distributed tracing policies.  However, MQTT has no metadata (the equivalent of HTTP headers), so per-operation policies are not possible.  AMQP, by contract, does have per-operation metadata.  Unique request ID, and distributed tracing headers can be provided on a per-operation basis with AMQP.
+예를 들어 WebSockets를 통한 MQTT는 WebSockets 연결을 시작하는 동안 헤더를 추가할 수 있는 기능을 제공하므로, 인증, 원격 측정 및 분산 추적 정책을 추가하기에 좋습니다. 그러나 MQTT에는 (HTTP 헤더와 동일한) 메타데이터가 없으므로 작업별 정책이 불가능합니다.  AMQP는 계약에 따라 작업별 메타데이터를 가지고 있습니다. AMQP를 사용하여 작업별로 고유 요청 ID 및 분산 추적 헤더를 제공할 수 있습니다.
 
-{% include requirement/MUST id="general-proto-adparch" %} consult the [Architecture Board] on policy decisions for non-HTTP protocols.  Implementation of all policies is expected.  If the protocol cannot support a policy, obtain an exception from the [Architecture Board].
+{% include requirement/MUST id="general-proto-adparch" %} HTTP가 아닌 프로토콜에 대한 정책 결정에 대해서는 [Architecture Board]에 문의하십시오. 모든 정책의 구현이 기대됩니다. 프로토콜이 정책을 지원할 수 없는 경우 [Architecture Board]에서 예외를 얻습니다.
 
-{% include requirement/MUST id="general-proto-config" %} use the global configuration established in the Azure Core library to configure policies for non-HTTP protocols.  Consumers don't necessarily know what protocol is used by the client library.  They will expect the client library to honor global configuration that they have established for the entire Azure SDK.
+{% include requirement/MUST id="general-proto-config" %} Azure Core 라이브러리에 설정된 전역 구성을 사용하여 HTTP가 아닌 프로토콜에 대한 정책을 구성하십시오.  소비자는 클라이언트 라이브러리에서 어떤 프로토콜을 사용하는지 반드시 알 필요는 없습니다. 이들은 클라이언트 라이브러리가 전체 Azure SDK에 대해 설정한 전역 구성을 준수할 것으로 예상합니다.
 
 {% include refs.md %}
