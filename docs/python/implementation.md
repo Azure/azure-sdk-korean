@@ -139,79 +139,79 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 - Logger 이름: `azure.someservice`
 - Child 로거: `azure.someservice.achild`
 
-These naming rules allow the consumer to enable logging for all Azure libraries, a specific client library, or a subset of a client library.
+이 규칙을 통해 소비자는 모든 Azure 라이브러리, 특정 클라이언트 라이브러리, 혹은 클라이언트의 하위 집합에 대한 로깅을 사용할 수 있습니다.
 
-{% include requirement/MUST id="python-logging-error" %} use the `ERROR` logging level for failures where it's unlikely the application will recover (for example, out of memory).
+{% include requirement/MUST id="python-logging-error" %} 어플리케이션이 복구될 가능성이 낮을 경우(예: 메모리부족) `ERROR` 로깅 수준을 사용해야 합니다.
 
-{% include requirement/MUST id="python-logging-warn" %} use the `WARNING` logging level when a function fails to perform its intended task. The function should also raise an exception.
+{% include requirement/MUST id="python-logging-warn" %} 함수가 의도된 작업을 수행하지 못한 경우 `WARNING` 로깅 수준을 사용하십시오. 함수는 예외를 발생시켜야합니다.
 
-Don't include occurrences of self-healing events (for example, when a request will be automatically retried).
+자동 복구 이벤트 발생을 포함하지 마십시오(예: 요청이 자동으로 다시 시작되는 경우).
 
-{% include requirement/MUST id="python-logging-info" %} use the `INFO` logging level when a function operates normally.
+{% include requirement/MUST id="python-logging-info" %} 함수가 정상적으로 작동될 시 `INFO` 로깅 수준을 사용하십시오.
 
-{% include requirement/MUST id="python-logging-debug" %} use the `DEBUG` logging level for detailed trouble shooting scenarios.
+{% include requirement/MUST id="python-logging-debug" %} 자세한 문제 해결 시나리오는 `DEBUG` 로깅 수준을 사용하십시오.
 
-The `DEBUG` logging level is intended for developers or system administrators to diagnose specific failures.
+`DEBUG` 로깅 수준을 개발자 또는 시스템 관리자가 특정 오류를 진단하기 위한 것입니다.
 
-{% include requirement/MUSTNOT id="python-logging-sensitive-info" %} send sensitive information in log levels other than `DEBUG`.  For example, redact or remove account keys when logging headers.
+{% include requirement/MUSTNOT id="python-logging-sensitive-info" %} `DEBUG` 이외의 로그 수준에서 중요한 정보를 보내지 말아야 합니다. 예시: 헤더를 로깅할 때 계정키를 수정 혹은 삭제합니다.
 
-{% include requirement/MUST id="python-logging-request" %} log the request line, response line, and headers for an outgoing request as an `INFO` message.
+{% include requirement/MUST id="python-logging-request" %} 발신 요청에 대한 요청 라인, 응답 라인 및 헤더를 'INFO' 메시지로 기록해야 합니다.
 
-{% include requirement/MUST id="python-logging-cancellation" %} log an `INFO` message, if a service call is canceled.
+{% include requirement/MUST id="python-logging-cancellation" %} 서비스 호출이 취소되었을 경우 `INFO` 메세지를 기록해야 합니다.
 
-{% include requirement/MUST id="python-logging-exceptions" %} log exceptions thrown as a `WARNING` level message. If the log level set to `DEBUG`, append stack trace information to the message.
+{% include requirement/MUST id="python-logging-exceptions" %} `WARNING` 수준 메시지로 Throw된 예외를 기록해야 합니다. 만약 `DEBUG`로 로그 레벨이 설정되어 있다면, 스택 추적 정보를 메시지에 추가합니다.
 
-You can determine the logging level for a given logger by calling [`logging.Logger.isEnabledFor`](https://docs.python.org/3/library/logging.html#logging.Logger.isEnabledFor).
+[`logging.Logger.isEnabledFor`](https://docs.python.org/3/library/logging.html#logging.Logger.isEnabledFor)를 호출하여 주어진 로거에 대한 로깅 레벨을 결정할 수 있습니다.
 
-#### Distributed tracing
+#### 분산 추적
 
-{% include requirement/MUST id="python-tracing-span-per-method" %} create a new trace span for each library method invocation. The easiest way to do so is by adding the distributed tracing decorator from `azure.core.tracing`.
+{% include requirement/MUST id="python-tracing-span-per-method" %} 각 라이브러리 메서드 호출에 대해서 새 추적 범위를 만들어야 합니다. 가장 쉬운 방법은 `azure.core.tracing`의 분산 트레이싱 데코레이터를 추가하는 것입니다.
 
-{% include requirement/MUST id="python-tracing-span-name" %} use `<package name>/<method name>` as the name of the span.
+{% include requirement/MUST id="python-tracing-span-name" %} 스팬의 이름으로 `<package name>/<method name>`를 사용해야합니다.
 
-{% include requirement/MUST id="python-tracing-span-per-call" %} create a new span for each outgoing network call. If using the HTTP pipeline, the new span is created for you.
+{% include requirement/MUST id="python-tracing-span-per-call" %} 나가는 네트워크 호출마다 새 스팬을 만들어야 합니다. HTTP 파이프라인을 사용한다면 새로운 스팬이 생성됩니다.
 
-{% include requirement/MUST id="python-tracing-propagate" %} propagate tracing context on each outgoing service request.
+{% include requirement/MUST id="python-tracing-propagate" %} 나가는 서비스 요청마다 추적 컨텍스트를 전파해야 합니다.
 
-#### Telemetry
+#### 원격 분석
 
-Client library usage telemetry is used by service teams (not consumers) to monitor what SDK language, client library version, and language/platform info a client is using to call into their service. Clients can prepend additional information indicating the name and version of the client application.
+클라이언트 라이브러리 사용 원격 측정 기능은 소비자가 아닌 서비스 팀에서 클라이언트가 서비스에 호출하는 데 사용되는 SDK 언어, 클라이언트 라이브러리 버전 및 언어/플랫폼 정보를 모니터링하는 데 사용됩니다. 클라이언트는 클라이언트 응용 프로그램의 이름과 버전을 나타내는 정보를 추가할 수 있습니다.
 
-{% include requirement/MUST id="python-http-telemetry-useragent" %} send telemetry information in the [User-Agent header] using the following format:
+{% include requirement/MUST id="python-http-telemetry-useragent" %} 다음 방식을 사용하여 [User-Agent header]로 원격 측정 정보 전송하십시오:
 
 ```
 [<application_id> ]azsdk-python-<package_name>/<package_version> <platform_info>
 ```
 
-- `<application_id>`: optional application-specific string. May contain a slash, but must not contain a space. The string is supplied by the user of the client library, e.g. "AzCopy/10.0.4-Preview"
-- `<package_name>`: client library (distribution) package name as it appears to the developer, replacing slashes with dashes and removing the Azure indicator.  For example, "azure-keyvault-secrets" would specify "azsdk-python-keyvault-secrets".
-- `<package_version>`: the version of the package. Note: this is not the version of the service
-- `<platform_info>`: information about the currently executing language runtime and OS, e.g. "Python/3.8.4 (Windows-10-10.0.19041-SP0)"
+- `<application_id>`: 선택적 응용 프로그램별 문자열입니다. 슬래시를 포함할 수 있지만 공백을 포함할 수 없습니다. 이 문자열은 클라이언트 라이브러리의 사용자에 의해 제공됩니다(예: "AzCopy/10.0.4-Preview").
+- `<package_name>`: 슬래시를 대시로 바꾸고 Azure 표시기를 제거하여 개발자에게 표시되는 클라이언트 라이브러리(배포) 패키지 이름입니다. 예를 들어 "azure-keyvault-secrets"는 "azsdk-python-keyvault-secrets"를 지정합니다.
+- `<package_version>`: 패키지의 버전입니다. 메모: 이것은 서비스의 버전이 아닙니다.
+- `<platform_info>`: 현재 실행 중인 언어 런타임 및 OS에 대한 정보(예: "Python/3.8.4 (Windows-10.0.19041-SP0)"
 
-For example, if we re-wrote `AzCopy` in Python using the Azure Blob Storage client library, we may end up with the following user-agent strings:
+예를 들어 Azure Blob Storage 클라이언트 라이브러리를 사용하여 파이썬에서 'AzCopy'를 다시 작성하면 다음과 같은 사용자-에이전트 문자열이 생성될 수 있습니다:
 
 - (Python) `AzCopy/10.0.4-Preview azsdk-python-storage/4.0.0 Python/3.7.3 (Ubuntu; Linux x86_64; rv:34.0)`
 
-The `azure.core.pipeline.policies.UserAgentPolicy` will provide this functionality if added to the HttpPipeline.
+`azure.core.pipeline.policies.UserAgentPolicy`는 HttpPipeline에 추가되는 경우 기능을 제공합니다.
 
-{% include requirement/SHOULD id="python-azurecore-http-telemetry-dynamic" %} send additional (dynamic) telemetry information as a semi-colon separated set of key-value types in the `X-MS-AZSDK-Telemetry` header.  For example:
+{% include requirement/SHOULD id="python-azurecore-http-telemetry-dynamic" %} 추가 (동적) 원격측정 정보를 'X-MS-AZSDK-원격측정' 헤더에서 키-값 유형의 세미콜론으로 구분된 집합으로 전송합니다. 예를 들어:
 
 ```http
 X-MS-AZSDK-Telemetry: class=BlobClient;method=DownloadFile;blobType=Block
 ```
 
-The content of the header is a semi-colon key=value list.  The following keys have specific meaning:
+헤더의 내용은 세미콜론 키=값 목록입니다. 다음의 키는 특정한 의미를 가지고 있습니다:
 
-* `class` is the name of the type within the client library that the consumer called to trigger the network operation.
-* `method` is the name of the method within the client library type that the consumer called to trigger the network operation.
+* `class`는 소비자가 네트워크 작업을 트리거하기 위해 호출한 클라이언트 라이브러리 내 유형의 이름입니다.
+* `method`는 소비자가 네트워크 작업을 트리거하기 위해 호출한 클라이언트 라이브러리 유형 내의 메서드 이름입니다.
 
-Any other keys that are used should be common across all client libraries for a specific service.  **DO NOT** include personally identifiable information (even encoded) in this header.  Services need to configure log gathering to capture the `X-MS-SDK-Telemetry` header in such a way that it can be queried through normal analytics systems.
+사용되는 다른 모든 키는 특정 서비스에 대한 모든 클라이언트 라이브러리에서 공통적이어야 합니다. 이 헤더에 개인 식별 정보(인코딩된 경우도 포함)를 **포함하지 않아야**합니다. 서비스는 일반 분석 시스템을 통해 쿼리할 수 있는 방식으로 'X-MS-SDK-Telemetry' 헤더를 캡처할 수 있게 로그 수집을 구성해야 합니다.
 
-##### Considerations for clients not using the UserAgentPolicy from azure-core
+##### azure-core에서 UserAgentPolicy를 사용하지 않는 클라이언트에 대한 고려 사항
 
-{% include requirement/MUST id="python-azurecore-http-telemetry-appid" %} allow the consumer of the library to set the application ID by passing in an `application_id` parameter to the service client constructor.  This allows the consumer to obtain cross-service telemetry for their app.
+{% include requirement/MUST id="python-azurecore-http-telemetry-appid" %} 라이브러리 소비자가 'application_id' 매개변수를 서비스 클라이언트 생성자에게 전달하여 애플리케이션 ID를 설정하도록 허용해야 합니다. 이를 통해 소비자는 앱에 대한 교차 서비스 원격 분석을 얻을 수 있습니다.
 
-{% include requirement/MUST id="python-azurecore-http-telemetry-appid-length" %} enforce that the application ID is no more than 24 characters in length.  Shorter application IDs allows service teams to include diagnostic information in the "platform information" section of the user agent, while still allowing the consumer to obtain telemetry information for their own application.
+{% include requirement/MUST id="python-azurecore-http-telemetry-appid-length" %} 응용 프로그램 ID의 길이는 24자를 넘지 않도록 해야 합니다. 짧은 애플리케이션 ID는 서비스 팀이 사용자 에이전트의 "플랫폼 정보" 섹션에 진단 정보를 포함시킬 수 있게하며, 소비자는 여전히 자신의 애플리케이션에 대한 원격 측정 정보를 얻을 수 있습니다.
 
 ## Testing
 
@@ -315,19 +315,19 @@ class ResponseHook(Protocol):
 
 ## 파이썬 언어와 코드스타일
 
-{% include requirement/MUST id="python-codestyle-pep8" %} follow the general guidelines in [PEP8](https://www.python.org/dev/peps/pep-0008/) unless explicitly overridden in this document.
+{% include requirement/MUST id="python-codestyle-pep8" %} 본 문서에서 재정의되지 않는 한 [PEP8](https://www.python.org/dev/peps/pep-0008/)의 일반 지침을 따르십시오.
 
-{% include requirement/MUSTNOT id="python-codestyle-idiomatic" %} "borrow" coding paradigms from other languages.
+{% include requirement/MUSTNOT id="python-codestyle-idiomatic" %} 다른 언어의 코딩 패러다임을 빌려서는 안됩니다.
 
-For example, no matter how common Reactive programming is in the Java community, it's still unfamiliar for most Python developers.
+예를 들어 Java 커뮤니티에서 Reactive 프로그래밍이 얼마나 일반적인지에 상관없이 대부분의 Python 개발자에게는 여전히 익숙하지 않습니다.
 
-{% include requirement/MUST id="python-codestyle-consistency" %} favor consistency with other Python components over other libraries for the same service.
+{% include requirement/MUST id="python-codestyle-consistency" %} 동일한 서비스를 위해서는 다른 라이브러리보다 다른 파이썬 구성 요소와의 일관성을 선호해야 합니다.
 
-It's more likely that a developer will use many different libraries using the same language than a developer will use the same service from many different languages.
+개발자가 여러 언어의 동일한 서비스를 사용하는 것보다 개발자가 동일한 언어의 많은 다른 라이브러리를 사용할 가능성이 더 높습니다.
 
 ### Error handling
 
-{% include requirement/MUST id="python-errors-use-chaining" %} use exception chaining to include the original source of the error when catching and raising new exceptions.
+{% include requirement/MUST id="python-errors-use-chaining" %} 새 예외를 수집 및 생성할 때 오류의 원래 소스를 포함하려면 예외 체인을 사용해야 합니다.
 
 ```python
 # Yes:
@@ -352,7 +352,7 @@ if not success:
 
 ### Naming conventions
 
-{% include requirement/MUST id="python-codestyle-vars-naming" %} use snake_case for variable, function, and method names:
+{% include requirement/MUST id="python-codestyle-vars-naming" %} 변수, 함수 및 메서드 이름에 snake_case를 사용해야 합니다:
 
 ```python
 # Yes:
@@ -372,7 +372,7 @@ def DoSomething():
     ...
 ```
 
-{% include requirement/MUST id="python-codestyle-type-naming" %} use Pascal case for types:
+{% include requirement/MUST id="python-codestyle-type-naming" %} 다음 유형에 대해 파스칼 케이스를 사용해야 합니다:
 
 ```python
 # Yes:
@@ -388,7 +388,7 @@ class camelCasedTypeName(object):
     pass
 ```
 
-{% include requirement/MUST id="python-codestyle-const-naming" %} use ALL CAPS for constants:
+{% include requirement/MUST id="python-codestyle-const-naming" %} 상수에 모두 대문자를 사용해야 합니다:
 
 ```python
 # Yes:
@@ -401,15 +401,15 @@ max_size = 4711
 MaxSize = 4711
 ```
 
-{% include requirement/MUST id="python-codestyle-module-naming" %} use snake_case for module names.
+{% include requirement/MUST id="python-codestyle-module-naming" %} 모듈 이름에 snake_case를 사용해야 합니다.
 
 ### Method signatures
 
-{% include requirement/MUSTNOT id="python-codestyle-static-methods" %} use static methods ([`staticmethod`](https://docs.python.org/3/library/functions.html#staticmethod)). Prefer module level functions instead.
+{% include requirement/MUSTNOT id="python-codestyle-static-methods" %} 정적 메서드 ([`staticmethod`](https://docs.python.org/3/library/functions.html#staticmethod))를 사용해서는 안됩니다. 대신 모듈 레벨 함수를 사용하는 것을 추천합니다.
 
-Static methods are rare and usually forced by other libraries.
+정적 메서드는 드물며 일반적으로 다른 라이브러리에 의해 강제됩니다.
 
-{% include requirement/MUSTNOT id="python-codestyle-properties" %} use simple getter and setter functions. Use properties instead.
+{% include requirement/MUSTNOT id="python-codestyle-properties" %} 게터 및 세터 함수를 사용하면 안 됩니다. 대신 속성을 사용할 수 있습니다.
 
 ```python
 # Yes
@@ -428,11 +428,11 @@ class BadThing(object):
         return self._something
 ```
 
-{% include requirement/SHOULDNOT id="python-codestyle-long-args" %} have methods that require more than five positional parameters. Optional/flag parameters can be accepted using keyword-only arguments, or `**kwargs`.
+{% include requirement/SHOULDNOT id="python-codestyle-long-args" %} 5개 이상의 위치 매개 변수를 필요로 하는 메서드는 사용할 수 없습니다. 키워드 전용 인수 또는 `**kwargs`를 사용하여 선택적/플래그 매개 변수를 사용할 수 있습니다.
 
-See TODO: insert link for general guidance on positional vs. optional parameters here.
+위치 vs 선택적 매개변수에 대한 지침은 TODO: 링크를 참조하십시오.
 
-{% include requirement/MUST id="python-codestyle-optional-args" %} use keyword-only arguments for optional or less-often-used arguments for modules that only need to support Python 3.
+{% include requirement/MUST id="python-codestyle-optional-args" %} Python 3만 지원해야 하는 모듈의 경우 선택적 또는 덜 자주 사용되는 인수에는 키워드 전용 인수를 사용해야 합니다.
 
 ```python
 # Yes
@@ -441,7 +441,7 @@ def foo(a, b, *, c, d=None):
     ...
 ```
 
-{% include requirement/MUST id="python-codestyle-kwargs" %} use keyword-only arguments for arguments that have no obvious ordering.
+{% include requirement/MUST id="python-codestyle-kwargs" %} 명확한 순서가 없는 인수에는 키워드 전용 인수를 사용해야 합니다.
 
 ```python
 # Yes - `source` and `dest` have logical order, `recurse` and `overwrite` do not.
@@ -452,7 +452,7 @@ def copy(source, dest, *, recurse=False, overwrite=False) ...
 def copy(source, dest, recurse=False, overwrite=False) ...
 ```
 
-{% include requirement/MUST id="python-codestyle-positional-params" %} specify the parameter name when calling methods with more than two required positional parameters.
+{% include requirement/MUST id="python-codestyle-positional-params" %} 필요한 위치 매개 변수가 세 개 이상인 메서드를 호출할 때 매개 변수 이름을 지정해야 합니다.
 
 ```python
 def foo(a, b, c):
@@ -472,7 +472,7 @@ bar(e=3, d=4)
 foo(1, 2, 3)
 ```
 
-{% include requirement/MUST id="python-codestyle-optional-param-calling" %} specify the parameter name for optional parameters when calling functions.
+{% include requirement/MUST id="python-codestyle-optional-param-calling" %} 함수를 호출할 때 선택적 파라미터의 파라미터 이름을 지정해야 합니다.
 
 ```python
 def foo(a, b=1, c=None):
@@ -488,13 +488,13 @@ foo(1, 2, 3)
 
 ### Public vs "private"
 
-{% include requirement/MUST id="python-codestyle-private-api" %} use a single leading underscore to indicate that a name isn't part of the public API.  Non-public APIs aren't guaranteed to be stable.
+{% include requirement/MUST id="python-codestyle-private-api" %} 이름이 퍼블릭 API의 일부가 아님을 나타내려면 선행 밑줄을 하나 사용해야 합니다. 퍼블릭이 아닌 API는 안정성이 보장되지 않습니다.
 
-{% include requirement/MUSTNOT id="python-codestyle-double-underscore" %} use leading double underscore prefixed method names unless name clashes in the inheritance hierarchy are likely.  Name clashes are rare.
+{% include requirement/MUSTNOT id="python-codestyle-double-underscore" %} 계층 구조에서 이름 충돌이 발생할 가능성이 있는 경우가 아니라면 선행 이중 밑줄 접두사 메서드 이름을 사용하면 안됩니다. 이름 충돌 발생은 드뭅니다.
 
-{% include requirement/MUST id="python-codestyle-public-api" %} add public methods and types to the module's `__all__` attribute.
+{% include requirement/MUST id="python-codestyle-public-api" %} 모듈의 `__all__` 속성에 공용 메서드와 형식을 추가해야 합니다.
 
-{% include requirement/MUST id="python-codestyle-interal-module" %} use a leading underscore for internal modules. You **may** omit a leading underscore if the module is a submodule of an internal module.
+{% include requirement/MUST id="python-codestyle-interal-module" %} 내부 모듈에는 선행 밑줄을 사용해야 합니다. 모듈이 내부 모듈의 하위 모듈인 경우 선행 밑줄을 **생략**할 수 있습니다.
 
 ```python
 # Yes:
@@ -509,25 +509,25 @@ azure.exampleservice.some_internal_module
 
 ### Types (or not)
 
-{% include requirement/MUST id="python-codestyle-structural-subtyping" %} prefer structural subtyping and protocols over explicit type checks.
+{% include requirement/MUST id="python-codestyle-structural-subtyping" %} 명시적 유형 검사보다 구조 하위 유형 지정 및 프로토콜을 선호해야 합니다.
 
-{% include requirement/MUST id="python-codestyle-abstract-collections" %} derive from the abstract collections base classes `collections.abc` (or `collections` for Python 2.7) to provide custom mapping types.
+{% include requirement/MUST id="python-codestyle-abstract-collections" %} 사용자 정의 매핑 유형을 제공하려면 추상 컬렉션 기본 클래스 'collections.abc'(또는 Python 2.7의 'collections')에서 파생되어야 합니다.
 
-{% include requirement/MUST id="python-codestyle-pep484" %} provide type hints [PEP484](https://www.python.org/dev/peps/pep-0484/) for publicly documented classes and functions.
+{% include requirement/MUST id="python-codestyle-pep484" %} 공개적으로 문서화된 클래스 및 함수에 대한 유형 힌트 [PEP484](https://www.python.org/dev/peps/pep-0484/) 를 제공해야 합니다.
 
-- See the [suggested syntax for Python 2.7 and 2.7-3.x straddling code](https://www.python.org/dev/peps/pep-0484/#suggested-syntax-for-python-2-7-and-straddling-code) for guidance for Python 2.7 compatible code. Do not do this for code that is Python 3 specific (e.g. `async` clients.)
+- Python 2.7 호환 코드에 대한 지침은 [suggested syntax for Python 2.7 and 2.7-3.x straddling code](https://www.python.org/dev/peps/pep-0484/#suggested-syntax-for-python-2-7-and-straddling-code)에서 확인할 수 있습니다. 파이썬 3 전용(예: 'async' 클라이언트)에서는 사용해서는 안됩니다.
 
 ### Threading
 
-{% include requirement/MUST id="python-codestyle-thread-affinity" %} maintain thread affinity for user-provided callbacks unless explicitly documented to not do so.
+{% include requirement/MUST id="python-codestyle-thread-affinity" %} 사용자가 제공한 콜백에 대해 명시적으로 문서화되지 않은 경우 스레드 선호도를 유지해야 합니다.
 
-{% include requirement/MUST id="python-codestyle-document-thread-safety" %} explicitly include the fact that a method (function/class) is thread safe in its documentation.
+{% include requirement/MUST id="python-codestyle-document-thread-safety" %} 설명서에 메서드(함수/클래스)가 스레드 안전하다는 사실을 포함해야 합니다.
 
-Examples: [`asyncio.loop.call_soon_threadsafe`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.call_soon_threadsafe), [`queue`](https://docs.python.org/3/library/queue.html)
+예시: [`asyncio.loop.call_soon_threadsafe`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.call_soon_threadsafe), [`queue`](https://docs.python.org/3/library/queue.html)
 
-{% include requirement/SHOULD id="python-codestyle-use-executor" %} allow callers to pass in an [`Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance rather than defining your own thread or process management for parallelism.
+{% include requirement/SHOULD id="python-codestyle-use-executor" %} 호출자가 병렬 처리를 위해 자신만의 스레드 또는 프로세스 관리를 정의하지 않고 [`Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) 를 통과하도록 허용해야 합니다.
 
-You may do your own thread management if the thread isn't exposed to the caller in any way. For example, the `LROPoller` implementation uses a background poller thread.
+스레드가 호출자에게 노출되지 않은 경우 직접 스레드를 관리할 수 있습니다. 예를 들어 `LROPoller` 구현에서는 백그라운드 poller 스레드를 사용합니다.
 
 {% include refs.md %}
 {% include_relative refs.md %}
