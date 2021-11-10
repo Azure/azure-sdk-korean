@@ -9,13 +9,13 @@ entries:
         url: /general_introduction.html
       - title: 용어
         url: /general_terminology.html
-      - title: API Design (영문)
+      - title: API 디자인
         url: /general_design.html
       - title: Implementation (영문)
         url: /general_implementation.html
       - title: 설명서
         url: /general_documentation.html
-      - title: Azure Core (번역중)
+      - title: Azure Core
         url: /general_azurecore.html
       - title: 오픈소스 정책
         url: /policies_opensource.html

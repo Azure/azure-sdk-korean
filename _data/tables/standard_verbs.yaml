@@ -2,49 +2,49 @@
 entries:
   - Verb: create_\<noun>
     Parameters: key, item
-    Returns: Created item
-    Comments: Create new item. Fails if item already exists.
+    Returns: 생성된 item
+    Comments: 새로운 아이템 생성. 아이템이 이미 존재하면 실패.
   - Verb: upsert_\<noun>
     Parameters: key, item
     Returns: item
-    Comments: Create new item, or update existing item. Verb is primarily used in database-like services.
+    Comments: 새로운 아이템 생성, 혹은 존재하는 아이템 수정. 동사는 주로 데이터베이스와 같은 서비스에서 사용됨.
   - Verb: set_\<noun>
     Parameters: key, item
     Returns: item
-    Comments: Create new item, or update existing item. Verb is primarily used for dictionary-like properties of a service.
+    Comments: 새로운 아이템 생성, 혹은 존재하는 아이템 수정. 동사는 주로 서비스의 사전과 같은 속ㅊㅊ성에 사용됨.
   - Verb: update_\<noun>
     Parameters: key, partial item
     Returns: item
-    Comments: Fails if item doesn't exist.
+    Comments: 아이템이 존재하지 않으면 실패.
   - Verb: replace_\<noun>
-    Parameters: ey, item
+    Parameters: key, item
     Returns: item
-    Comments: Replaces an existing item. Fails if the item doesn't exist.
+    Comments: 존재하는 아이템 대체. 아이템이 존재하지 않으면 실패.
   - Verb: append_\<noun>
     Parameters: item
     Returns: item
-    Comments: Add item to a collection. Item will be added last.
+    Comments: 컬렉션에 아이템 추가. 아이템은 리스트의 마지막에 추가됨.
   - Verb: add_\<noun>
     Parameters: index, item
     Returns: item
-    Comments: Add item to a collection. Item will be added at the given index.
+    Comments: 컬렉션에 아이템 추가. 아이템은 주어진 인덱스에 추가됨.
   - Verb: get_\<noun>
     Parameters: key
     Returns: item
-    Comments: Raises an error if item doesn't exist.
+    Comments: 아이템이 존재하지 않으면 오류 발생.
   - Verb: list_\<noun>
     Parameters:
-    Returns: Pageable[Item]
-    Comments: Return an iterable of items. Returns iterable with no items if no items exist.
+    Returns: Pageable[item]
+    Comments: 반복 가능한(iterable) 아이템들. 아이템이 존재하지 않는 경우, 아이템이 없는 반복 가능한 객체(iterable) 반환.
   - Verb: \<noun>_exists
     Parameters: key
-    Returns: boolean`
-    Comments: Return `True` if the item exists. Must raise an error if the method failed to determine if the item exists (for example, the service returned an HTTP 503 response).
+    Returns: boolean
+    Comments: 아이템이 존재하는 경우 `True` 반환. 메서드가 아이템의 존재 여부를 결정하지 못한 경우(예시, 서비스에서 HTTP 503 응답을 반환한 경우) 오류를 발생시켜야 함.
   - Verb: delete_\<noun>
     Parameters: key
     Returns:
-    Comments: Delete an existing item. Must succeed even if item didn't exist.
+    Comments: 존재하는 아이템 삭제. 아이템이 존재하지 않더라도 성공해야 함.
   - Verb: remove_\<noun>
     Parameters: key
-    Returns: removed item
-    Comments: Remove a reference to an item from a collection. This method doesn't delete the actual item, only the reference.
+    Returns: 삭제된 item
+    Comments: 컬렉션에서 아이템의 참조를 삭제. 이 메서드는 실제 아이템을 삭제하지 않고, 오직 참조만 삭제.
