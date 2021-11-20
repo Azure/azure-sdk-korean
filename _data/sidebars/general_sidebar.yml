@@ -19,7 +19,7 @@ entries:
         url: /general_azurecore.html
       - title: 오픈소스 정책
         url: /policies_opensource.html
-  - title: .NET Guidelines
+  - title: .NET 가이드라인
     folderitems:
       - title: Design (영문)
         url: /dotnet_introduction.html
