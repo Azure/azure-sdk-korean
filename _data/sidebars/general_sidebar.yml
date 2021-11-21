@@ -100,7 +100,7 @@ entries:
         url: /android_design.html
       - title: Implementation (영문)
         url: /android_implementation.html
-  - title: iOS Guidelines
+  - title: iOS 가이드라인
     folderitems:
       - title: Design (영문)
         url: /ios_design.html
