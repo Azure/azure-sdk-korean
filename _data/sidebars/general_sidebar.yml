@@ -116,7 +116,7 @@ entries:
         url: /policies_repobranching.html
       - title: 파이프라인
         url: /policies_pipelines.html
-  - title: 정책
+  - title: Policies
     folderitems:
       - title: Review Process (영문)
         url: /policies_reviewprocess.html
