@@ -106,7 +106,7 @@ entries:
         url: /ios_design.html
       - title: Implementation (영문)
         url: /ios_implementation.html
-  - title: Github Repos
+  - title: 깃허브 리파지토리
     folderitems:
       - title: Guidelines Contributions (영문)
         url: /policies_adoption.html
