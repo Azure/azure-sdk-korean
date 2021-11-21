@@ -11,7 +11,6 @@ sidebar: general_sidebar
 ### 서비스 클라이언트
 
 #### Http 파이프라인
-
 <!-- Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services. -->
 
 <!-- translation by @hdddhdd -->
@@ -23,21 +22,18 @@ sidebar: general_sidebar
 
 HTTP 파이프라인은 HTTP기반의 Azure 서비스에 대한 연결을 지원하는 'azure-core'라이브러리의 구성요소입니다.
 
-
-
 <!-- {% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints. -->
 
-
-REST ENDPOINT로 요청을 보내기 위해서 http 파이프라인을 사용하십시오. 
+REST ENDPOINT로 요청을 보내기 위해서 HTTP 파이프라인을 사용하십시오. 
 
 <!-- translation by @hdddhdd -->
-{% include requirement/MUST id="python-network-http-pipeline" %}  REST endpoint로 요청을 보내기 위해서 [HTTP 파이프라인]을 사용하십시오.
+{% include requirement/MUST id="python-network-http-pipeline" %}  REST endpoint로 요청을 보내기 위해서 HTTP 파이프라인을 사용하십시오.
 
 <!-- {% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline: -->
 
 {% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음의 정책들을 포함해야 합니다. :
 
-- Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
+<!-- - Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
 - Headers (`azure.core.pipeline.policies.HeadersPolicy`)
 - Telemetry (`azure.core.pipeline.policies.UserAgentPolicy`)
 - Proxy (`azure.core.pipeline.policies.ProxyPolicy`)
@@ -45,7 +41,18 @@ REST ENDPOINT로 요청을 보내기 위해서 http 파이프라인을 사용하
 - Retry (`azure.core.pipeline.policies.RetryPolicy` and `azure.core.pipeline.policies.AsyncRetryPolicy`)
 - Credentials (e.g. `BearerTokenCredentialPolicy`, `AzureKeyCredentialPolicy`, etc)
 - Distributed tracing (`azure.core.pipeline.policies.DistributedTracingPolicy`)
-- Logging (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`)
+- Logging (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`) -->
+
+- 유일한 요청 아이디 (`azure.core.pipeline.policies.RequestIdPolicy`)
+- 헤더 (`azure.core.pipeline.policies.HeadersPolicy`)
+- 원격 측정(Telemetry) (`azure.core.pipeline.policies.UserAgentPolicy`)
+- 프록시 (`azure.core.pipeline.policies.ProxyPolicy`)
+- 내용 디코딩 (`azure.core.pipeline.policies.ContentDecodePolicy`)
+- 재시도 (`azure.core.pipeline.policies.RetryPolicy` and `azure.core.pipeline.policies.AsyncRetryPolicy`)
+- 자격 (e.g. `BearerTokenCredentialPolicy`, `AzureKeyCredentialPolicy`, etc)
+- 분산 추적 (`azure.core.pipeline.policies.DistributedTracingPolicy`)
+- 로깅 (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`)
+
 
 ```python
 
@@ -115,7 +122,14 @@ Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오.
 -->
 
 {% include requirement/MUST id="python-custom-policy-base-class" %}  네트워크 호출이 필요한 경우에는 [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy)을 파생시키십시오. 네크워크 호출이 필요하지 않은 경우에는 [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy).을 파생시키십시오.
+
+
 {% include requirement/MUST id="python-custom-policy-thread-safe" %} custom policies를 위해 스레드 안정성을 보장하십시오. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
+
+이의 타당한 결과는 당신이 정책 예시 자체 안에서라기 보다는 
+ context안의 어떤 per-request 또는 연결 bookkeeping data를 해야한다는 것이다.
+
+
 
 
 {% include requirement/MUST id="python-pipeline-document-policies" %} document any custom policies in your package. The documentation should make it clear how a user of your library is supposed to use the policy.
