@@ -111,10 +111,8 @@ class ExampleClient(object):
 
 <!-- {% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need. -->
 
-{% include requirement/MUST id="python-custom-policy-review" %} 
-Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오. 
+{% include requirement/MUST id="python-custom-policy-review" %} Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오. 
 필요에 맞게 변경 또는 매개변수를 지정할 수 있는 기존 정책이 이미 있을 수 있습니다.
-
 
 <!-- {% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not). 
 {% include requirement/MUST id="python-custom-policy-thread-safe" %} ensure thread-safety for custom policies. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
@@ -126,29 +124,23 @@ Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오.
 
 {% include requirement/MUST id="python-custom-policy-thread-safe" %} custom policies를 위해 스레드 안정성을 보장하십시오. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
 
-이의 타당한 결과는 당신이 정책 예시 자체 안에서라기 보다는 
- context안의 어떤 per-request 또는 연결 bookkeeping data를 해야한다는 것이다.
-
-
-
-
 {% include requirement/MUST id="python-pipeline-document-policies" %} document any custom policies in your package. The documentation should make it clear how a user of your library is supposed to use the policy.
 
 {% include requirement/MUST id="python-pipeline-policy-namespace" %} add the policies to the `azure.<package name>.pipeline.policies` namespace.
 
-#### Service Methods
+#### 서비스 방법
 
-##### Parameter validation
+##### 매개변수 유효성 검사
 
 {% include requirement/MUSTNOT id="python-client-parameter-validation" %} use `isinstance` to validate parameter value types other than for [built-in types](https://docs.python.org/3/library/stdtypes.html) (e.g. `str` etc). For other types, use [structural type checking].
 
-### Supporting types
+### 지원 유형
 
 {% include requirement/MUST id="python-models-repr" %} implement `__repr__` for model types. The representation **must** include the type name and any key properties (that is, properties that help identify the model instance).
 
 {% include requirement/MUST id="python-models-repr-length" %} truncate the output of `__repr__` after 1024 characters.
 
-##### Extensible enumerations
+##### 확장 가능한 열거
 
 Any Enums defined in the SDK should be interchangable with case-insensitive strings. This is achieved by using the `CaseInsensitiveEnumMeta` class defined in `azure-core`.
 
@@ -163,15 +155,15 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
     BAR = 'bar'
 ```
 
-### SDK Feature implementation
+### SDK 상징 구현
 
-#### Configuration
+#### 배치
 
 {% include requirement/MUST id="python-envvars-global" %} honor the following environment variables for global configuration settings:
 
 {% include tables/environment_variables.md %}
 
-#### Logging
+#### 로깅
 
 {% include requirement/MUST id="python-logging-usage" %} use Pythons standard [logging module](https://docs.python.org/3/library/logging.html).
 
@@ -209,7 +201,7 @@ The `DEBUG` logging level is intended for developers or system administrators to
 
 You can determine the logging level for a given logger by calling [`logging.Logger.isEnabledFor`](https://docs.python.org/3/library/logging.html#logging.Logger.isEnabledFor).
 
-#### Distributed tracing
+#### 분산 추적(Distributed tracing)
 
 {% include requirement/MUST id="python-tracing-span-per-method" %} create a new trace span for each library method invocation. The easiest way to do so is by adding the distributed tracing decorator from `azure.core.tracing`.
 
@@ -219,7 +211,7 @@ You can determine the logging level for a given logger by calling [`logging.Logg
 
 {% include requirement/MUST id="python-tracing-propagate" %} propagate tracing context on each outgoing service request.
 
-#### Telemetry
+#### 원격 추적(Telemetry)
 
 Client library usage telemetry is used by service teams (not consumers) to monitor what SDK language, client library version, and language/platform info a client is using to call into their service. Clients can prepend additional information indicating the name and version of the client application.
 
@@ -253,13 +245,14 @@ The content of the header is a semi-colon key=value list.  The following keys ha
 
 Any other keys that are used should be common across all client libraries for a specific service.  **DO NOT** include personally identifiable information (even encoded) in this header.  Services need to configure log gathering to capture the `X-MS-SDK-Telemetry` header in such a way that it can be queried through normal analytics systems.
 
-##### Considerations for clients not using the UserAgentPolicy from azure-core
+##### azure-core에서 UserAgentPolicy를 사용하지 않는 클라이언트에 대한 고려 사항
+
 
 {% include requirement/MUST id="python-azurecore-http-telemetry-appid" %} allow the consumer of the library to set the application ID by passing in an `application_id` parameter to the service client constructor.  This allows the consumer to obtain cross-service telemetry for their app.
 
 {% include requirement/MUST id="python-azurecore-http-telemetry-appid-length" %} enforce that the application ID is no more than 24 characters in length.  Shorter application IDs allows service teams to include diagnostic information in the "platform information" section of the user agent, while still allowing the consumer to obtain telemetry information for their own application.
 
-## Testing
+## 테스팅
 
 {% include requirement/MUST id="python-testing-pytest" %} use [pytest](https://docs.pytest.org/en/latest/) as the test framework.
 
