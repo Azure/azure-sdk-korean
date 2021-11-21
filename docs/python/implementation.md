@@ -1,22 +1,41 @@
 ---
-title: "Python Guidelines: Implementation"
+title: "Python 가이드라인: 구현"
 keywords: guidelines python
 permalink: python_implementation.html
 folder: python
 sidebar: general_sidebar
 ---
 
-## API implementation
+## API 구현
 
-### Service client
+### 서비스 클라이언트
 
 #### Http pipeline
 
-Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services.
+<!-- Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services. -->
 
-{% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints.
+<!-- translation by @hdddhdd -->
+클라이언트 라이브러리가 일반적으로 한 개 또는 그 이상의 HTTP 요청을 래핑하므로, 표준 네트워크 기능을 제공하는 것이 중요합니다. 
 
-{% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline:
+널리 이해된 것은 아니지만, 비동기 프로그래밍 기술은 탄력적인 웹서비스를 개발하는데 필수적입니다. 
+
+많은 개발자들은 기술을 사용하는 방법을 배울 때 쉬운 의미 때문에 동기식 방법을 선호합니다. 
+
+HTTP 파이프라인은 HTTP기반의 Azure 서비스에 대한 연결을 지원하는 'azure-core'라이브러리의 구성요소입니다.
+
+
+
+<!-- {% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints. -->
+
+
+REST ENDPOINT로 요청을 보내기 위해서 http 파이프라인을 사용하십시오. 
+
+<!-- translation by @hdddhdd -->
+{% include requirement/MUST id="python-network-http-pipeline" %}  REST endpoint로 요청을 보내기 위해서 [HTTP 파이프라인]을 사용하십시오.
+
+<!-- {% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline: -->
+
+{% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음의 정책들을 포함하십시오. :
 
 - Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
 - Headers (`azure.core.pipeline.policies.HeadersPolicy`)
