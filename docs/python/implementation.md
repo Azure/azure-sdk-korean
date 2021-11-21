@@ -10,7 +10,7 @@ sidebar: general_sidebar
 
 ### 서비스 클라이언트
 
-#### Http pipeline
+#### Http 파이프라인
 
 <!-- Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services. -->
 
@@ -35,7 +35,7 @@ REST ENDPOINT로 요청을 보내기 위해서 http 파이프라인을 사용하
 
 <!-- {% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline: -->
 
-{% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음의 정책들을 포함하십시오. :
+{% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음의 정책들을 포함해야 합니다. :
 
 - Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
 - Headers (`azure.core.pipeline.policies.HeadersPolicy`)
@@ -95,15 +95,28 @@ class ExampleClient(object):
 
 ##### Custom policies
 
-Some services may require custom policies to be implemented. For example, custom policies may implement fall back to secondary endpoints during retry, request signing, or other specialized authentication techniques.
+<!-- translation by @hdddhdd -->
+<!-- Some services may require custom policies to be implemented. For example, custom policies may implement fall back to secondary endpoints during retry, request signing, or other specialized authentication techniques. -->
+일부 서비스는 custom policies가 구현되도록 요청합니다. 예를 들어, custom policies는 재시도, 요청 서명 또는 다른 특수 인증 기술을 실행하는 도중에 부차적인 endpoint로 폴백할 수 있습니다. 
 
-{% include requirement/SHOULD id="python-pipeline-core-policies" %} use the policy implementations in `azure-core` whenever possible.
+<!-- {% include requirement/SHOULD id="python-pipeline-core-policies" %} use the policy implementations in `azure-core` whenever possible. -->
+{% include requirement/SHOULD id="python-pipeline-core-policies" %} 가능하다면 azure-core에서 정책 구현을 사용하십시오.
 
-{% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need.
+<!-- {% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need. -->
 
-{% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not).
+{% include requirement/MUST id="python-custom-policy-review" %} 
+Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오. 
+필요에 맞게 변경 또는 매개변수를 지정할 수 있는 기존 정책이 이미 있을 수 있습니다.
 
+
+<!-- {% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not). 
 {% include requirement/MUST id="python-custom-policy-thread-safe" %} ensure thread-safety for custom policies. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
+
+-->
+
+{% include requirement/MUST id="python-custom-policy-base-class" %}  네트워크 호출이 필요한 경우에는 [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy)을 파생시키십시오. 네크워크 호출이 필요하지 않은 경우에는 [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy).을 파생시키십시오.
+{% include requirement/MUST id="python-custom-policy-thread-safe" %} custom policies를 위해 스레드 안정성을 보장하십시오. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
+
 
 {% include requirement/MUST id="python-pipeline-document-policies" %} document any custom policies in your package. The documentation should make it clear how a user of your library is supposed to use the policy.
 
