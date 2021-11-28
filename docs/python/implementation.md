@@ -1,24 +1,39 @@
 ---
-title: "Python Guidelines: Implementation"
+title: "Python 가이드라인: 구현"
 keywords: guidelines python
 permalink: python_implementation.html
 folder: python
 sidebar: general_sidebar
 ---
 
-## API implementation
+## API 구현
 
-### Service client
+### 서비스 클라이언트
 
-#### Http pipeline
+#### Http 파이프라인
+<!-- Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services. -->
 
-Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services.
+<!-- translation by @hdddhdd -->
+클라이언트 라이브러리가 일반적으로 한 개 또는 그 이상의 HTTP 요청을 래핑하므로, 표준 네트워크 기능을 제공하는 것이 중요합니다. 
 
-{% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints.
+널리 이해된 것은 아니지만, 비동기 프로그래밍 기술은 탄력적인 웹서비스를 개발하는데 필수적입니다. 
 
-{% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline:
+많은 개발자들은 기술을 사용하는 방법을 배울 때 쉬운 의미 때문에 동기식 방법을 선호합니다. 
 
-- Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
+HTTP 파이프라인은 HTTP기반의 Azure 서비스에 대한 연결을 지원하는 'azure-core'라이브러리의 구성요소입니다.
+
+<!-- {% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints. -->
+
+REST ENDPOINT로 요청을 보내기 위해서 HTTP 파이프라인을 사용하십시오. 
+
+<!-- translation by @hdddhdd -->
+{% include requirement/MUST id="python-network-http-pipeline" %}  REST endpoint로 요청을 보내기 위해서 HTTP 파이프라인을 사용하십시오.
+
+<!-- {% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline: -->
+
+{% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음의 정책들을 포함해야 합니다. :
+
+<!-- - Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
 - Headers (`azure.core.pipeline.policies.HeadersPolicy`)
 - Telemetry (`azure.core.pipeline.policies.UserAgentPolicy`)
 - Proxy (`azure.core.pipeline.policies.ProxyPolicy`)
@@ -26,7 +41,18 @@ Since the client library generally wraps one or more HTTP requests, it's importa
 - Retry (`azure.core.pipeline.policies.RetryPolicy` and `azure.core.pipeline.policies.AsyncRetryPolicy`)
 - Credentials (e.g. `BearerTokenCredentialPolicy`, `AzureKeyCredentialPolicy`, etc)
 - Distributed tracing (`azure.core.pipeline.policies.DistributedTracingPolicy`)
-- Logging (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`)
+- Logging (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`) -->
+
+- 유일한 요청 아이디 (`azure.core.pipeline.policies.RequestIdPolicy`)
+- 헤더 (`azure.core.pipeline.policies.HeadersPolicy`)
+- 원격 측정(Telemetry) (`azure.core.pipeline.policies.UserAgentPolicy`)
+- 프록시 (`azure.core.pipeline.policies.ProxyPolicy`)
+- 내용 디코딩 (`azure.core.pipeline.policies.ContentDecodePolicy`)
+- 재시도 (`azure.core.pipeline.policies.RetryPolicy` and `azure.core.pipeline.policies.AsyncRetryPolicy`)
+- 자격 (e.g. `BearerTokenCredentialPolicy`, `AzureKeyCredentialPolicy`, etc)
+- 분산 추적 (`azure.core.pipeline.policies.DistributedTracingPolicy`)
+- 로깅 (`azure.core.pipeline.policies.NetworkTraceLoggingPolicy`)
+
 
 ```python
 
@@ -76,33 +102,45 @@ class ExampleClient(object):
 
 ##### Custom policies
 
-Some services may require custom policies to be implemented. For example, custom policies may implement fall back to secondary endpoints during retry, request signing, or other specialized authentication techniques.
+<!-- translation by @hdddhdd -->
+<!-- Some services may require custom policies to be implemented. For example, custom policies may implement fall back to secondary endpoints during retry, request signing, or other specialized authentication techniques. -->
+일부 서비스는 custom policies가 구현되도록 요청합니다. 예를 들어, custom policies는 재시도, 요청 서명 또는 다른 특수 인증 기술을 실행하는 도중에 부차적인 endpoint로 폴백할 수 있습니다. 
 
-{% include requirement/SHOULD id="python-pipeline-core-policies" %} use the policy implementations in `azure-core` whenever possible.
+<!-- {% include requirement/SHOULD id="python-pipeline-core-policies" %} use the policy implementations in `azure-core` whenever possible. -->
+{% include requirement/SHOULD id="python-pipeline-core-policies" %} 가능하다면 azure-core에서 정책 구현을 사용하십시오.
 
-{% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need.
+<!-- {% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need. -->
 
-{% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not).
+{% include requirement/MUST id="python-custom-policy-review" %} Azure SDK [Architecture Board]로 제안된 정책을 검토하십시오. 
+필요에 맞게 변경 또는 매개변수를 지정할 수 있는 기존 정책이 이미 있을 수 있습니다.
 
+<!-- {% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not). 
 {% include requirement/MUST id="python-custom-policy-thread-safe" %} ensure thread-safety for custom policies. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
+
+-->
+
+{% include requirement/MUST id="python-custom-policy-base-class" %}  네트워크 호출이 필요한 경우에는 [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy)을 파생시키십시오. 네크워크 호출이 필요하지 않은 경우에는 [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy).을 파생시키십시오.
+
+
+{% include requirement/MUST id="python-custom-policy-thread-safe" %} custom policies를 위해 스레드 안정성을 보장하십시오. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
 
 {% include requirement/MUST id="python-pipeline-document-policies" %} document any custom policies in your package. The documentation should make it clear how a user of your library is supposed to use the policy.
 
 {% include requirement/MUST id="python-pipeline-policy-namespace" %} add the policies to the `azure.<package name>.pipeline.policies` namespace.
 
-#### Service Methods
+#### 서비스 방법
 
-##### Parameter validation
+##### 매개변수 유효성 검사
 
 {% include requirement/MUSTNOT id="python-client-parameter-validation" %} use `isinstance` to validate parameter value types other than for [built-in types](https://docs.python.org/3/library/stdtypes.html) (e.g. `str` etc). For other types, use [structural type checking].
 
-### Supporting types
+### 지원 유형
 
 {% include requirement/MUST id="python-models-repr" %} implement `__repr__` for model types. The representation **must** include the type name and any key properties (that is, properties that help identify the model instance).
 
 {% include requirement/MUST id="python-models-repr-length" %} truncate the output of `__repr__` after 1024 characters.
 
-##### Extensible enumerations
+##### 확장 가능한 열거
 
 Any Enums defined in the SDK should be interchangable with case-insensitive strings. This is achieved by using the `CaseInsensitiveEnumMeta` class defined in `azure-core`.
 
@@ -117,15 +155,15 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
     BAR = 'bar'
 ```
 
-### SDK Feature implementation
+### SDK 상징 구현
 
-#### Configuration
+#### 배치
 
 {% include requirement/MUST id="python-envvars-global" %} honor the following environment variables for global configuration settings:
 
 {% include tables/environment_variables.md %}
 
-#### Logging
+#### 로깅
 
 {% include requirement/MUST id="python-logging-usage" %} use Pythons standard [logging module](https://docs.python.org/3/library/logging.html).
 
@@ -163,7 +201,7 @@ The `DEBUG` logging level is intended for developers or system administrators to
 
 You can determine the logging level for a given logger by calling [`logging.Logger.isEnabledFor`](https://docs.python.org/3/library/logging.html#logging.Logger.isEnabledFor).
 
-#### Distributed tracing
+#### 분산 추적(Distributed tracing)
 
 {% include requirement/MUST id="python-tracing-span-per-method" %} create a new trace span for each library method invocation. The easiest way to do so is by adding the distributed tracing decorator from `azure.core.tracing`.
 
@@ -173,7 +211,7 @@ You can determine the logging level for a given logger by calling [`logging.Logg
 
 {% include requirement/MUST id="python-tracing-propagate" %} propagate tracing context on each outgoing service request.
 
-#### Telemetry
+#### 원격 추적(Telemetry)
 
 Client library usage telemetry is used by service teams (not consumers) to monitor what SDK language, client library version, and language/platform info a client is using to call into their service. Clients can prepend additional information indicating the name and version of the client application.
 
@@ -207,13 +245,14 @@ The content of the header is a semi-colon key=value list.  The following keys ha
 
 Any other keys that are used should be common across all client libraries for a specific service.  **DO NOT** include personally identifiable information (even encoded) in this header.  Services need to configure log gathering to capture the `X-MS-SDK-Telemetry` header in such a way that it can be queried through normal analytics systems.
 
-##### Considerations for clients not using the UserAgentPolicy from azure-core
+##### azure-core에서 UserAgentPolicy를 사용하지 않는 클라이언트에 대한 고려 사항
+
 
 {% include requirement/MUST id="python-azurecore-http-telemetry-appid" %} allow the consumer of the library to set the application ID by passing in an `application_id` parameter to the service client constructor.  This allows the consumer to obtain cross-service telemetry for their app.
 
 {% include requirement/MUST id="python-azurecore-http-telemetry-appid-length" %} enforce that the application ID is no more than 24 characters in length.  Shorter application IDs allows service teams to include diagnostic information in the "platform information" section of the user agent, while still allowing the consumer to obtain telemetry information for their own application.
 
-## Testing
+## 테스팅
 
 {% include requirement/MUST id="python-testing-pytest" %} use [pytest](https://docs.pytest.org/en/latest/) as the test framework.
 
