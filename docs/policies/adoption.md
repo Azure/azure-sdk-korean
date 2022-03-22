@@ -1,5 +1,5 @@
 ---
-title: "Policies: Guideline Adoption"
+title: "정책: 도입 가이드라인"
 permalink: policies_adoption.html
 folder: policies
 sidebar: general_sidebar
