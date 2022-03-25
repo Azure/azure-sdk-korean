@@ -101,7 +101,7 @@ public final class ConfigurationClientBuilder { ... }
 
 요청 로깅은 `HttpPipeline`에 의해 자동으로 수행됩니다. 클라이언트 라이브러리에서 커스텀로깅를 추가할 필요가 있는 경우, 파이프라인 로깅 메커니즘과 같은 가이드라인과 메커니즘을 따르십시오. 클라이언트 라이브러리가 커스텀로깅을 실행하고자 하는 경우, 라이브러리 설계자는 로깅 메커니즘이 `HttpPipeline` 로깅 정책과 동일한 방법으로 접속 가능함을 보장해야 합니다.
 
-{% include requirement/MUST id="android-logging-directly" %} (`HttpPipeline` 경유가 아닌) 직접 로깅하는 경우 [Azure SDK 공통 가이드라인 로깅 섹션][logging-general-guidelines]및 [다음 가이드라인](#using-the-clientlogger-interface)을 따르십시오.
+{% include requirement/MUST id="android-logging-directly" %} (`HttpPipeline` 경유가 아닌) 직접 로깅하는 경우 [Azure SDK 공통 가이드라인 로깅 섹션][logging-general-guidelines]및 [다음 가이드라인](#clientlogger-인터페이스-사용)을 따르십시오.
 
 #### ClientLogger 인터페이스 사용
 
@@ -183,8 +183,8 @@ Android 개발자들은 자신이 실행하고 있는 런타임 환경에 대해
 
 최소 API 수준 선택에 대해 논의할 때 다음 두 가지 사항을 고려해야 합니다:
 
-1. Google이 지원하는 최소 API 레벨.
-2. 선택하는 특정 API 수준의 도달 범위.
+1. Google이 지원하는 최소 API 레벨
+2. 선택하는 특정 API 수준의 도달 범위
 
 우리는 인기 있는 HTTP 클라이언트나 직렬화 라이브러리같이 개발자 커뮤니티에서 여전히 널리 적용되는 툴을 사용할 수 있는 안드로이드 장치가 도달할 수 있도록 구글이 지원하는 최소 API 레벨을 요구합니다. 우리는 현재 99.8% 이상을 커버하는 API level 15(2021년 5월 기준)에 정착하고 있습니다. 특정 API 수준의 도달 범위는 안드로이드 스튜디오에서 "Create New Project" 화면에서 생성할 프로젝트 유형을 선택한 후 "Help me choose" 를 클릭하면 확인할 수 있습니다.
 
