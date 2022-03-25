@@ -5,53 +5,52 @@ folder: policies
 sidebar: general_sidebar
 ---
 
-The design guidelines are meant to be much like the US constitution - a document that everyone can abide by and follow, but not one that is easy to adjust.  As a result, the following policy affects how we can change the design guidelines.
+설계 가이드라인은 미국 헌법과 -모든 사람이 준수하고 따를 수 있지만 쉽게 조정할 수 있는 문서는 아니라는 점에서-매우 유사합니다. 그 결과, 이하의 방침이 설계 가이드 라인을 변경하는 방법에 영향을 줄 수 있습니다.
 
-## Changing the general design guidelines
+## 일반적인 설계 지침 변경
 
-Any change to the general design guidelines (which includes everything under the `/docs/general` folder within the `azure/azure-sdk` repository) should be "a big deal" since such changes affect every single client library that we produce.  The following requirements must be met before a general design guideline is adopted:
+일반적인 설계 가이드라인(azure/azure-sdk 저장소 내의 /docs/general 폴더 아래에 있는 모든 내용 포함하는)의 변경은 그러한 변경이 작성하는 모든 클라이언트 라이브러리에 영향을 미치기 때문에 "큰 일"이 될 것입니다. 일반적인 설계 지침을 채택하기 전에 다음 요건이 충족되어야 합니다.
 
-* The design guideline is discussed within an Architectural Board meeting with a quorum of 3 voting members of the architecture board.  Each voting member may vote as follows:
-    * Approve - the architect believes this is a good guideline.
-    * Abstain - the architect feels the guideline has flaws, but not enough to stop the proposal.
-    * Reject - the architect feels the guideline is flawed enough it must not be added to the guidelines.
-* Two thirds of voting members must vote "Approve".
-* There must be no "Reject" votes.
-* The proposed language for the design guideline is submitted via PR.
-    * Review by any appropriate groups (as determined by the board chair) - examples: Security, CSS.
-    * Review by at least two affected service teams in different groups.
-    * Approval (through the PR process) by 3 voting members of the board.
+* 설계 가이드라인은 아키텍처 이사회의 3명의 의결권 멤버로 구성된 아키텍처 이사회에서 논의됩니다. 각 투표 구성원은 다음과 같이 투표할 수 있습니다.
+    * 승인 - 설계자는 이것이 좋은 지침이라고 생각합니다.
+    * 자제 - 설계자는 가이드라인에 결함이 있다고 생각하지만 제안을 멈출 만큼 충분하지는 않습니다.
+    * 거부 - 설계자는 가이드라인에 추가해서는 안 될 정도로 가이드라인에 결함이 있다고 생각합니다.
+* 투표 멤버의 3분의 2가 "찬성"에 투표해야 합니다.
+* "거부" 표가 없어야 합니다.
+* 설계 가이드라인에 대해 제안된 언어는 PR을 통해 제출됩니다.
+    * 적절한 그룹(이사회 의장의 결정에 따라)에 의한 검토 - 예: 보안, CSS
+    * 서로 다른 그룹에 속한 영향을 받는 서비스 팀 2개 이상에 의한 검토.
+    * (PR 프로세스를 통해) 이사회의 3명의 투표 멤버에 의한 승인.
 
-## Changing the language specific guidelines
+## 언어별 가이드라인 변경
 
-Language specific guidelines (which includes everything under the language-specific folder of `/docs` in the `azure/azure-sdk` repository) are generally driven by the general guidelines, but also idiomatic and generally accepted design and implementation principals in the language of choice.  Design guidelines must meet the spirit of the general design guidelines.  Implementation guidelines are governed by the language team, with the language architect having responsibility for ensuring the implementation guidelines meet the best practices for the language concerned.
+언어 고유의 가이드라인(azure/azure-sdk 저장소의 /docs 언어 고유의 폴더 아래에 있는 모든 것을 포함한다)은 일반적으로 일반적인 가이드라인에 따라 결정되며, 일반적인 언어에서 자연스럽게 받아들여지는 설계 및 구현 원칙에도 따라 결정됩니다. 설계 가이드라인은 일반적인 설계 가이드라인의 정신을 충족해야 합니다. 실장 가이드라인은 언어 팀에 의해 관리되며, 언어 설계자는 실장 가이드라인이 해당 언어의 최선을 충족하는지 확인할 책임이 있습니다.
 
-Guidelines can be proposed by anyone via PR, but the following must be met to be merged:
+가이드라인은 누구나 PR을 통해 제안할 수 있지만 병합하려면 다음 사항을 충족해야 합니다.
 
-* PR is approved (through the PR process) by the assigned language architect.  If the updated guidelines affect the design principles or the API design sections, then a second member of the architecture board must also approve the PR.
-* PR is reviewed with relevant stake holders (such as service teams, security, and CSS).
-* PR is approved by the language dev lead.
+* PR은 (PR 프로세스를 통해) 지정된 언어 설계자에 의해 승인됩니다. 업데이트된 가이드라인이 설계 원칙이나 API 설계 섹션에 영향을 미치는 경우 아키텍처 보드[이사회]의 두 번째 멤버도 PR을 승인해야 합니다.
+* PR은 관련 관계자(서비스 팀, 보안, CSS 등)와 함께 검토됩니다.
+* PR은 Language Dev Lead에 의해 승인됩니다.
 
-## Engineering systems policy changes
+## 엔지니어링 시스템 정책 변경
 
-The engineering systems policies (which includes everything under the `/docs/policies` folder within the `azure/azure-sdk` repository) are also proposed via PR and subject to review:
+엔지니어링 시스템 정책(azure/azure-sdk 저장소 내의 /docs/policies 폴더 아래에 있는 모든 내용 포함)도 PR을 통해 제안되며 다음 사항을 검토할 수 있습니다.
 
-* PR is reviewed with relevant stake holders, as determined by the engineering systems dev lead (such as service teams, security, and CSS).
-* PR is approved by the engineering systems dev lead or designate.
-* If the proposal affects client libraries in a specific language, then the proposal must also be approved by the language dev lead.
+* PR은 엔지니어링 시스템 개발 리드(서비스 팀, 보안, CSS 등)에 의해 결정되는 관련 이해관계자와 함께 검토됩니다.
+* PR은 엔지니어링 시스템 개발 리드 또는 지정에 의해 승인됩니다.
+* 제안서가 특정 언어의 클라이언트 라이브러리에 영향을 미치는 경우 제안서는 언어 개발 책임자의 승인을 받아야 합니다.
 
-## For new language guidelines
+## 새로운 언어의 가이드라인
 
-Language specific guidelines are first published in DRAFT.  This means that they are in flux and may be adjusted as the first libraries are created.  During the draft phase, there are no requirements on merging pull requests.  To move from DRAFT to general availability, the following conditions must be met:
+언어 고유의 가이드라인은 최초로 드래프트에 게재되어 있습니다. 즉, 이들 라이브러리는 유동적이며 첫 번째 라이브러리가 작성될 때 조정될 수 있습니다. 드래프트 단계 중에는 pull request를 병합하는 요건은 없습니다. 드래프트에서 일반으로 이행하려면 다음 조건들이 충족되어야 합니다.
 
-* The guidelines are published in draft mode for at least 1 month to allow public comments.
-* The engineering systems are configured for producing client libraries in the language.
-* The Azure Core and Azure Identity libraries are published in beta to appropriate distribution points.
-* At least 2 Azure client libraries are published in beta to the appropriate distribution points.
-* At least 1 user study has been conducted that studies the Azure Core and Azure Identity library usage (generally as part of a client library user study).
-* The guidelines have been reviewed by the architectural board and (if there is one) the language team in DevDiv.
+* 이 가이드라인은 공개 코멘트를 허용하기 위해 최소 1개월 동안 초안 모드로 게시됩니다.
+* 엔지니어링 시스템은 언어로 클라이언트 라이브러리를 생성하도록 구성됩니다.
+* Azure Core 및 Azure Identity 라이브러리는 베타 버전으로 적절한 배포 지점에 게시됩니다.
+* 적어도 2개의 Azure 클라이언트 라이브러리가 적절한 배포 지점에 베타 버전으로 게시됩니다.
+* Azure Core 및 Azure Identity 라이브러리의 사용(용례)(일반적으로 클라이언트 라이브러리 사용자 연구의 일부)을 조사하는 사용자 연구가 적어도1건 실시되었습니다.
+* 가이드라인은 아키텍처 보드, 및 (존재하는 경우에)DevDiv 언어 팀이 검토했습니다.
 
-## Changing this policy
-
-Changes to this policy can only be made by the [SDK architectural board](mailto:adparch@microsoft.com).
+## 이 정책 변경
+이 정책은 [SDK 아키텍처 보드](mailto:adparch@microsoft.com)에서만 변경할 수 있습니다.
 
