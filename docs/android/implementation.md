@@ -1,37 +1,37 @@
 ---
-title: "Android Guidelines: Implementation"
+title: "Android 가이드라인: 구현"
 keywords: guidelines android
 permalink: android_implementation.html
 folder: android
 sidebar: general_sidebar
 ---
 
-## API Implementation
+## API 구현
 
-This section describes guidelines for implementing Azure SDK client libraries. Please note that some of these guidelines are automatically enforced by code generation tools.
+이 문서는 Azure SDK 클라이언트 라이브러리를 구현하기 위한 가이드라인입니다. 이 가이드라인의 일부는 코드 생성 도구에 의해 자동으로 적용된 점을 유의하시기 바랍니다.
 
-{% include requirement/MUSTNOT id="android-implementation" %} allow implementation code (that is, code that doesn't form part of the public API) to be mistaken as public API. There are two valid arrangements for implementation code, which in order of preference are the following:
+{% include requirement/MUSTNOT id="android-implementation" %} 구현 코드(즉, 공개 API의 일부를 구성하지 않은 코드)를 공개 API로 오인하지 않도록 하십시오. 구현 코드에는 두 가지 유효한 약정이 있는데, 우선 순위는 다음과 같습니다:
 
-1. Implementation classes can be made package-private and placed within the same package as the consuming class.
-2. Implementation classes can be placed within a subpackage named `implementation`.
+1. 구현 클래스를 패키지-프라이빗으로 만들고, 이를 사용하는 클래스와 같은 패키지 내에 배치할 수 있습니다.
+2. 구현 클래스를 `implementation`으로 명명된 서브패키지 내에 배치할 수 있습니다.
 
-CheckStyle checks ensure that classes within an `implementation` package aren’t exposed through public API, but it is better that the API not be public in the first place, so preferring to have package-private is the better approach where practicable.
+CheckStyle 검사는 `implementation` 패키지 내의 클래스가 공개 API를 통해 노출되지 않도록 확인합니다. 하지만 우선 API를 공개 API로 구현하지 않는 것이 좋으므로, 가능하면 패키지-프라이빗을 적용하는 것이 더 낫습니다.
 
-### Service Client
+### 서비스 클라이언트
 
-#### Async Service Client
+#### 비동기 서비스 클라이언트
 
-{% include requirement/MUST id="java-async-blocking" %} include blocking calls inside async client library code.
+{% include requirement/MUST id="java-async-blocking" %} 비동기 클라이언트 라이브러리 내에 동기 함수 호출을 포함하십시오.
 
-##### Using the HTTP Pipeline
+##### HTTP 파이프라인 사용하기
 
-The Azure SDK team has provided an [Azure Core] library that contains common mechanisms for cross cutting concerns such as configuration and doing HTTP requests.
+Azure SDK 팀은 구성이나 HTTP 요청 등의 횡단 관심사(cross cutting concerns)에 관한 일반적인 매커니즘이 포함된 [Azure Core] 라이브러리를 제공하고 있습니다.
 
-{% include requirement/MUST id="android-requests-use-pipeline" %} use the HTTP pipeline component within Azure Core for communicating to service REST endpoints.
+{% include requirement/MUST id="android-requests-use-pipeline" %} REST endpoints를 서비스하기 위해 Azure Core 내의 HTTP 파이프라인 컴포넌트를 사용하십시오.
 
-The HTTP pipeline consists of a HTTP transport that is wrapped by multiple policies. Each policy is a control point during which the pipeline can modify either the request and/or response. We prescribe a default set of policies to standardize how client libraries interact with Azure services. The order in the list is the most sensible order for implementation.
+HTTP pipeline은 여러 정책에 의해 래핑된 HTTP transport로 구성되어 있다. 각 정책은 파이프라인이 요청 및/또는 응답을 수정할 수 있는 제어 지점입니다. 우리는 클라이언트 라이브러리가 Azure 서비스와 상호 작용하는 방법을 표준화하는 기본 정책 세트를 규정합니다. 리스트의 순서는 구현에 있어 가장 합리적인 순서입니다.
 
-{% include requirement/MUST id="android-requests-implement-policies" %} include the following policies provided by Azure Core when constructing the HTTP pipeline:
+{% include requirement/MUST id="android-requests-implement-policies" %} HTTP 파이프라인을 구성할 때 Azure Core에 의해 제공되는 아래의 정책들을 포함하십시오:
 
 - Telemetry
 - Unique Request ID
@@ -40,11 +40,11 @@ The HTTP pipeline consists of a HTTP transport that is wrapped by multiple polic
 - Response downloader
 - Logging
 
-{% include requirement/SHOULD id="ios-requests-use-azure-core-impl" %} use the policy implementations in Azure Core whenever possible.  Do not try to "write your own" policy unless it is doing something unique to your service. If you need another option to an existing policy, engage with the [Architecture Board] to add the option.
+{% include requirement/SHOULD id="ios-requests-use-azure-core-impl" %} 가능한 한 Azure Core의 정책 구현을 사용하십시오. 서비스의 고유한 것이 아니라면 정책을 "직접 작성하려고" 하지 마십시오. 기존 정책에 다른 옵션이 필요한 경우 [Architecture Board]와 협력하여 옵션을 추가하십시오.
 
-#### Annotations
+#### 어노테이션
 
-Include the following annotations on the service client class. For example, this code sample shows a sample class demonstrating the use of these two annotations:
+서비스 클라이언트 클래스에는 다음의 어노테이션을 포함하십시오. 예를 들어, 이 코드에서는 두 어노테이션을 사용하는 예시 클래스를 볼 수 있습니다:
 
 ```java
 @ServiceClient(builder = ConfigurationAsyncClientBuilder.class, isAsync = true, service = ConfigurationService.class)
@@ -56,60 +56,60 @@ public final class ConfigurationAsyncClient {
 }
 ```
 
-| Annotation | Location | Description |
+| 어노테이션 | 위치 | 설명 |
 |:-----------|:---------|:------------|
-| `@ServiceClient` | Service Client | Specifies the builder responsible for instantiating the service client, whether the API is asynchronous, and a reference back to the service interface (the interface annotated with `@ServiceInterface`). |
-| `@ServiceMethod` | Service Method | Placed on all service client methods that do network operations. |
+| `@ServiceClient` | 서비스 클라이언트 | 클라이언트를 인스턴스화하는 빌더, API가 비동기인지 여부, 서비스 인터페이스(`@ServiceInterface` 어노테이션이 있는 인터페이스)에 대한 참조를 명시합니다. |
+| `@ServiceMethod` | 서비스 메서드 | 네트워크 동작을 수행하는 모든 서비스 클라이언트 메서드에 명시합니다. |
 
-#### Service Client Builder
+#### 서비스 클라이언트 빌더
 
-##### Annotations
+##### 어노테이션
 
-The `@ServiceClientBuilder` annotation should be placed on any class that is responsible for instantiating service clients (that is, instantiating classes annotated with `@ServiceClient`). For example:
+`@ServiceClientBuilder` 어노테이션은 서비스 클라이언트 인스턴스화를 담당하는 클래스에 반드시 명시되어야 합니다. (즉, `@ServiceClient` 어노테이션이 적용된 클래스를 인스턴스화하는 클래스에 배치되어야 합니다.). 예시는 다음과 같습니다:
 
 ```java
 @ServiceClientBuilder(serviceClients = {ConfigurationClient.class, ConfigurationAsyncClient.class})
 public final class ConfigurationClientBuilder { ... }
 ```
 
-This builder states that it can build instances of `ConfigurationClient` and `ConfigurationAsyncClient`.
+위의 빌더는 `ConfigurationClient`와 `ConfigurationAsyncClient`의 인스턴스를 작성할 수 있다고 명시합니다.
 
-### Supporting Types
+### 지원 타입
 
-#### Model Types
+#### 모델 타입
 
-##### Annotations
+##### 어노테이션
 
-There are two annotations of note that should be applied on model classes, when applicable:
+조건에 해당하는 경우, 모델 클래스에 적용해야 하는 두 가지 어노테이션이 있습니다.
 
-* The `@Fluent` annotation is applied to all model classes that are expected to provide a fluent API to end users.
-* The `@Immutable` annotation is applied to all immutable classes.
+* `@Fluent` 어노테이션은 최종 사용자에게 Fluent API를 제공할 것으로 예상되는 모든 모델 클래스에 적용됩니다.
+* `@Immutable` 어노테이션은 변경할 수 없는 모든 클래스에 적용됩니다.
 
 > TODO: Include the @HeaderCollection annotation.
 
-## SDK Feature Implementation
+## SDK 기능 구현
 
-### Configuration
+### 구성
 
-When configuring your client library, particular care must be taken to ensure that the consumer of your client library can properly configure the connectivity to your Azure service both globally (along with other client libraries the consumer is using) and specifically with your client library. For Android applications, configuration can be applied in a variety of ways, such as through application preferences or using a `.properties` file, to name a few.
+클라이언트 라이브러리를 구성할 때, 클라이언트 라이브러리의 사용자가 Azure 서비스에 대한 접속을 글로벌하고(사용자가 사용하고 있는 다른 클라이언트와 함께), 특히 클라이언트 라이브러리와의 접속을 적절히 설정할 수 있도록 특히 주의해야 합니다. 안드로이드 어플리케이션에 대해서, 설정을 어플리케이션 환경설정 또는 `.properties` 파일 사용 등과 같은 다양한 방법으로 적용할 수 있습니다.
 
 > TODO: Determine a recommended way to pass configuration parameters to Android libraries
 
-### Logging
+### 로깅
 
-Client libraries must make use of the robust logging mechanisms in Azure Core, so that the consumers can adequately diagnose issues with method calls and quickly determine whether the issue is in the consumer code, client library code, or service.
+클라이언트 라이브러리는 Azure Core의 견고한 로깅 메커니즘을 사용하여 사용자가 메서드 호출에 관한 문제를 적절하게 진단하고 문제가 사용자의 코드, 클라이언트 라이브러리 코드 또는 서비스에 있는지 여부를 신속하게 판단할 수 있도록 해야 합니다.
 
-Request logging will be done automatically by the `HttpPipeline`. If a client library needs to add custom logging, follow the same guidelines and mechanisms as the pipeline logging mechanism. If a client library wants to do custom logging, the designer of the library must ensure that the logging mechanism is pluggable in the same way as the `HttpPipeline` logging policy.
+요청 로깅은 `HttpPipeline`에 의해 자동으로 수행됩니다. 클라이언트 라이브러리에서 커스텀로깅를 추가할 필요가 있는 경우, 파이프라인 로깅 메커니즘과 같은 가이드라인과 메커니즘을 따르십시오. 클라이언트 라이브러리가 커스텀로깅을 실행하고자 하는 경우, 라이브러리 설계자는 로깅 메커니즘이 `HttpPipeline` 로깅 정책과 동일한 방법으로 접속 가능함을 보장해야 합니다.
 
-{% include requirement/MUST id="android-logging-directly" %} follow [the logging section of the Azure SDK General Guidelines][logging-general-guidelines] and [the following guidelines](#using-the-clientlogger-interface) if logging directly (as opposed to through the `HttpPipeline`).
+{% include requirement/MUST id="android-logging-directly" %} (`HttpPipeline` 경유가 아닌) 직접 로깅하는 경우 [Azure SDK 공통 가이드라인 로깅 섹션][logging-general-guidelines]및 [다음 가이드라인](#clientlogger-인터페이스-사용)을 따르십시오.
 
-#### Using the ClientLogger interface
+#### ClientLogger 인터페이스 사용
 
-{% include requirement/MUST id="android-logging-clientlogger" %} use the `ClientLogger` API provided within Azure Core as the sole logging API throughout all client libraries. Internally, `ClientLogger` logs to the Android Logcat buffer.
+{% include requirement/MUST id="android-logging-clientlogger" %} Azure Core에서 제공되는 `ClientLogger` API를 모든 클라이언트 라이브러리에서 유일한 로깅 API로 사용합니다. 내부적으로, `ClientLogger`는 Android Logcat 버퍼에 기록됩니다.
 
 > TODO: Determine if we want ClientLogger to wrap SLF4J like it's Java counterpart.
 
-{% include requirement/MUST id="android-logging-create-new" %} create a new instance of a `ClientLogger` per instance of all relevant classes. For example, the code below will create a `ClientLogger` instance for the `ConfigurationAsyncClient`:
+{% include requirement/MUST id="android-logging-create-new" %} 모든 관련 클래스의 인스턴스별로 `ClientLogger`의 새 인스턴스를 만듭니다. 예를 들어, 아래의 코드는 `ConfigurationAsyncClient`용 `ClientLogger` 인스턴스를 생성합니다:
 
 ```java
 public final class ConfigurationAsyncClient {
@@ -126,11 +126,11 @@ public final class ConfigurationAsyncClient {
 }
 ```
 
-Don't create static logger instances. Static logger instances are long-lived and the memory allocated to them is not released until the application is terminated.
+정적 로거 인스턴스를 생성하지 마십시오. 정적 로거 인스턴스는 수명이 길며 애플리케이션이 종료될 때까지 할당된 메모리가 해제되지 않습니다.
 
-{% include requirement/MUST id="android-logging-log-and-throw" %} throw all exceptions created within the client library code through one of the logger APIs - `ClientLogger.logThrowableAsError()`, `ClientLogger.logThrowableAsWarning()`, `ClientLogger.logExceptionAsError()` or `ClientLogger.logExceptionAsWarning()`.
+{% include requirement/MUST id="android-logging-log-and-throw" %} 로거 API 중 하나를 통해 클라이언트 라이브러리 코드 내에 생성된 모든 예외를 throw 하십시오 - `ClientLogger.logThrowableAsError()`, `ClientLogger.logThrowableAsWarning()`, `ClientLogger.logExceptionAsError()`, `ClientLogger.logExceptionAsWarning()`.
 
-For example:
+예를 들어:
 
 ```java
 // NO!!!!
@@ -161,48 +161,48 @@ if (numberOfAttempts < retryPolicy.getMaxRetryCount()) {
 }
 ```
 
-### Distributed tracing
+### 분산 트레이스
 
-Distributed tracing is uncommon in a mobile context. If you feel like you need to support distributed tracing, contact the [Azure SDK mobile team](mailto:azuresdkmobileteam@microsoft.com) for advice.
+분산 트레이스는 모바일컨텍스트에서는 거의 발생하지 않습니다. 분산 트레이스를 서포트할 필요가 있는 경우는, [Azure SDK 모바일 팀](mailto:azuresdkmobileteam@microsoft.com)에 문의해 주십시오.
 
-### Testing
+### 테스팅
 
-One of the key things we want to support is to allow consumers of the library to easily write repeatable unit-tests for their applications without activating a service. This allows them to reliably and quickly test their code without worrying about the vagaries of the underlying service implementation (including, for example, network conditions or service outages). Mocking is also helpful to simulate failures, edge cases, and hard to reproduce situations (for example: does code work on February 29th).
+우리가 지원하고 싶은 핵심 사항 중 하나는 라이브러리 이용자가 서비스를 활성화하지 않고도 애플리케이션에 대해 반복 가능한 유닛 테스트를 쉽게 작성할 수 있도록 하는 것입니다. 이는 기반이 되는 서비스 구현의 예상 밖의 문제(네트워크의 상태나 서비스의 정지등)에 대해 염려하지 않고, 코드를 확실하고 빠르게 테스트할 수 있습니다. 모의 객체는 장애, 엣지 케이스, 재현하기 어려운 상황(코드가 2월 29일에는 작동하지 않는 경우)을 시뮬레이트하는데도 도움이 됩니다.
 
-{% include requirement/MUST id="android-testing-patterns" %} parameterize all applicable unit tests to make use of all available HTTP clients and service versions. Parameterized runs of all tests must occur as part of live tests. Shorter runs, consisting of just Netty and the latest service version, can be run whenever PR validation occurs.
+{% include requirement/MUST id="android-testing-patterns" %} 사용 가능한 모든 HTTP 클라이언트 및 서비스 버전을 사용하기 위해 적용 가능한 모든 유닛 테스트를 파라미터화하십시오. 모든 테스트의 파라미터화된 실행은 라이브 테스트의 일부로 수행되어야 합니다. PR 유효성 검사가 발생할 때마다 더 짧은 실행(Netty 및 최신 서비스 버전)을 실행할 수 있습니다.
 
 > TODO: Document how to write good tests using JUnit on Android.
 
-### Other Android-related considerations
+### 기타 Android 관련 고려 사항
 
 > TODO: Revisit min API level chosen.
 
-Android developers need to concern themselves with the runtime environment they are running in. The Android ecosystem is fragmented, with a wide variety of runtimes deployed.
+Android 개발자들은 자신이 실행하고 있는 런타임 환경에 대해 고려할 필요가 있습니다. Android 생태계는 매우 다양한 런타임으로 분할되어 있습니다.
 
-{% include requirement/MUST id="android-library-sync-support" %} support at least Android API level 15 and later (Ice Cream Sandwich). This value can be found in your project's top level `build.gradle` file as `minSdkVersion`.
+{% include requirement/MUST id="android-library-sync-support" %} 최소 Android API level 15 이상을 지원하십시오(Ice Cream Sandwich). 해당 값은 프로젝트의 최상위 레벨 `build.gradle` 파일의 `minSdkVersion`에서 찾을 수 있습니다.
 
-There are two things that are of concern when discussing the minimum API level to choose:
+최소 API 수준 선택에 대해 논의할 때 다음 두 가지 사항을 고려해야 합니다:
 
-1. The minimum API level that Google supports.
-2. The reach of selecting a particular API level.
+1. Google이 지원하는 최소 API 레벨
+2. 선택하는 특정 API 수준의 도달 범위
 
-We require the minimum API level that Google supports that reaches the most Android devices while still allowing for the use of widely adopted tools by the developer community, such as popular HTTP clients or serialization libraries. We have currently landed on API level 15, which covers more than 99.8% of all Android devices (as of May 2021). The reach of a particular API level can be found when clicking "Help me choose" in Android Studio's "Create New Project" screen, after selecting the type of project to create.
+우리는 인기 있는 HTTP 클라이언트나 직렬화 라이브러리같이 개발자 커뮤니티에서 여전히 널리 적용되는 툴을 사용할 수 있는 안드로이드 장치가 도달할 수 있도록 구글이 지원하는 최소 API 레벨을 요구합니다. 우리는 현재 99.8% 이상을 커버하는 API level 15(2021년 5월 기준)에 정착하고 있습니다. 특정 API 수준의 도달 범위는 안드로이드 스튜디오에서 "Create New Project" 화면에서 생성할 프로젝트 유형을 선택한 후 "Help me choose" 를 클릭하면 확인할 수 있습니다.
 
-{% include requirement/MUST id="android-library-target-sdk-version" %} set the `targetSdkVersion` to be API level 26 or higher in your project's top level `build.gradle` file.
+{% include requirement/MUST id="android-library-target-sdk-version" %} 프로젝트의 최상위 `build.gradle` 파일에서 `targetSdkVersion`을 API 수준 26 이상으로 설정하십시오.
 
-As of November 2018, all existing Android apps are required to target API level 26 or higher. For more information, see [Improving app security and performance on Google Play for years to come](https://android-developers.googleblog.com/2017/12/improving-app-security-and-performance.html).
+2018년 11월 현재 모든 기존 Android 앱은 API 레벨 26 이상을 대상으로 해야 합니다. 자세한 내용은 [향후 Google Play에서 앱 보안 및 성능 향상](https://android-developers.googleblog.com/2017/12/improving-app-security-and-performance.html)을 참조하십시오.
 
-{% include requirement/MUST id="android-library-max-sdk-version" %} set the `maxSdkVersion` to be the latest API level that you have run tests on in your project's top level `build.gradle` file. This should be the latest API level that is supported by Google at the point at which the SDK is released.
+{% include requirement/MUST id="android-library-max-sdk-version" %} `maxSdkVersion`을 프로젝트의 최상위 `build.gradle` 파일에서 테스트를 실행하는 최신 API 수준으로 설정하십시오. 이는 SDK가 출시되는 시점에 Google이 지원하는 최신 API 수준이어야 합니다.
 
-{% include requirement/MUST id="android-library-source-compat" %} set your Gradle project's source and target compatibility level to `1.8`.
+{% include requirement/MUST id="android-library-source-compat" %} Gradle 프로젝트의 source 및 target compatibility 수준을 `1.8`로 설정하십시오.
 
-{% include requirement/MUST id="android-library-aar" %} release the library as an Android AAR.
+{% include requirement/MUST id="android-library-aar" %} 라이브러리를 Android AAR로 릴리스하십시오.
 
-{% include requirement/MUST id="android-library-resource-prefix" %} define a `resourcePrefix` of `azure_<service>` in the `build.gradle` android section if using resources.
+{% include requirement/MUST id="android-library-resource-prefix" %} 리소스를 사용하는 경우 `build.gradle`의 안드로이드 섹션에서 `azure_<service>`의 `resourcePrefix`를 정의하십시오.
 
-{% include requirement/SHOULD id="android-library-shrink-code" %} include a Proguard configuration in the AAR to assist developers in correctly minifying their applications when using the library.
+{% include requirement/SHOULD id="android-library-shrink-code" %} AAR에는 개발자가 라이브러리를 사용할 때 애플리케이션을 올바르게 최소화하는 것을 보조할 수 있도록 Proguard 구성이 포함되어 있어야 합니다.
 
-{% include requirement/MUST id="android-library-proguard" %} use `consumerProguardFiles` if you include a Proguard configuration in the library.
+{% include requirement/MUST id="android-library-proguard" %} 라이브러리에 Proguard 구성을 포함하는 경우 `consumerProguardFiles`를 사용하십시오.
 
 {% include refs.md %}
 {% include_relative refs.md %}
