@@ -1,76 +1,77 @@
 ---
-title: "Policies: Release Notes"
+title: "정책: 릴리스 노트"
 permalink: policies_releasenotes.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-# Producing Release Notes
+# 릴리스 노트 작성하기
 
-Each release cycle, we produce release notes for every language. This process is partly automated. Our automation runs regularly and produces pull requests with titles of the form **({Language} release notes for the {YYYY-MM} release)** for dotnet, java, js, and python. Below are instructions for updating/reviewing the PRs before merging.
+ 각 릴리스 사이클마다 모든 언어에 대한 릴리즈 노트를 작성합니다. 이 과정은 부분적으로 자동화되어 있습니다. 자동화 시스템은 정기적으로 실행되며 dotnet, java, js 및 python에 대해 **({YYYY-MM} 릴리스에 대한 {Language} 릴리즈 노트)** 형식의 제목으로 pull requests를 생성합니다. 다음은 병합하기 전에 PR을 업데이트/검토하기 위한 지침입니다.
 
-- The **engineering leads** for the released packages should make sure they have been picked up by the automation and that the entry is correct.
-  - You can update the generated data at `_data/releases/YYYY-MM/{language}.yml` by adding github style suggestions to the PR that the release driver can commit to the PR when reviewed.
-  - Suggest new release entries that should be added to the PR if it has not already been added by the automation (it most likely will be).
-  - If there are packages that should be in the release that don't appear it is probably because the automation has not run since the package was released. Your package should generally get picked up by the automation within 24 hours.
-  - The generated data in `_data/releases/YYYY-MM/{language}.yml` is pulled into the proper sections in the corresponding markdown file at `releases/YYYY-MM/{language}.md` by the Jekyll engine. Once changes to the yml file is merged into main you can see the content pulled into the github.io site at `https://azure.github.io/azure-sdk/releases/YYYY-MM/{language}.html`
+- 릴리스된 패키지의 **엔지니어링 리드**는 자동화 시스템에 의해 잘 인식되고 있는지, 엔트리가 올바른지 확인해야 합니다.
+  - `_data/releases/YYYY-MM/{language}.yml`에 생성된 데이터를 업데이트하려면, 검토 시 릴리스 드라이브가 PR에 커밋할 수 있는 github 스타일의 제안을 추가해야 합니다.
+  - 자동화 시스템에 의해 아직 추가되지 않은 경우, PR에 추가해야 할 새로운 릴리스 엔트리를 제안합니다.(대부분의 경우)
+  - 릴리스에 있어야 할 패키지가 표시되지 않는 경우, 패키지가 릴리스된 후 자동화가 실행되지 않았기 때문일 수 있습니다. 패키지는 일반적으로 보통 24시간 이내에 자동화 시스템에 의해 인식되어야 합니다.
+  - `_data/releases/YYYY-MM/{language}.yml`에서 생성된 데이터는 Jekyll 엔진에 의해 `releases/YYYY-MM/{language}.md`에 있는 해당 Markdown 파일의 해당 섹션으로 가져옵니다. yml 파일의 변경 내용이 메인 파일에 머지되면 github.io 사이트 `https://azure.github.io/azure-sdk/releases/YYYY-MM/{language}.html`에서 가져온 내용을 볼 수 있습니다.
 
-- The **release manager** should hide all entries for packages that should not be in the release period, review and merge the pull request.
-  - Entries can be hidden by setting the `Hidden` field to `true`.
-  - After code complete, the release manager will do a final editorial pass before linking the release notes into the table of contents.
+- **릴리스 관리자**는 릴리스 기간에 있어서는 안 되는 패키지의 모든 엔트리를 숨기고, full request를 검토하고 머지해야 합니다.
+  - `Hidden` 필드를 `true`로 설정하면 엔트리를 숨길 수 있습니다.
+  - 코드가 완료된 후, 릴리스 관리자는 릴리스 노트를 목차에 연결하기 전에 최종 편집 단계를 수행합니다.
 
-Release notes are part of the release and must be ready for final edit by the "Code Complete" date.
+릴리스 노트는 릴리스의 일부이며 "코드 완료" 날짜까지 최종 편집할 준비가 되어 있어야 합니다.
 
-## What's in a release note?
+## 릴리스 노트에는 무엇이 있습니까?
 
-The release notes consist of four sections:
+릴리스 노트는 다음 4개의 색션으로 구성되어 있습니다:
 
-1. A list of packages that are being released (that have developer impacting changes) and how to install the packages.
-2. A list of "developer impacting changes" to each package, organized by package.
-3. Boilerplate text that provides a link to the latest release information.
-4. A table of links that point to the "point in time" package download, source code, and reference documentation.
+1. 릴리스 중인 패키지 목록(변경 사항에 영향을 미치는 개발자가 있는) 및 패키지 설치 방법
+2. 패키지별로 구성된, 각 패키지의 "변경 사항에 영향을 미치는 개발자" 목록
+3. 최신 릴리스 정보에 대한 링크를 제공하는 상용구
+4. "point in time" 패키지 다운로드, 소스 코드 및 참조 문서를 가리키는 링크 테이블
 
-> **Note**: Do not include other documentation or samples in the table of links.  These can be accessed via the standard latest release link.
+> **참고**: 링크 테이블에 다른 문서나 샘플을 포함하지 마십시오.  표준 최신 릴리스 링크를 통해 접근할 수 있습니다.
 
-## What's a "developer impacting change"?
+## "변경 사항에 영향을 미치는 개발자"란 무엇입니까?
 
-We don't want to advertise every single bug fix as most of them do not impact the way customers think about developing the client.  The [change log](https://azure.github.io/azure-sdk/policies_releases.html#change-logs) provides an exhaustive list of changes.  We don't need to duplicate it.
+대부분의 버그 수정은 고객의 클라이언트 개발 방식에 영향을 미치지 않으므로 모든 버그 수정 사항을 알리고 싶지는 않습니다. [변경 로그](https://azure.github.io/azure-sdk/policies_releases.html#change-logs)에는 전체 변경 목록을 제공합니다. 복제할 필요가 없습니다.
 
-However, in the release notes we do want to list critical changes for customers. A critical change is one that the developer would either need to know or want to know. Use the following section headers (`Features Added`, `Breaking Changes`, and `Bugs Fixed`) for the defined critical changes:
+그러나 릴리스 노트에는 고객을 위한 중요한 변경 사항이 나열되어 있습니다. 중요한 변경 사항이란 개발자가 알아야 하거나 알고 싶어하는 것입니다. 정의된 중요한 변경 사항에는 다음 섹션 헤더(`기능 추가`, `주요 변경 사항` 및 `버그 수정`)를 사용합니다:
 
-* *Features Added* - For new features to be called out in release notes. 
-* *Breaking Changes* - For any changes that the will break the customer in some way, such as breaking existing functionality, soon-to-be removed features, or now removed features. 
-* *Bugs Fixed* - For important bug fixes to be called out in release notes, including any security fixes. Include things that the customer would likely notice or need to react to in some way. 
+* *기능 추가* - 릴리스 노트에 새 기능이 호출됩니다.
+* *주요 변경 사항* - 기존 기능 중단, 곧 제거될 기능 또는 현재 제거되는 기능 등 어떤 형태로든 고객에게 문제가 되는 모든 변경사항입니다.
+* *버그 수정* - 중요한 버그 수정은 보안 수정을 포함하여 릴리스 노트에 기재되어 있습니다. 고객이 인지하거나 어떤 식으로든 대응해야 하는 사항을 포함합니다. 
 
-For example, "The name of the property displayed in the ArgumentOutOfRangeException in the MaxDeliveryCount property in SubscriptionProperties was updated to use the correct property name." does not qualify as an important bug fix so shouldn't be listed under `Bugs Fixed` but can be listed under `Other Changes`.  However, "Added a new overload to the constructor to support AzureAD credentials" would be a good thing to include under `Features Added`.
+예를 들어, "올바른 속성 이름을 사용하도록 SubscriptionProperties의 MaxDeliveryCount 속성의 ArgumentOutOfRangeException에 표시된 속성 이름이 업데이트되었습니다."는 중요한 버그 수정으로 간주되지 않으므로 `버그 수정`아래에 나열해서는 안 되지만 `다른 수정사항`에는 나열할 수 있습니다. 그러나, "AzureAD 자격 증명을 지원하기 위해 생성자에 새로운 과부하를 추가했습니다"는 `기능 추가`아래에 기재하는 것이 좋습니다.
 
-Ensure the release notes are written from the perspective of the user.   We don't want to tell them about a new change without ALSO telling them how to take advantage of the change with either a link to the documentation or a short snippet of code.
+릴리스 노트가 사용자의 관점에서 작성되었는지 확인합니다. 문서 링크나 짧은 코드 조각으로 변경 사항을 활용하는 방법을 설명하지 않고서 새로운 변경사항에 대해 알려주고 싶지 않습니다. 
 
-## What if my library is changed but doesn't have any "developer impacting changes"?
+## 라이브러리가 변경되었지만 "변경 사항에 영향을 주는 개발자"가 없으면 어떻게 합니까?
 
-You can either leave the library out of the release notes, or add a note such as "This release contains bug fixes to improve quality."
+릴리스 노트에서 라이브러리를 제외하거나 "이 릴리스에는 품질을 향상시키기 위한 버그 수정이 포함되어 있습니다"와 같은 메모를 추가할 수 있습니다.
 
-## How to produce quick links?
+## 빠른 링크를 생성하는 방법은 무엇입니까?
 
-The release manager will produce the point-in-time snapshot of the versions and ensure the release notes use the snapshot to generate the quick links tables.
+릴리스 관리자는 버전의 특정 시점 스냅샷을 생성하고 릴리스 노트가 스냅샷을 사용하여 빠른 링크 테이블을 생성하도록 합니다. 
 
-## Who publishes the release notes and when are they published?
+## 릴리스 노트는 누가, 언제 게시합니까?
 
-* For all releases, the release manager will merge and publish the release notes in the current month's release folder.
+* 모든 릴리스에 대해, 릴리스 관리자는 이 달의 릴리스 폴더에 릴리즈 노트를 병합하여 게시합니다.
 
-## What do I need to do for an out-of-band release?
+## 대역 외 릴리스에서는 어떻게 해야 합니까?
 
-If you need to release a library after the official release notes release date has occurred but before the next month has been released, then add your release notes to the current month's release notes. The _Language Release Owner_ will merge and publish the release notes in the current month's release folder.
+공식 릴리스 노트 출시일 이후 다음 출시일 전에 라이브러리를 출시해야 하는 경우, 다음 릴리스 노트를 이번 달 릴리스 노트에 추가하십시오. _Language Release Owner_는 이번 달의 릴리스 폴더에 릴리스 노트를 병합하여 게시합니다.
 
-For example:
-1. The official release notes are announced on 9/18/2020.
-1. The library you need to ship does not ship by that date, say 9/22/2020.
-1. Submit a PR to add your release notes to September release notes and tag the _Language Release Owner_.
 
-If you have any questions, please reach out to your team's _Language Release Owner_.
+예를 들어:
+1. 공식 릴리스 노트는 2020년 9월 18일에 발표됩니다.
+1. 출하되어야 할 라이브러리는 2020년 9월 22일까지 출하되지 않습니다.
+1. PR을 제출하여 9월 릴리스 노트에 릴리스 노트를 추가하고 _Language Release Owner_에 태그를 붙입니다.
 
-You may optionally provide social media outreach for out-of-band releases.  Contact the _Community Engagement Manager_ for details on this at least 7 working days prior to the release.
+질문이 있는 경우, 팀의 _Language Release Owner_에게 문의하십시오.
 
-## Where do I go if I need help?
+필요에 따라 대역 외 릴리스에 소셜 미디어 지원을 선택적으로 제공할 수 있습니다. 자세한 내용은 출시 최소 7일(영업일 기준) 전에 _커뮤니티 참여 관리자_에게 문의 하십시오.
 
-The _Azure SDK release manager_ is best place to start when you need help with a release. They manage the Release channel in the Azure SDK Teams team.  If you need help you can post a message in that Teams channel here: <https://aka.ms/azsdk/teams/release>
+## 도움이 필요하면 어디에 요청해야 합니까?
+
+릴리즈에 대한 도움이 필요할 때 _Azure SDK 릴리스 관리자_가 가장 적합합니다. Azure SDK Teams 팀에서 Release 채널을 관리합니다. 도움이 필요한 경우 다음 URL의 팀 채널에 메시지를 게시할 수 있습니다: <https://aka.ms/azsdk/teams/release>
