@@ -98,7 +98,7 @@ entries:
     folderitems:
       - title: Design (영문)
         url: /android_design.html
-      - title: Implementation (영문)
+      - title: 구현
         url: /android_implementation.html
   - title: iOS 가이드라인
     folderitems:

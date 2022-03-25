@@ -4,7 +4,7 @@
 [Java 8 supported features]: https://developer.android.com/studio/write/java8-support#supported_features
 [azure-sdk-for-android/parent/pom.xml]: https://github.com/Azure/azure-sdk-for-android/blob/main/parent/pom.xml
 [azure/azure-sdk-for-android]: https://github.com/Azure/azure-sdk-for-android
-[logging-general-guidelines]: https://azure.github.io/azure-sdk/general_implementation.html#logging
+[logging-general-guidelines]: https://azure.github.io/azure-sdk-korean/general_implementation.html#logging
 [Azure Core]: https://github.com/Azure/azure-sdk-for-android/tree/main/sdk/core/azure-core
 [1]: https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s
 [Mockito]: https://site.mockito.org/
