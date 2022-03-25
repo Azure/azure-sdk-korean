@@ -9,7 +9,7 @@ sidebar: general_sidebar
 
 Azure SDK의 생명 주기와 지원은 아래 정보와 충돌하는 경우 우세한 최신[Microsoft Modern Lifecycle Policy](https://docs.microsoft.com/en-US/lifecycle/policies/modern)의 적용을 받습니다.
 
-### **패키지 생명주기**
+### **패키지 생명 주기**
 
 다음은 일반적인 패키지 생명 주기 단계입니다(주요 버전용).
 
@@ -21,7 +21,7 @@ Azure SDK의 생명 주기와 지원은 아래 정보와 충돌하는 경우 우
 
 4. **커뮤니티** - SDK는 고객 계약에 별도로 명시되지 않는 한 Microsoft로부터 업데이트를 받지 않습니다. 패키지는 공용 패키지 관리자와 커뮤니티에서 유지 관리할 수 있는 GitHub repo를 통해 계속 사용할 수 있습니다.
 
-패키지의 생명 주기 단계를 확인할 수 있습니다. [이 페이지에서](https://azure.github.io/azure-sdk/releases/latest/index.html)
+[이 페이지에서](https://azure.github.io/azure-sdk/releases/latest/index.html) 패키지의 생명 주기 단계를 확인할 수 있습니다. 
 
 ### **Azure 클라우드**
 
@@ -56,6 +56,6 @@ Azure SDK 라이브러리는 Azure Service REST API, 프로그래밍 언어 런�
 - [JavaScript 테스트 구성](https://github.com/Azure/azure-sdk-for-js/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
 - [Python 테스트 구성](https://github.com/Azure/azure-sdk-for-python/blob/main/eng/pipelines/templates/stages/platform-matrix.json)
 
-### **지원**:
+### **지원:**
 
 지원 계획이 있는 고객은 [여기](https://azure.microsoft.com/en-us/support/create-ticket/)에서 Azure 지원 티켓을 열 수 있습니다. [Azure SDK GitHub 저장소](https://github.com/Azure/azure-sdk/blob/main/README.md)에서 GitHub 문제를 열어 버그 및 기능 요청을 추적할 수 있습니다. GitHub 문제는 무료이지만 처리 시간이 오래 걸릴 수 있습니다.
