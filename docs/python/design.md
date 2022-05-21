@@ -23,9 +23,9 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * Client libraries should be consistent within the language, consistent with the service and consistent between all target languages. In cases of conflict, consistency within the language is the highest priority and consistency between all target languages is the lowest priority.
 * Service-agnostic concepts such as logging, HTTP communication, and error handling should be consistent. The developer should not have to relearn service-agnostic concepts as they move between client libraries.
 * Consistency of terminology between the client library and the service is a good thing that aids in diagnosability.
-* All differences between the service and client library must have a good (articulated) reason for existing, rooted in idiomatic usage rather than whim.
-* The Azure SDK for each target language feels like a single product developed by a single team.
-* There should be feature parity across target languages. This is more important than feature parity with the service.
+* 서비스와 클라이언트 라이브러리 사이의 모든 차이점은 변덕보다는 관용적인 사용에 뿌리를 둔 현존하는 타당한(분명히 표현된) 이유가 있어야 합니다.
+* 각 대상 언어에 대한 Azure SDK는 하나의 팀이 개발한 하나의 제품처럼 느껴져야 합니다.
+* 대상 언어 간에 기능 동등성이 있어야 합니다. 이것은 서비스와의 기능 동등성보다 더 중요합니다.
 
 #### Approachable
 
