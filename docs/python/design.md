@@ -10,7 +10,7 @@ sidebar: general_sidebar
 
 ### Design principles
 
-The Azure SDK should be designed to enhance the productivity of developers connecting to Azure services. Other qualities (such as completeness, extensibility, and performance) are important but secondary. Productivity is achieved by adhering to the principles described below:
+The Azure SDK 는 Azure 서비스에 연결하는 개발자의 생산성을 증대시켜야 합니다. 다른 퀄리티(완성도, 확장성, 성능)도 중요하지만 부수적이다. Productivity is achieved by adhering to the principles described below:
 
 #### Idiomatic
 
