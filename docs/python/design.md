@@ -14,15 +14,15 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 
 #### Idiomatic
 
-* The SDK should follow the design guidelines and conventions for the target language. It should feel natural to a developer in the target language.
+* The SDK should follow the design guidelines and conventions for the target language. It should feel natural to a developer in the target language.    
 * We embrace the ecosystem with its strengths and its flaws.
 * We work with the ecosystem to improve it for all developers.
 
-#### Consistent
+#### 일관성 (Consistent)
 
-* Client libraries should be consistent within the language, consistent with the service and consistent between all target languages. In cases of conflict, consistency within the language is the highest priority and consistency between all target languages is the lowest priority.
-* Service-agnostic concepts such as logging, HTTP communication, and error handling should be consistent. The developer should not have to relearn service-agnostic concepts as they move between client libraries.
-* Consistency of terminology between the client library and the service is a good thing that aids in diagnosability.
+* 클라이언트 라이브러리는 언어 내에서 일관성이 있어야 하며 서비스와 모든 대상 언어 간의 일관성이 있어야 한다. 충돌이 발생하면, 우선 언어 내의 일관성을 가장 높은 우선순위를 가지고 모든 대상의 언어 간의 일관성을 가장 낮은 우선순위로 가진다.
+* 로깅, HTTP 통신, 예외 처리 같은 서비스-어그노스틱(Service-agnostic)은 일관성이 있어야 하며 개발자는 클라이언트 라이브러리들 간에 이동할 때 서비스-어그노스틱(Service-agnostic)을 다시 학습할 필요가 없어야 한다.
+* 클라이언트 라이브러리와 서비스 사이에 용어의 일관성은 분석에 도움이 된다.
 * All differences between the service and client library must have a good (articulated) reason for existing, rooted in idiomatic usage rather than whim.
 * The Azure SDK for each target language feels like a single product developed by a single team.
 * There should be feature parity across target languages. This is more important than feature parity with the service.
