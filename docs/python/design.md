@@ -15,8 +15,8 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 #### 관습적 (Idiomatic)
 
 * SDK는 대상 언어에 대한 디자인 가이드라인 및 규칙을 따라야 합니다. 해당 언어의 개발자가 자연스럽게 받아들일 수 있어야 합니다.
-* We embrace the ecosystem with its strengths and its flaws.
-* We work with the ecosystem to improve it for all developers.
+* 우리는 생태계의 장점과 단점을 함께 포괄합니다.
+* 우리는 모든 개발자들을 위한 생태계를 개선시키기 위해 협력합니다.
 
 #### Consistent
 
