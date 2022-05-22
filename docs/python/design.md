@@ -32,8 +32,8 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * 우리는 지원되는 기술들의 전문가로 우리의 고객들과 개발자들은 전문성을 가질 필요가 없습니다.
 * 개발자들은 Azure 서비스를 성공적으로 사용하기 쉽게 해주는 좋은 문서(튜토리얼, 방법 문서, 샘플들 및 API 문서)를 찾아야 합니다.
 * 모범 사례를 구현하는 예측 가능한 기본값들을 사용함으로써 쉽게 시작할 수 있습니다. 점진적인 개념의 공개에 대해 생각해보세요.
-* The SDK should be easily acquired through the most normal mechanisms in the target language and ecosystem.
-* Developers can be overwhelmed when learning new service concepts. The core use cases should be discoverable.
+* SDK는 목표하는 언어와 생태계 안에서 가장 평범한 방법을 통해 쉽게 얻을 수 있어야 합니다.
+* 개발자들은 새로운 서비스 개념을 배울 때 압도당할 수 있습니다. 핵심 사용 사례들은 쉽게 발견할 수 있어야 합니다.
 
 #### Diagnosable
 
