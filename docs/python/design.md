@@ -27,11 +27,11 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * The Azure SDK for each target language feels like a single product developed by a single team.
 * There should be feature parity across target languages. This is more important than feature parity with the service.
 
-#### Approachable
+#### 접근하기쉽게
 
-* We are experts in the supported technologies so our customers, the developers, don't have to be.
-* Developers should find great documentation (hero tutorial, how to articles, samples, and API documentation) that makes it easy to be successful with the Azure service.
-* Getting off the ground should be easy through the use of predictable defaults that implement best practices. Think about progressive concept disclosure.
+* 우리는 지원되는 기술들의 전문가로 우리의 고객들과 개발자들은 전문성을 가질 필요가 없습니다.
+* 개발자들은 Azure 서비스를 성공적으로 사용하기 쉽게 해주는 좋은 문서(튜토리얼, 방법 문서, 샘플들 및 API 문서)를 찾아야 합니다.
+* 모범 사례를 구현하는 예측 가능한 기본값들을 사용함으로써 쉽게 시작할 수 있습니다. 점진적인 개념의 공개에 대해 생각해보세요.
 * The SDK should be easily acquired through the most normal mechanisms in the target language and ecosystem.
 * Developers can be overwhelmed when learning new service concepts. The core use cases should be discoverable.
 
@@ -50,39 +50,40 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * Incompatibilities should never be introduced deliberately without thorough review and very strong justification.
 * Do not rely on dependencies that can force our hand on compatibility.
 
-### General guidelines
+### 일반적인 가이드라인(General guidelines)
 
-The API surface of your client library must have the most thought as it is the primary interaction that the consumer has with your service.
+클라이언트 라이브러리의 API 표면은 소비자가 서비스와 갖는 주요 상호작용이기 때문에 가장 많이 생각해야 합니다.
 
-{% include requirement/MUST id="python-feature-support" %} support 100% of the features provided by the Azure service the client library represents. Gaps in functionality cause confusion and frustration among developers.
+{% include requirement/MUST id="python-feature-support" %} 
+Azure 서비스가 제공하는 클라이언트 라이브러리에 해당하는 기능의 100%를 지원하십시오. 기능상의 차이는 개발자들 사이의 혼란을 야기합니다.
 
-### Non-HTTP based services
+### 비-HTTP 기반 서비스(Non-HTTP based services)
 
-These guidelines were written primarily with a HTTP based request/response in mind, but many general guidelines apply to other types of services as well. This includes, but is not limited to, packaging and naming, tools and project structures.
+이 가이드라인들은 주로 HTTP기반의 요청/응답을 생각하여 작성되었습니다. 그러나 많은 일반적인 가이드라인들은 또 다른 유형의 서비스에도 적용됩니다.
 
-Please contact the [Architecture board] for more guidance on non HTTP/REST based services.
+비 HTTP/REST 기반의 서비스들에 대한 추가적인 가이드를 위해서 [Architecture board] 에 문의 해 주십시오.
 
-### Supported python versions
+### 지원되는 python 버전(Supported python versions)
 
-{% include requirement/MUST id="python-general-version-support" %} support Python 2.7 and 3.5.3+.
+{% include requirement/MUST id="python-general-version-support" %} Python 2.7 와 3.5.3+에 지원합니다.
 
-{% include requirement/SHOULD id="python-general-universal-pkg" %} provide a [universal package] that works on all supported versions of Python, unless there's a compelling reason to have separate Python2 and Python3 packages.
+{% include requirement/SHOULD id="python-general-universal-pkg" %} 별도의 Python2 및 Python3 패키지를 사용해야 하는 특별한 이유가 없는 한, Python의 모든 버전에서 지원되는 [universal package]를 제공하십시오.
 
-For example, if you depend on different external packages for Python2 and Python3, and neither external dependency is available for both Python versions.
+예를 들어, Python2 및 Python3에 대해 서로 다른 외부 패키지에 의존하고 있으며 두 Python 버전 모두 외부 종속성이 사용되지 못하는 경우입니다.
 
-## Azure SDK API Design
+## Azure SDK API 디자인(Azure SDK API Design)
 
-Your API surface will consist of one or more _service clients_ that the consumer will instantiate to connect to your service, plus a set of supporting types.
+API 표면은 소비자가 서비스에 연결하기 위해 인스턴스화하는 하나 이상의 _서비스 클라이언트_ 와 일련의 지원 유형으로 구성됩니다.
 
-### Service client
+### 서비스 클라이언트(Service client)
 
-The service client is the primary entry point for users of the library. A service client exposes one or more methods that allow them to interact with the service.
+{% include requirement/MUST id="python-client-namespace" %} 서비스 클라이언트는 라이브러리의 유저들의 주된 진입점입니다. 서비스 클라이언트는 서비스에 상호작용을 허가하는 하나 또는 그 이상의 방법들을 노출합니다.
 
-{% include requirement/MUST id="python-client-namespace" %} expose the service clients the user is more likely to interact with from the root namespace of your package. Specialized service clients may be placed in sub-namespaces.
+유저가 상호작용할 가능성이 높은 서비스 클라이언트 패키지의 최상위 네임스페이스에 표시하십시오. 전문화된 서비스 클라이언트는 하위 네임스페이스에 배치할 수 있습니다.
 
-{% include requirement/MUST id="python-client-naming" %} name service client types with a **Client** suffix.
+{% include requirement/MUST id="python-client-naming" %} **Client** 접미사를 사용하여 서비스 클라이언트 타입의 이름을 지정하십시오.
 
-{% include requirement/MUST id="python-client-sync-async-separate-clients" %} provide separate sync and async clients. See the [Async Support](#async-support) section for more information.
+{% include requirement/MUST id="python-client-sync-async-separate-clients" %} 각각의 동기 및 비동기 클라이언트를 제공하십시오. 추가적인 정보를 위해서 [Async Support](#async-support) 섹션을 확인하십시오.
 
 ```python
 # Yes
@@ -95,11 +96,11 @@ class CosmosProxy(object) ...
 class CosmosUrl(object) ...
 ```
 
-{% include requirement/MUST id="python-client-immutable" %} make the service client immutable. See the [Client Immutability](#client-immutability) section for more information.
+{% include requirement/MUST id="python-client-immutable" %} 서비스 클라이언트를 변경할 수 없게 만드십시오. 추가적인 정보를 위해서 [Client Immutability](#client-immutability) 섹션을 확인하십시오.
 
-#### Constructors and factory methods
+#### 생성자 및 팩토리 메소드(Constructors and factory methods)
 
-Only the minimal information needed to connect and interact with the service should be required in order to construct a client instance. All additional information should be optional and passed in as optional keyword-only arguments.
+클라이언트 인스턴스를 구성하기 위해 서비스에 연결하거나 상호 작용하는 데 필요한 최소한의 정보가 필요합니다. 모든 추가 정보는 선택 사항이며 선택적 키워드-전용 인수로 전달되어야 합니다.
 
 ##### Client configuration
 
