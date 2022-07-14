@@ -35,14 +35,14 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * SDK는 목표하는 언어와 생태계 안에서 가장 평범한 방법을 통해 쉽게 얻을 수 있어야 합니다.
 * 개발자들은 새로운 서비스 개념을 배울 때 압도당할 수 있습니다. 핵심 사용 사례들은 쉽게 발견할 수 있어야 합니다.
 
-#### Diagnosable
+#### 진단가능성 (Diagnosable)
 
-* The developer should be able to understand what is going on.
-* It should be discoverable when and under what circumstances a network call is made.
-* Defaults are discoverable and their intent is clear.
-* Logging, tracing, and exception handling are fundamental and should be thoughtful.
-* Error messages should be concise, correlated with the service, actionable, and human readable. Ideally, the error message should lead the consumer to a useful action that they can take.
-* Integrating with the preferred debugger for the target language should be easy.
+* 개발자는 무슨 일이 일어나고 있는지 이해할 수 있어야 합니다.
+* 언제, 어떤 상황에서 네트워크 호출이 이루어졌는지 발견할 수 있어야 합니다.
+* 기본값은 검색할 수 있으며 의도가 명확합니다.
+* 로깅, 추적 및 예외 처리는 기본적이며 신중해야 합니다.
+* 오류 메시지는 간결해야 하고 서비스와 연관되어 있어야 하며 실행 가능하고 사람이 읽을 수 있어야 합니다. 이상적으로는 오류 메시지를 통해 소비자가 취할 수 있는 유용한 조처를 하도록 유도해야 합니다.
+* 대상 언어에 대해 선호하는 디버거와 통합이 쉬워야 합니다.
 
 #### Dependable
 
