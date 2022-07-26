@@ -1,48 +1,49 @@
 ---
-title: "Policies: Releases"
+title: "정책: 릴리즈"
 permalink: policies_releases.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-The release policy for the Azure SDK accommodates the need to release different SDK packages based on the ship cycle of the underlying service.
+Azure SDK에 대한 릴리스 정책은 기본 서비스의 배포 주기에 따라 다른 SDK 패키지를 릴리스해야 하는 필요성을 수용합니다.
 
 ## Exit Criteria
 
-The following are mandatory actions required when releasing a new version of any service SDK.
+다음은 서비스 SDK의 새 버전을 릴리스할 때 필요한 필수 작업입니다.
 
-### 1) Language coverage
+### 1) 언어 커버리지
 
-Market data and customer engagement studies clearly indicate that a cloud provider’s support of several programming languages and great developer experiences via SDK’s & tools can heavily impact a customer’s decision in choosing a cloud provider over others. In the same way, bad experiences both in getting started scenarios as well as total cost of ownership can drive customers away. It is important that Azure provides a uniform story for language coverage in its primary languages in order to raise customer confidence that they will be able to use any of Azure’s services in their solutions if they are using one of these languages. Customers feel that their language choice limits the services that they can choose to use easily from that language. The intent is that this is not a service by service evaluation of customer demand and more of an Azure platform statement that all of Azure’s services are easily usable in these primary languages.
+시장 데이터 및 고객 참여 연구에 따르면 SDK 및 도구를 통해 클라우드 제공자가 여러 프로그래밍 언어를 지원하고 좋은 개발자 경험을 제공하면 클라우드 제공업체를 선택하는 고객의 결정에 큰 영향을 미칠 수 있습니다.
+마찬가지로, 시작 시나리오와 총 구현 비용의 나쁜 경험은 고객을 멀어지게 할 수 있습니다. Azure는 고객이 아래 언어 중 하나를 사용하는 경우 솔루션에서 Azure의 서비스를 사용할 수 있다는 확신을 높이기 위해 기본 언어의 언어 적용 범위에 대해 통일된 스토리를 제공하는 것이 중요합니다. 고객은 언어 선택이 해당 언어에서 쉽게 사용할 수 있는 서비스를 제한한다고 느낍니다. 이는 고객의 평가에 의한 서비스가 아니라, Azure의 모든 서비스가 이러한 기본 언어로 쉽게 사용할 수 있다는 것에 가깝다는 것입니다.
 
-We’re motivated to provide high quality SDKs to deliver a great experience for Azure developers leveraging and interacting with Azure services.
+우리는 Azure 서비스를 활용하고 상호 작용하는 Azure 개발자에게 훌륭한 경험을 제공하기 위해 고품질 SDK를 제공하고자 합니다.
 
-At the moment we are committed to building and supporting an SDK for each of these primary languages SDKs for all azure services:
+현재 우리는 모든 azure 서비스에 대해 다음과 같은 기본 언어 SDK 각각에 대한 SDK를 빌드하고 지원하기 위해 최선을 다하고 있습니다.
 
 - Java
 - .NET
 - Python
 - TS/JS
 
-We recommended supporting additional key languages depending on the business scenarios and critical customer demand. Non primary languages depend much more heavily on contributions from outside the Azure SDK team.
+비즈니스 시나리오와 중요한 고객 요구에 따라 추가 언어를 지원하는 것이 좋습니다. 기본으로 지원하지 않는 언어는 Azure SDK 팀 외부의 기여에 훨씬 더 많이 의존합니다.
 
-### 2) Change logs & Migration Guides
+### 2) 변경 로그 및 마이그레이션 가이드
 
-Facilitating a swift transition of the SDKs' users to the new version being released requires clear clarification and documentation of the changes from the previous version. The type and granularity of the documentation depends on the type and scope of the release:
+SDK 사용자를 릴리즈되는 새 버전으로 신속하게 전환하려면 이전 버전의 변경 사항에 대한 명확한 설명과 문서화가 필요합니다. 문서의 유형과 세분성은 릴리스의 유형과 범위에 따라 다릅니다.
 
-#### New standards upgrade release
+#### 새로운 스텐다드 업그레이드 릴리스
 
-This covers the case when we upgrade and existing Azure SDK to the new SDKs standards. Such a release usually contains major modifications to the structure, interfaces and behavioral aspects of the existing SDKs. Such an update requires a detailed and verbose porting guide to help the adopting users understand the benefits, changes and offerings of the new SDK version. The requirement here is to:
+여기는 기존 Azure SDK를 새 SDK 표준으로 업그레이드하는 경우가 포함됩니다. 이러한 릴리스에는 일반적으로 기존 SDK의 구조, 인터페이스 및 동작 측면에 대한 주요 수정 사항이 포함됩니다. 이러한 업데이트에는 사용자가 새 SDK 버전의 이점, 변경 사항 및 제공 사항을 이해하는 데 도움이 되는 상세하고 상세한 이식 가이드가 필요합니다. 필요한 사항은 다음과 같습니다:
 
- {% include requirement/MUST %} Create a Migration guide for each language SDK. Use the [Migration guide template](migration-guide-template.md) as a reference.
+ {% include requirement/MUST %} [마이그레이션 가이드 템플릿](migration-guide-template.md)을 참고하여 각 프로그래밍 언어 SDK에 대한 마이그레이션 가이드 만들기. 
 
- {% include requirement/MUST %} Include a "Benefits" section clearing explaining the advantages of migration to this version of the SDK.
+ {% include requirement/MUST %} 이 버전의 SDK로 마이그레이션할 때의 이점을 설명하는 "장점" 섹션을 포함합니다.
 
- {% include requirement/MUST %} Place that guide in the SDK repository preferably in the root of the directory that contains the service.
+ {% include requirement/MUST %} 서비스가 포함된 디렉토리의 루트에 있는 SDK 레포지토리에 해당 가이드를 배치합니다.
 
-An example porting guide can be found [here](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging.ServiceBus/MigrationGuide.md).
+예시 포팅 가이드를 찾을 수 있습니다 [here](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging.ServiceBus/MigrationGuide.md).
 
-(Please Note) Migration guide creation will be required to obtain sign-off from the Archboard.
+(참고) Archboard에서 승인을 얻으려면 마이그레이션 가이드 생성이 필요합니다.
 
 #### New version release
 
