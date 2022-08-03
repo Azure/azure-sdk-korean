@@ -1,16 +1,16 @@
 ---
-title: "Python Guidelines: API Design"
+title: "파이썬 안내서 : API 디자인"
 keywords: guidelines python
 permalink: python_design.html
 folder: python
 sidebar: general_sidebar
 ---
 
-## Introduction
+## 개요
 
-### Design principles
+### 디자인 원칙
 
-The Azure SDK should be designed to enhance the productivity of developers connecting to Azure services. Other qualities (such as completeness, extensibility, and performance) are important but secondary. Productivity is achieved by adhering to the principles described below:
+Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성을 높이도록 설계되어야 합니다. SDK의 완전성, 확장성, 성능 등 다른 요소들도 중요하지만 부차적입니다. 아래 원칙들을 고수함으로써 생산성을 높입니다.
 
 #### 관습적 (Idiomatic)
 
@@ -44,11 +44,11 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * 오류 메시지는 간결해야 하고 서비스와 연관되어 있어야 하며 실행 가능하고 사람이 읽을 수 있어야 합니다. 이상적으로는 오류 메시지를 통해 소비자가 취할 수 있는 유용한 조처를 하도록 유도해야 합니다.
 * 대상 언어에 대해 선호하는 디버거와 통합이 쉬워야 합니다.
 
-#### Dependable
+#### 호환성 (Dependable)
 
-* Breaking changes are more harmful to a user's experience than most new features and improvements are beneficial.
-* Incompatibilities should never be introduced deliberately without thorough review and very strong justification.
-* Do not rely on dependencies that can force our hand on compatibility.
+* 하위 호환성이 보장되지 않은 새로운 기능이나 개선은 사용자 경험에 좋을 때보다 그 반대인 경우가 더 많습니다.
+* 일부러 호환성을 깨뜨리는 일은 타당한 이유와 함께 반드시 꼼꼼한 검토를 거쳐야만 합니다.
+* 향후 호환성을 점검할 일이 빈번하지 않도록 의존관계를 점검해야 합니다.
 
 ### General guidelines
 
