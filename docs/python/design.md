@@ -95,13 +95,13 @@ class CosmosProxy(object) ...
 class CosmosUrl(object) ...
 ```
 
-{% include requirement/MUST id="python-client-immutable" %} make the service 서비스 클라이언트는 불변해야합니다. [클라이언트 불변성](#client-immutability) 절에서 더 자세한 내용을 보실 수 있습니다.
+{% include requirement/MUST id="python-client-immutable" %} 서비스 클라이언트는 불변해야합니다. [클라이언트 불변성](#client-immutability) 절에서 더 자세한 내용을 보실 수 있습니다.
 
-#### Constructors and factory methods
+#### 생성자와 팩토리 메서드
 
-Only the minimal information needed to connect and interact with the service should be required in order to construct a client instance. All additional information should be optional and passed in as optional keyword-only arguments.
+서비스와 연결시키고 상호작용하는데 필요한 최소한의 전달인자만을 클라이언트 인스턴스를 생성할 때 요구해야합니다. 나머지 정보는 모두 선택적인 키워드 전달인자로 보내는 것이 바람직합니다.
 
-##### Client configuration
+##### 클라이언트 구성
 
 {% include requirement/MUST id="python-client-constructor-form" %} provide a constructor that takes positional binding parameters (for example, the name of, or a URL pointing to the service instance), a positional `credential` parameter, a `transport` keyword-only parameter, and keyword-only arguments (emulated using `**kwargs` for Python 2.7 support) for passing settings through to individual HTTP pipeline policies. See the [Authentication](#authentication) section for more information on the `credential` parameter.
 
