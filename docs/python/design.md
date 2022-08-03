@@ -76,26 +76,26 @@ API를 통해 서비스로 연결할때, 고객은 한개 이상의 _서비스 �
 
 ### 서비스 클라이언트
 
-서비스 클라이언트는 라이브러리를 사용할 때 처음으로 다루는 부분입니다. 하나 이상의 메소드를 개방하여 하여금 서비스와 상호작용할 수 있게 만들어 주지요.
+서비스 클라이언트는 라이브러리를 사용할 때 처음으로 다루는 부분입니다. 하나 이상의 메소드를 개방하여 하여금 서비스와 상호작용할 수 있게 만들어 줍니다.
 
-{% include requirement/MUST id="python-client-namespace" %} expose the service clients the user is more likely to interact with from the root namespace of your package. Specialized service clients may be placed in sub-namespaces.
+{% include requirement/MUST id="python-client-namespace" %} 상호작용이 빈번할 확률이 높은 서비스 클라이언트는 패키지의 최상위 네임스페이스에 개방시켜주세요. 특화된 특정 서비스 클라이언트는 하위 네임스페이스에 둘 수 있습니다. 
 
-{% include requirement/MUST id="python-client-naming" %} name service client types with a **Client** suffix.
+{% include requirement/MUST id="python-client-naming" %} 서비스 클라이언트 타입을 가진 객체의 이름은 **Client** 로 끝나야합니다.
 
-{% include requirement/MUST id="python-client-sync-async-separate-clients" %} provide separate sync and async clients. See the [Async Support](#async-support) section for more information.
+{% include requirement/MUST id="python-client-sync-async-separate-clients" %} 동기와 비동기 클라이언트를 별도로 제공해주세요. [비동기 지원](#async-support) 절에서 더 자세한 내용을 보실 수 있습니다.
 
 ```python
-# Yes
+# 좋습니다
 class CosmosClient(object) ...
 
-# No
+# 안됩니다
 class CosmosProxy(object) ...
 
-# No
+# 안됩니다
 class CosmosUrl(object) ...
 ```
 
-{% include requirement/MUST id="python-client-immutable" %} make the service client immutable. See the [Client Immutability](#client-immutability) section for more information.
+{% include requirement/MUST id="python-client-immutable" %} make the service 서비스 클라이언트는 불변해야합니다. [클라이언트 불변성](#client-immutability) 절에서 더 자세한 내용을 보실 수 있습니다.
 
 #### Constructors and factory methods
 
