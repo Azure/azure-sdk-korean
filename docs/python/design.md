@@ -12,7 +12,7 @@ sidebar: general_sidebar
 
 Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성을 높이도록 설계되어야 합니다. SDK의 완전성, 확장성, 성능 등 다른 요소들도 중요하지만 부차적입니다. 아래 원칙들을 고수함으로써 생산성을 높입니다.
 
-#### 관습적 (Idiomatic)
+#### 직관성 (Idiomatic)
 
 * SDK는 대상 언어에 대한 디자인 가이드라인 및 규칙을 따라야 합니다. 해당 언어의 개발자가 자연스럽게 받아들일 수 있어야 합니다.
 * 우리는 생태계의 장점과 단점을 함께 포괄합니다.
@@ -21,13 +21,13 @@ Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성
 #### 일관성 (Consistent)
 
 * 클라이언트 라이브러리는 언어 내에서 일관성이 있어야 하며, 서비스와 대상 언어 간의 일관성이 있어야 합니다. 충돌이 발생하면, 우선 언어 내의 일관성을 가장 높은 우선순위를 가지고, 모든 대상의 언어 간의 일관성을 가장 낮은 우선순위로 가집니다.
-* 로깅, HTTP 통신, 예외 처리 같은 서비스-어그노스틱(Service-agnostic)은 일관성이 있어야 하며 개발자는 클라이언트 라이브러리들 간에 이동할 때 서비스-어그노스틱(Service-agnostic)을 다시 학습할 필요가 없어야 합니다.
+* 로깅, HTTP 통신, 예외 처리 같은 일률적인 서비스는 일관성이 있어야 하며, 개발자는 클라이언트 라이브러리들 간에 이동할 때 위와 같은 일률적인 서비스를 다시 학습할 필요가 없어야 합니다.
 * 클라이언트 라이브러리와 서비스 사이에 용어의 일관성은 분석에 도움이 된다.
 * 서비스와 클라이언트 라이브러리 사이의 모든 차이점은 변덕보다는 관용적인 사용에 뿌리를 둔 현존하는 타당한(분명히 표현된) 이유가 있어야 합니다.
 * 각 대상 언어에 대한 Azure SDK는 하나의 팀이 개발한 하나의 제품처럼 느껴져야 합니다.
 * 대상 언어 간에 기능 동등성이 있어야 합니다. 이것은 서비스와의 기능 동등성보다 더 중요합니다.
 
-#### 접근하기쉽게
+#### 접근성 (Approachable)
 
 * 우리는 지원되는 기술들의 전문가로 우리의 고객들과 개발자들은 전문성을 가질 필요가 없습니다.
 * 개발자들은 Azure 서비스를 성공적으로 사용하기 쉽게 해주는 좋은 문서(튜토리얼, 방법 문서, 샘플들 및 API 문서)를 찾아야 합니다.
@@ -50,33 +50,33 @@ Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성
 * 일부러 호환성을 깨뜨리는 일은 타당한 이유와 함께 반드시 꼼꼼한 검토를 거쳐야만 합니다.
 * 향후 호환성을 점검할 일이 빈번하지 않도록 의존관계를 점검해야 합니다.
 
-### General guidelines
+### 일반적 가이드라인
 
-The API surface of your client library must have the most thought as it is the primary interaction that the consumer has with your service.
+클라이언트 라이브러리의 API에 정말 많은 노력을 기울여야해요. 서비스의 첫인상이자 주로 쓰는 상호작용 방법이기 때문입니다.
 
-{% include requirement/MUST id="python-feature-support" %} support 100% of the features provided by the Azure service the client library represents. Gaps in functionality cause confusion and frustration among developers.
+{% include requirement/MUST id="python-feature-support" %} Azure 서비스가 제공하는 100%의 기능을 모두 클라이언트 라이브러리에서 지원해야합니다. 기능이 빠져있다면 개발자로서 아주 난감할 것이기 때문입니다.
 
-### Non-HTTP based services
+### HTTP 기반이 아닌 서비스
 
-These guidelines were written primarily with a HTTP based request/response in mind, but many general guidelines apply to other types of services as well. This includes, but is not limited to, packaging and naming, tools and project structures.
+이 안내서는 HTTP 기반 요청/응답 구조를 염두에 두고 작성했지만, 아닌 서비스들에도 많은 부분을 적용하실 수 있습니다. 예로 들면 패키징과 네이밍, 도구와 프로젝트 구조를 비롯한 서비스들이 있어요.
 
-Please contact the [Architecture board] for more guidance on non HTTP/REST based services.
+HTTP/REST 기반이 아닌 서비스들에 대해 더 자세한 문의사항이 있으시다면 [아키텍처 위원회]에 문의해주시길 바랍니다.
 
-### Supported python versions
+### 지원 중인 파이썬 버전
 
-{% include requirement/MUST id="python-general-version-support" %} support Python 2.7 and 3.5.3+.
+{% include requirement/MUST id="python-general-version-support" %} 파이썬 3.7 이상을 지원하고 있습니다.
 
-{% include requirement/SHOULD id="python-general-universal-pkg" %} provide a [universal package] that works on all supported versions of Python, unless there's a compelling reason to have separate Python2 and Python3 packages.
+{% include requirement/SHOULD id="python-general-universal-pkg" %} 버전 별로 패키지를 구성해야만 하는 이유가 없다면, 지원 중인 모든 파이썬 버전에 통용되는 [범용 패키지]를 제공해주시길 바랍니다.
 
-For example, if you depend on different external packages for Python2 and Python3, and neither external dependency is available for both Python versions.
+예시로 의존관계인 외부 패키지가 모든 버전에 없기 때문에, 버전별로 서로 다른 외부 패키지에 의존해야만 하는 경우가 있습니다.
 
-## Azure SDK API Design
+## Azure SDK API 디자인
 
-Your API surface will consist of one or more _service clients_ that the consumer will instantiate to connect to your service, plus a set of supporting types.
+API를 통해 서비스로 연결할때, 고객은 한개 이상의 _서비스 클라이언트_ 인스턴스를 생성할 것입니다. 이때 이 과정을 돕는 여러개의 타입들도 API 내부에 존재할 것입니다. (todo: plus a set of supporting types)
 
-### Service client
+### 서비스 클라이언트
 
-The service client is the primary entry point for users of the library. A service client exposes one or more methods that allow them to interact with the service.
+서비스 클라이언트는 라이브러리를 사용할 때 처음으로 다루는 부분입니다. 하나 이상의 메소드를 개방하여 하여금 서비스와 상호작용할 수 있게 만들어 주지요.
 
 {% include requirement/MUST id="python-client-namespace" %} expose the service clients the user is more likely to interact with from the root namespace of your package. Specialized service clients may be placed in sub-namespaces.
 
