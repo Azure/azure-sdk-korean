@@ -1,18 +1,18 @@
 ---
-title: "Python Guidelines: API Design"
+title: "파이썬 안내서 : API 디자인"
 keywords: guidelines python
 permalink: python_design.html
 folder: python
 sidebar: general_sidebar
 ---
 
-## Introduction
+## 개요
 
-### Design principles
+### 디자인 원칙
 
-The Azure SDK should be designed to enhance the productivity of developers connecting to Azure services. Other qualities (such as completeness, extensibility, and performance) are important but secondary. Productivity is achieved by adhering to the principles described below:
+Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성을 높이도록 설계되어야 합니다. SDK의 완전성, 확장성, 성능 등 다른 요소들도 중요하지만 부차적입니다. 아래 원칙들을 고수함으로써 생산성을 높입니다.
 
-#### 관습적 (Idiomatic)
+#### 직관성 (Idiomatic)
 
 * SDK는 대상 언어에 대한 디자인 가이드라인 및 규칙을 따라야 합니다. 해당 언어의 개발자가 자연스럽게 받아들일 수 있어야 합니다.
 * 우리는 생태계의 장점과 단점을 함께 포괄합니다.
@@ -21,13 +21,13 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 #### 일관성 (Consistent)
 
 * 클라이언트 라이브러리는 언어 내에서 일관성이 있어야 하며, 서비스와 대상 언어 간의 일관성이 있어야 합니다. 충돌이 발생하면, 우선 언어 내의 일관성을 가장 높은 우선순위를 가지고, 모든 대상의 언어 간의 일관성을 가장 낮은 우선순위로 가집니다.
-* 로깅, HTTP 통신, 예외 처리 같은 서비스-어그노스틱(Service-agnostic)은 일관성이 있어야 하며 개발자는 클라이언트 라이브러리들 간에 이동할 때 서비스-어그노스틱(Service-agnostic)을 다시 학습할 필요가 없어야 합니다.
+* 로깅, HTTP 통신, 예외 처리 같은 일률적인 서비스는 일관성이 있어야 하며, 개발자는 클라이언트 라이브러리들 간에 이동할 때 위와 같은 일률적인 서비스를 다시 학습할 필요가 없어야 합니다.
 * 클라이언트 라이브러리와 서비스 사이에 용어의 일관성은 분석에 도움이 된다.
 * 서비스와 클라이언트 라이브러리 사이의 모든 차이점은 변덕보다는 관용적인 사용에 뿌리를 둔 현존하는 타당한(분명히 표현된) 이유가 있어야 합니다.
 * 각 대상 언어에 대한 Azure SDK는 하나의 팀이 개발한 하나의 제품처럼 느껴져야 합니다.
 * 대상 언어 간에 기능 동등성이 있어야 합니다. 이것은 서비스와의 기능 동등성보다 더 중요합니다.
 
-#### 접근하기쉽게
+#### 접근성 (Approachable)
 
 * 우리는 지원되는 기술들의 전문가로 우리의 고객들과 개발자들은 전문성을 가질 필요가 없습니다.
 * 개발자들은 Azure 서비스를 성공적으로 사용하기 쉽게 해주는 좋은 문서(튜토리얼, 방법 문서, 샘플들 및 API 문서)를 찾아야 합니다.
@@ -44,11 +44,11 @@ The Azure SDK should be designed to enhance the productivity of developers conne
 * 오류 메시지는 간결해야 하고 서비스와 연관되어 있어야 하며 실행 가능하고 사람이 읽을 수 있어야 합니다. 이상적으로는 오류 메시지를 통해 소비자가 취할 수 있는 유용한 조처를 하도록 유도해야 합니다.
 * 대상 언어에 대해 선호하는 디버거와 통합이 쉬워야 합니다.
 
-#### Dependable
+#### 호환성 (Dependable)
 
-* Breaking changes are more harmful to a user's experience than most new features and improvements are beneficial.
-* Incompatibilities should never be introduced deliberately without thorough review and very strong justification.
-* Do not rely on dependencies that can force our hand on compatibility.
+* 하위 호환성이 보장되지 않은 새로운 기능이나 개선은 사용자 경험에 좋을 때보다 그 반대인 경우가 더 많습니다.
+* 일부러 호환성을 깨뜨리는 일은 타당한 이유와 함께 반드시 꼼꼼한 검토를 거쳐야만 합니다.
+* 향후 호환성을 점검할 일이 빈번하지 않도록 의존관계를 점검해야 합니다.
 
 ### General guidelines
 
