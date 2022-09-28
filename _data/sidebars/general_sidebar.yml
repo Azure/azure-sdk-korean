@@ -3,6 +3,24 @@ entries:
   levels: one
   folders:
   
+  - title: Azure SDK 소개, 활용 그리고 기여
+    folderitems:
+      - title: Azure SDK 소개
+        url: /
+      - title: Azure SDK 설치
+        url: /
+      - title: Azure SDK 사용
+        url: /
+      - title: Azure SDK 기여
+        url: /
+        subfolders:
+            - title: 컨트리뷰션 가이드
+              subfolderitems:
+        subfolders:
+            - title: 주제별 주요 컨트리뷰션
+              subfolderitems:
+                - title: CSpell
+                  url: /contribution_cspell
   - title: 공통 가이드라인
     folderitems:
       - title: 소개
