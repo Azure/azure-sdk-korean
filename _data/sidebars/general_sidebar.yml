@@ -21,6 +21,8 @@ entries:
               subfolderitems:
                 - title: CSpell
                   url: /contribution_cspell
+                - title: Python Version Drop
+                  url: /contribution_drop
   - title: 공통 가이드라인
     folderitems:
       - title: 소개
