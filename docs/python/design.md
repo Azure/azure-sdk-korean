@@ -50,39 +50,39 @@ Azure SDK는 무엇보다 Azure 서비스를 사용하는 개발자의 생산성
 * 일부러 호환성을 깨뜨리는 일은 타당한 이유와 함께 반드시 꼼꼼한 검토를 거쳐야만 합니다.
 * 향후 호환성을 점검할 일이 빈번하지 않도록 의존관계를 점검해야 합니다.
 
-### General guidelines
+### 일반적 가이드라인
 
-The API surface of your client library must have the most thought as it is the primary interaction that the consumer has with your service.
+클라이언트 라이브러리의 API에 정말 많은 노력을 기울여야합니다. 서비스의 첫인상이자 주로 쓰는 상호작용 방법이기 때문입니다.
 
-{% include requirement/MUST id="python-feature-support" %} support 100% of the features provided by the Azure service the client library represents. Gaps in functionality cause confusion and frustration among developers.
+{% include requirement/MUST id="python-feature-support" %} Azure 서비스가 제공하는 100%의 기능을 모두 클라이언트 라이브러리에서 지원해야합니다. 기능이 빠져있다면 개발자로서 아주 난감할 것이기 때문입니다.
 
-### Non-HTTP based services
+### HTTP 기반이 아닌 서비스
 
-These guidelines were written primarily with a HTTP based request/response in mind, but many general guidelines apply to other types of services as well. This includes, but is not limited to, packaging and naming, tools and project structures.
+이 안내서는 HTTP 기반 요청/응답 구조를 염두에 두고 작성했지만, 아닌 서비스들에도 많은 부분을 적용하실 수 있습니다. 예로 들면 패키징과 네이밍, 도구와 프로젝트 구조를 비롯한 서비스들이 있습니다.
 
-Please contact the [Architecture board] for more guidance on non HTTP/REST based services.
+HTTP/REST 기반이 아닌 서비스들에 대해 더 자세한 문의사항이 있으시다면 [아키텍처 위원회]에 문의해주시길 바랍니다.
 
-### Supported python versions
+### 지원 중인 파이썬 버전
 
-{% include requirement/MUST id="python-general-version-support" %} support Python 2.7 and 3.5.3+.
+{% include requirement/MUST id="python-general-version-support" %} 파이썬 2.7과 파이썬 3.5.3 이상을 지원하고 있습니다.
 
-{% include requirement/SHOULD id="python-general-universal-pkg" %} provide a [universal package] that works on all supported versions of Python, unless there's a compelling reason to have separate Python2 and Python3 packages.
+{% include requirement/SHOULD id="python-general-universal-pkg" %} 버전 별로 패키지를 구성해야만 하는 이유가 없다면, 지원 중인 모든 파이썬 버전에 통용되는 [범용 패키지]를 제공해주시길 바랍니다.
 
-For example, if you depend on different external packages for Python2 and Python3, and neither external dependency is available for both Python versions.
+예를들어, 파이썬2와 파이썬3가 다른 외부 패키지에 의존하고, 두 파이썬 버전이 같은 외부 의존 패키지를 사용할 수 없을 때 입니다.
 
-## Azure SDK API Design
+## Azure SDK API 디자인
 
-Your API surface will consist of one or more _service clients_ that the consumer will instantiate to connect to your service, plus a set of supporting types.
+API를 통해 서비스로 연결할때, 고객은 한개 이상의 _서비스 클라이언트_ 인스턴스를 생성할 것입니다. 이때 이 과정을 돕는 여러개의 타입들도 API 내부에 존재할 것입니다. (todo: plus a set of supporting types)
 
-### Service client
+### 서비스 클라이언트
 
-The service client is the primary entry point for users of the library. A service client exposes one or more methods that allow them to interact with the service.
+서비스 클라이언트는 라이브러리를 사용할 때 처음으로 다루는 부분입니다. 하나 이상의 메소드를 개방하여 하여금 서비스와 상호작용할 수 있게 만들어 줍니다.
 
-{% include requirement/MUST id="python-client-namespace" %} expose the service clients the user is more likely to interact with from the root namespace of your package. Specialized service clients may be placed in sub-namespaces.
+{% include requirement/MUST id="python-client-namespace" %} 상호작용이 빈번할 확률이 높은 서비스 클라이언트는 패키지의 최상위 네임스페이스에 개방시켜주세요. 특화된 특정 서비스 클라이언트는 하위 네임스페이스에 둘 수 있습니다. 
 
-{% include requirement/MUST id="python-client-naming" %} name service client types with a **Client** suffix.
+{% include requirement/MUST id="python-client-naming" %} 서비스 클라이언트 타입을 가진 객체의 이름은 **Client** 로 끝나야합니다.
 
-{% include requirement/MUST id="python-client-sync-async-separate-clients" %} provide separate sync and async clients. See the [Async Support](#async-support) section for more information.
+{% include requirement/MUST id="python-client-sync-async-separate-clients" %} 동기와 비동기 클라이언트를 별도로 제공해주세요. [비동기 지원](#async-support) 절에서 더 자세한 내용을 보실 수 있습니다.
 
 ```python
 # Yes
@@ -91,17 +91,17 @@ class CosmosClient(object) ...
 # No
 class CosmosProxy(object) ...
 
-# No
+# Yes
 class CosmosUrl(object) ...
 ```
 
-{% include requirement/MUST id="python-client-immutable" %} make the service client immutable. See the [Client Immutability](#client-immutability) section for more information.
+{% include requirement/MUST id="python-client-immutable" %} 서비스 클라이언트는 불변해야합니다. [클라이언트 불변성](#client-immutability) 절에서 더 자세한 내용을 보실 수 있습니다.
 
-#### Constructors and factory methods
+#### 생성자와 팩토리 메서드
 
-Only the minimal information needed to connect and interact with the service should be required in order to construct a client instance. All additional information should be optional and passed in as optional keyword-only arguments.
+서비스와 연결시키고 상호작용하는데 필요한 최소한의 인자만을 클라이언트 인스턴스를 생성할 때 요구해야합니다. 나머지 정보는 모두 선택적인 키워드 전달인자로 보내는 것이 바람직합니다.
 
-##### Client configuration
+##### 클라이언트 구성
 
 {% include requirement/MUST id="python-client-constructor-form" %} provide a constructor that takes positional binding parameters (for example, the name of, or a URL pointing to the service instance), a positional `credential` parameter, a `transport` keyword-only parameter, and keyword-only arguments (emulated using `**kwargs` for Python 2.7 support) for passing settings through to individual HTTP pipeline policies. See the [Authentication](#authentication) section for more information on the `credential` parameter.
 
