@@ -23,6 +23,8 @@ entries:
                   url: /contribution_cspell
                 - title: Python Version Drop
                   url: /contribution_drop
+                - title: Python type hint add
+                  url: /contribution_typehint
   - title: 공통 가이드라인
     folderitems:
       - title: 소개
