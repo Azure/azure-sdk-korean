@@ -9,7 +9,7 @@ Git 브랜칭과 워크플로우 전략은 대부분 [OneFlow](https://www.endof
 
 ## 메인 브랜치
 
- 메인은 항상 존재하고, 절대 강제로 푸시하면 안 되는 기본 브랜치입니다. 메인 브랜치는 항상 작동하는 상태를 유지해야 하며, CI(Continuous Integration) 빌드가 성공적으로 수행되어야 합니다 (예: 빌드, 분석, 테스트가 모두 통과). 나머지 모든 브랜치는 의도적으로 짧은 수명을 가지도록 설계되었으며, 더 이상 필요하지 않을 경우 삭제해야 합니다.
+ `main`은 항상 존재하고, 절대 강제로 푸시하면 안 되는 기본 브랜치입니다. 메인 브랜치는 항상 작동하는 상태를 유지해야 하며, CI(Continuous Integration) 빌드가 성공적으로 수행되어야 합니다 (예: 빌드, 분석, 테스트가 모두 통과). 나머지 모든 브랜치는 의도적으로 짧은 수명을 가지도록 설계되었으며, 더 이상 필요하지 않을 경우 삭제해야 합니다.
 
 메인 브랜치는 언제나 빌드 가능한 상태를 유지하지만, 항상 최신으로 배포된 공식 패키지의 상태를 반영하는 것은 아닙니다. 특정 배포된 패키지의 코드 상태를 파악하려면 그 패키지에 대한 태그를 참조해야 합니다. 이 규칙은 각각의 프로그래밍 언어 레포지토리에 따라 다를 수 있습니다. 예를 들어 파이썬이나 자바스크립트처럼 소스 코드를 직접 참조할 수 있는 언어들은 메인 브랜치가 항상 최신으로 배포된 공식 패키지와 동일한 상태를 유지하려는 경향이 있습니다. 그러므로 각 언어 레포지토리의 구체적인 지침을 참고해야 합니다.
 
@@ -17,7 +17,7 @@ Git 브랜칭과 워크플로우 전략은 대부분 [OneFlow](https://www.endof
 
 메인 레포지토리의 브랜치 혼잡을 줄이고, 다른 권한을 가진 기여자와 커뮤니티 회원들 모두에게 공통의 작업 흐름을 가능하게 하기 위해, 구성원들은 메인 레포지토리를 포크하여 작업을 진행해야 합니다. 포크에서의 작업이 준비되면 Pull Request를 메인 레포지토리에 제출할 수 있습니다.
 
-포크를 사용하는데 대한 간단한 시작 지침을 위한 다음 몇가지 섹션을 참조하십시오. 또한 Github에서 더 자세한 문서를 보려면 [관련문서](https://help.github.com/en/articles/working-with-forks)를 참조하십시오. 
+포크를 사용하는데 대한 간단한 시작 지침을 위한 다음 몇가지 섹션을 참조하십시오. 또한 Github에서 더 자세한 문서를 보려면 [working-with-forks](https://help.github.com/en/articles/working-with-forks)를 참조하십시오. 
 
 ### 포크된 레포지토리 복제하기
 
@@ -56,7 +56,7 @@ git push origin main
 
 이 시점에서 세 개의 레포지토리(로컬, origin, upstream)가 모두 일치하고 동기화되어야 합니다.
 
-로컬 또는 origin의 메인 브랜치가 실수로 동기화에서 벗어나는 것을 방지하기 위해 --ff-only (fast-forward only) 옵션을 사용합니다. 이 옵션은 메인 레포지토리에 이미 존재하지 않는 커밋이 있는 경우 실패하게 됩니다. 이와 같은 상태에 빠지게 된다면, 가장 간단한 해결 방법은 로컬의 메인 브랜치를 강제로 리셋하는 것입니다.
+로컬 또는 origin의 메인 브랜치가 실수로 동기화에서 벗어나는 것을 방지하기 위해 `--ff-only`(fast-forward only) 옵션을 사용합니다. 이 옵션은 메인 레포지토리에 이미 존재하지 않는 커밋이 있는 경우 실패하게 됩니다. 이와 같은 상태에 빠지게 된다면, 가장 간단한 해결 방법은 로컬의 메인 브랜치를 강제로 리셋하는 것입니다.
 
 ```bash
 # Warning: this will remove any commits you might have in your local main so if
@@ -104,7 +104,7 @@ git rebase main
 git push origin <branch-name> -f
 ```
 
-_Tip_: 변경 사항을 합치고자 한다면, -i 옵션을 rebase 명령어에 추가하여 대화형 모드로 전환하고 합치고자 하는 커밋을 선택할 수 있습니다. 대화형 모드에 대한 정보는 [관련 문서](https://www.git-scm.com/docs/git-rebase#_interactive_mode)를 참고하십시오. 
+_Tip_: 변경 사항을 합치고자 한다면, -i 옵션을 rebase 명령어에 추가하여 대화형 모드로 전환하고 합치고자 하는 커밋을 선택할 수 있습니다. 대화형 모드에 대한 정보는 [interactive mode](https://www.git-scm.com/docs/git-rebase#_interactive_mode)를 참고하십시오. 
 
 ## Feature 브랜치
 
@@ -152,6 +152,6 @@ Hotfix 브랜치가 생성된 후에는 평소에 사용하던 작업 프로세�
 
 변경사항이 `hotfix/<hotfix name>` 브랜치로 병합된 후, 메인에서 사용하는 것과 동일한 Release 프로세스를 사용하여 해당 브랜치에서 Release를 생성할 수 있습니다. 그러나 빌드를 대기열에 추가할 때 브랜치 이름을 반드시 `hotfix/<hotfix name>`로 설정해야 합니다.
 
-만약 변경사항이 main에서 체리픽(cherry-pick)되지 않았고, main에서 필요하다면 `hotfix/<hotfix name>` 브랜치에서 `main`으로 병합(`git merge hotfix/<hotfix name>`)해야 합니다. 병합할 때는 `main`의 버전 번호를 유지하고, CHANGELOG 항목이 날짜 그리고 버전별로 정렬되어 있는지 확인해야 합니다.
+만약 변경사항이 `main`으로 체리픽(cherry-pick)되지 않았고, `main`에 필요하다면 `git merge hotfix/<hotfix name>` 명령을 사용하여 `hotfix/<hotfix name>` 브랜치를 `main`으로 병합해야 합니다. 이때 병합을 수행할 때는 `main`의 버전 번호를 유지하고, CHANGELOG 항목이 날짜와 버전별로 정렬되어 있는지 확인해야 합니다.
 
 Hotfix가 배포되고 변경 사항이 `main`으로 병합되면, `hotfix/<hotfix name>` 브랜치를 삭제해야 합니다. 필요한 경우, 나중에 마지막 Release 태그로부터 항상 재생성할 수 있습니다.
