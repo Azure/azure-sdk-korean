@@ -1,35 +1,51 @@
 ---
-title: "General Guidelines: Implementation"
+title: "공통 가이드라인: 구현"
 keywords: guidelines
 permalink: general_implementation.html
 folder: general
 sidebar: general_sidebar
 ---
 
-Once you have worked through an acceptable API surface, you can start implementing the service clients.
+허용 가능한 API 표면을 통해 작업을 한 뒤부터는, 서비스 클라이언트의 구현을 시작하실 수 있습니다.
 
-## Configuration
+## 구성
 
-When configuring your client library, particular care must be taken to ensure that the consumer of your client library can properly configure the connectivity to your Azure service both globally (along with other client libraries the consumer is using) and specifically with your client library.
+당신의 클라이언트 라이브러리를 구성할 때는, 해당 클라이언트 라이브러리를 사용하는 사용자가 Azure 서비스에 대한 연결을 (그 사용자가 사용하고 있는 다른 클라이언트 라이브러리와) 전반적으로(globally) 그리고 당신의 클라이언트 라이브러리와 특정적으로(specifically) 모두 적절하게 구성할 수 있도록 각별히 주의를 기울여야 합니다.
 
-### Client configuration
+### 클라이언트 구성
 
-{% include requirement/MUST id="general-config-global-config" %} use relevant global configuration settings either by default or when explicitly requested to by the user, for example by passing in a configuration object to a client constructor.
+{% include requirement/MUST id="general-config-global-config" %} 관련 글로벌 구성 설정은 기본(default)으로 사용하거나 사용자에 의해 명시적으로 요청된 경우(예: 클라이언트 생성자에 구성 객체를 전달하는 등)에 사용하세요.
+<!--
+use relevant global configuration settings either by default or when explicitly requested to by the user, for example by passing in a configuration object to a client constructor.
+-->
 
-{% include requirement/MUST id="general-config-for-different-clients" %} allow different clients of the same type to use different configurations.
+{% include requirement/MUST id="general-config-for-different-clients" %} 동일 유형의 서로 다른 클라이언트들이 서로 다른 구성을 사용할 수 있도록 허용하세요.
 
-{% include requirement/MUST id="general-config-optout" %} allow consumers of your service clients to opt out of all global configuration settings at once.
+{% include requirement/MUST id="general-config-optout" %} 
+서비스 클라이언트의 소비자가 모든 글로벌 구성 설정을 한 번에 취소(opt out)할 수 있도록 허용하세요.
+<!--
+allow consumers of your service clients to opt out of all global configuration settings at once.
+-->
 
-{% include requirement/MUST id="general-config-global-overrides" %} allow all global configuration settings to be overridden by client-provided options. The names of these options should align with any user-facing global configuration keys.
+{% include requirement/MUST id="general-config-global-overrides" %} 모든 글로벌 구성 설정을 클라이언트 제공 옵션으로 재정의할 수 있도록 허용하세요. 이러한 옵션의 이름들은 사용자에게 보이는 글로벌 구성 키들과 일치해야 합니다.
+<!--
+allow all global configuration settings to be overridden by client-provided options. The names of these options should align with any user-facing global configuration keys.
+-->
 
-{% include requirement/MUSTNOT id="general-config-behaviour-changes" %} change behavior based on configuration changes that occur after the client is constructed. Hierarchies of clients inherit parent client configuration unless explicitly changed or overridden. Exceptions to this requirement are as follows:
+{% include requirement/MUSTNOT id="general-config-behaviour-changes" %} 클라이언트가 구성된 후에 발생하는 구성 변경사항에 따라 동작을 변경하지 마세요. 클라이언트의 계층 구조는 명시적으로 변경되거나 재정의되지 않는 한 부모 클라이언트의 구성을 상속합니다. 이 요구 사항에 대한 예외는 다음과 같습니다:
+
+1. 로그 수준 (Log level): Azure SDK 전체에 즉시 적용되어야 합니다.
+2. 추적 끄기/켜기 (Tracing on/off): Azure SDK 전체에 즉시 적용되어야 합니다.
+<!--
+change behavior based on configuration changes that occur after the client is constructed. Hierarchies of clients inherit parent client configuration unless explicitly changed or overridden. Exceptions to this requirement are as follows:
 
 1. Log level, which must take effect immediately across the Azure SDK.
 2. Tracing on/off, which must take effect immediately across the Azure SDK.
+-->
 
-### Service-specific environment variables
+### 서비스별 환경 변수
 
-{% include requirement/MUST id="general-config-envvars-prefix" %} prefix Azure-specific environment variables with `AZURE_`.
+{% include requirement/MUST id="general-config-envvars-prefix" %} Azure별 환경 변수의 접두사를 `AZURE_`로 지정합니다.
 
 {% include requirement/MAY id="general-config-envvars-use-client-specific" %} use client library-specific environment variables for portal-configured settings which are provided as parameters to your client library. This generally includes credentials and connection details. For example, Service Bus could support the following environment variables:
 
