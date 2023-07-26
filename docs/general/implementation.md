@@ -10,7 +10,7 @@ sidebar: general_sidebar
 
 ## 구성
 
-당신의 클라이언트 라이브러리를 구성할 때는, 해당 클라이언트 라이브러리를 사용하는 사용자가 Azure 서비스에 대한 연결을 (그 사용자가 사용하고 있는 다른 클라이언트 라이브러리와) 전반적으로(globally) 그리고 당신의 클라이언트 라이브러리와 특정적으로(specifically) 모두 적절하게 구성할 수 있도록 각별히 주의를 기울여야 합니다.
+당신의 클라이언트 라이브러리를 구성할 때는, 해당 클라이언트 라이브러리를 사용하는 소비자가 Azure 서비스에 대한 연결을 (그 소비자가 사용하고 있는 다른 클라이언트 라이브러리와) 전반적으로(globally) 그리고 당신의 클라이언트 라이브러리와 특정적으로(specifically) 모두 적절하게 구성할 수 있도록 각별히 주의를 기울여야 합니다.
 
 ### 클라이언트 구성
 
@@ -152,44 +152,99 @@ HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 �
  use the policy implementations in Azure Core whenever possible.  Do not try to "write your own" policy unless it is doing something unique to your service.  If you need another option to an existing policy, engage with the [Architecture Board] to add the option.
  -->
 
+## 인증
+<!--
+## Authentication
+ -->
+
+인증을 구현할 때는 PII(개인 식별 정보) 유출이나 자격증명 유출과 같은 보안 허점에 소비자를 노출시키지 마세요. 자격 증명은 일반적으로 시간 제한이 있는 상태로 발급되며, 서비스 연결이 예상대로 계속 작동하고 있는지 확인하기 위해 주기적으로 갱신(refresh)되어야 합니다. 클라이언트 라이브러리가 현재의 모든 보안 권장 사항을 따르고 있는지 확인하고 소비자에게 잠재적인 보안 문제가 발생하지 않도록 클라이언트 라이브러리에 대한 독립적인 보안 검토를 고려하세요.
+<!--
+When implementing authentication, don't open up the consumer to security holes like PII (personally identifiable information) leakage or credential leakage. Credentials are generally issued with a time limit, and must be refreshed periodically to ensure that the service connection continues to function as expected. Ensure your client library follows all current security recommendations and consider an independent security review of the client library to ensure you're not introducing potential security problems for the consumer.
+ -->
+
+{% include requirement/MUSTNOT id="general-authimpl-no-persisting" %} 보안 자격증명을 지속, 캐시 또는 재사용하지 마세요. 보안 자격증명은 보안 문제와 자격증명 갱신 상황을 모두 처리하기 위한 일시적인 것(short lived)으로 간주해야 합니다.   
+<!--
+persist, cache, or reuse security credentials.  Security credentials should be considered short lived to cover both security concerns and credential refresh situations.
+ -->
+
+만약 당신의 서비스에서 비표준 자격 증명 시스템(즉, Azure Core에서 지원하지 않는 자격증명 시스템)을 구현하는 경우라면, 당신은 클라이언트 라이브러리에서 제공하는 대체 자격증명 타입을 사용하여 요청을 인증할 수 있는 HTTP 파이프라인에 대한 인증 정책을 생성해야 합니다.
+<!--
+If your service implements a non-standard credential system (that is, a credential system that is not supported by Azure Core), then you need to produce an authentication policy for the HTTP pipeline that can authenticate requests given the alternative credential types provided by the client library.
+ -->
+
+{% include requirement/MUST id="general-authimpl-provide-auth-policy" %} 비표준 자격증명을 사용하는 경우 HTTP 파이프라인에서 HTTP 요청을 인증하는 적절한 인증 정책을 제공하세요. 여기에는 지원되는 경우 사용자 지정 연결 문자열(custom connection strings)이 포함됩니다.
+<!--
+provide a suitable authentication policy that authenticates the HTTP request in the HTTP pipeline when using non-standard credentials.  This includes custom connection strings, if supported.
+ -->
+
+## 네이티브 코드
+<!--
+## Native code
+ -->
+
+일부 언어는 플랫폼별 네이티브 코드 플러그인 개발을 지원합니다. 이러한 경우 호환성 문제가 발생할 수 있으며 추가적인 검토가 필요합니다. 특정 언어는 머신 네이티브 형식(예: C 또는 C++)으로 컴파일되지만, 대부분의 현대 언어들은 크로스 플랫폼 지원을 위해 중간 형식으로 컴파일하는 방식을 선택합니다.
+<!--
+Some languages support the development of platform-specific native code plugins.  These cause compatibility issues and require additional scrutiny.  Certain languages compile to a machine-native format (for example, C or C++), whereas most modern languages opt to compile to an intermediary format to aid in cross-platform support.
+ -->
+
+{% include requirement/SHOULD id="general-no-nativecode" %} 언어가 머신 네이티브 형식으로 컴파일되지 않는 한 플랫폼별 / 네이티브 코드를 작성해야 합니다.
+<!--
+write platform-specific / native code unless the language compiles to a machine-native format.
+ -->
+
+## 오류 처리
+<!--
+## Error handling
+ -->
+
+오류 처리는 클라이언트 라이브러리의 구현에 있어 중요한 측면입니다. 이는 문제가 소비자에게 전달되는 주요 방법입니다. 오류가 소비자에게 보고되는 방법에는 두 가지가 있습니다. 메서드가 예외를 던지거나, 메서드가 그 반환값으로 오류 코드(또는 값)를 반환하면, 소비자는 이를 확인해야 합니다. 이 섹션에서는 "오류를 발생시킨다"는 것은 오류 값을 반환하거나 예외를 던지는 것을 의미하며, "오류"는 오류 값 또는 예외 객체입니다.
+<!--
+Error handling is an important aspect of implementing a client library. It is the primary method by which problems are communicated to the consumer. There are two methods by which errors are reported to the consumer. Either the method throws an exception, or the method returns an error code (or value) as its return value, which the consumer must then check. In this section we refer to "producing an error" to mean returning an error value or throwing an exception, and "an error" to be the error value or exception object.
+ -->
+
+{% include requirement/SHOULD id="general-errors-prefer-exceptions" %} 오류를 생성할 때는 오류 값을 반환하는 것보다 예외를 사용하는 것을 선호해야 합니다.
+<!--
+prefer the use of exceptions over returning an error value when producing an error.
+ -->
+
+{% include requirement/MUST id="general-errors-for-failed-requests" %} 서비스/Swagger에서 성공 상태 코드로 정의되지 않은 HTTP 상태 코드로 HTTP 요청이 실패할 경우 오류를 생성하세요. 이러한 오류들도 오류로 기록되어야 합니다.
+<!--
+produce an error when any HTTP request fails with an HTTP status code that is not defined by the service/Swagger as a successful status code. These errors should also be logged as errors.
+ -->
+
+{% include requirement/MUST id="general-errors-include-request-response" %} 발생한 오류에 HTTP 응답 (상태 코드 및 헤더 포함)과 발신 요청 (URL, 쿼리 매개변수, 헤더 포함)이 포함되어 있는지 확인하세요.
+<!--
+ensure that the error produced contains the HTTP response (including status code and headers) and originating request (including URL, query parameters, and headers).
+ -->
+
+여러 HTTP 요청을 생성하는 상위 수준의 메서드의 경우, 마지막 예외 또는 모든 실패에 대한 집계 예외가 생성되어야 합니다.
+<!--
+In the case of a higher-level method that produces multiple HTTP requests, either the last exception or an aggregate exception of all failures should be produced.
+ -->
+ 
+{% include requirement/MUST id="general-errors-rich-info" %} 서비스가 (응답 헤더 또는 바디를 통해) 풍부한 오류 정보를 반환하는 경우, 서비스별 프로퍼티/필드에서 생성된 오류를 통해 풍부한 정보를 사용할 수 있어야 합니다.
+<!--
+ensure that if the service returns rich error information (via the response headers or body), the rich information must be available via the error produced in service-specific properties/fields.
+ -->
+
+{% include requirement/SHOULDNOT id="general-errors-no-new-types" %} 개발자가 오류를 해결하기 위한 대체 작업을 수행할 수 있는 경우가 아니라면 새로운 오류 타입을 만들어서는 안 됩니다. 특수한 오류 타입은 Azure Core 패키지에 있는 기존 오류 타입을 기반으로 해야 합니다.
+<!--
+create a new error type unless the developer can perform an alternate action to remediate the error.  Specialized error types should be based on existing error types present in the Azure Core package.
+ -->
+
+{% include requirement/MUSTNOT id="general-errors-use-system-types" %} 언어별 오류 타입으로 충분할 경우 새 오류 타입을 만들지 마세요. 유효성 검사를 위해 시스템에서 제공하는 오류 타입을 사용하세요.
+<!--
+create a new error type when a language-specific error type will suffice.  Use system-provided error types for validation.
+ -->
+
+{% include requirement/MUST id="general-errors-documentation" %} 각 메서드에서 생성되는 오류를 문서화하세요 (일반적으로 타깃 언어로 문서화되지 않은 흔히 발생하는 오류는 제외).
+<!--
+document the errors that are produced by each method (with the exception of commonly thrown errors that are generally not documented in the target language).
+ -->
+
+
 <!--
  -->
-## Authentication
-
-When implementing authentication, don't open up the consumer to security holes like PII (personally identifiable information) leakage or credential leakage.  Credentials are generally issued with a time limit, and must be refreshed periodically to ensure that the service connection continues to function as expected.  Ensure your client library follows all current security recommendations and consider an independent security review of the client library to ensure you're not introducing potential security problems for the consumer.
-
-{% include requirement/MUSTNOT id="general-authimpl-no-persisting" %} persist, cache, or reuse security credentials.  Security credentials should be considered short lived to cover both security concerns and credential refresh situations.  
-
-If your service implements a non-standard credential system (that is, a credential system that is not supported by Azure Core), then you need to produce an authentication policy for the HTTP pipeline that can authenticate requests given the alternative credential types provided by the client library.
-
-{% include requirement/MUST id="general-authimpl-provide-auth-policy" %} provide a suitable authentication policy that authenticates the HTTP request in the HTTP pipeline when using non-standard credentials.  This includes custom connection strings, if supported.
-
-## Native code
-
-Some languages support the development of platform-specific native code plugins.  These cause compatibility issues and require additional scrutiny.  Certain languages compile to a machine-native format (for example, C or C++), whereas most modern languages opt to compile to an intermediary format to aid in cross-platform support.
-
-{% include requirement/SHOULD id="general-no-nativecode" %} write platform-specific / native code unless the language compiles to a machine-native format.
-
-## Error handling
-
-Error handling is an important aspect of implementing a client library.  It is the primary method by which problems are communicated to the consumer.  There are two methods by which errors are reported to the consumer.  Either the method throws an exception, or the method returns an error code (or value) as its return value, which the consumer must then check.  In this section we refer to "producing an error" to mean returning an error value or throwing an exception, and "an error" to be the error value or exception object.  
-
-{% include requirement/SHOULD id="general-errors-prefer-exceptions" %} prefer the use of exceptions over returning an error value when producing an error.
-
-{% include requirement/MUST id="general-errors-for-failed-requests" %} produce an error when any HTTP request fails with an HTTP status code that is not defined by the service/Swagger as a successful status code. These errors should also be logged as errors.
-
-{% include requirement/MUST id="general-errors-include-request-response" %} ensure that the error produced contains the HTTP response (including status code and headers) and originating request (including URL, query parameters, and headers).  
-
-In the case of a higher-level method that produces multiple HTTP requests, either the last exception or an aggregate exception of all failures should be produced.
-
-{% include requirement/MUST id="general-errors-rich-info" %} ensure that if the service returns rich error information (via the response headers or body), the rich information must be available via the error produced in service-specific properties/fields.
-
-{% include requirement/SHOULDNOT id="general-errors-no-new-types" %} create a new error type unless the developer can perform an alternate action to remediate the error.  Specialized error types should be based on existing error types present in the Azure Core package.
-
-{% include requirement/MUSTNOT id="general-errors-use-system-types" %} create a new error type when a language-specific error type will suffice.  Use system-provided error types for validation.
-
-{% include requirement/MUST id="general-errors-documentation" %} document the errors that are produced by each method (with the exception of commonly thrown errors that are generally not documented in the target language).
-
 ## Logging
 
 Client libraries must support robust logging mechanisms so that the consumer can adequately diagnose issues with the method calls and quickly determine whether the issue is in the consumer code, client library code, or service.
