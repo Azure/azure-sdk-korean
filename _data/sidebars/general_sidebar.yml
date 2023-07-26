@@ -130,11 +130,11 @@ entries:
         url: /ios_implementation.html
   - title: GitHub 저장소
     folderitems:
-      - title: Guidelines Contributions (영문)
+      - title: 도입 가이드라인
         url: /policies_adoption.html
-      - title: Repository structure (영문)
+      - title: 저장소 구조
         url: /policies_repostructure.html
-      - title: Repository branching (영문)
+      - title: 저장소 브랜치 관리
         url: /policies_repobranching.html
       - title: 파이프라인
         url: /policies_pipelines.html
