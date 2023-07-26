@@ -99,9 +99,9 @@ class CosmosUrl(object) ...
 
 ##### 클라이언트 구성
 
-{% include requirement/MUST id="python-client-constructor-form" %} 위치 바인딩 위치 바인딩 매개변수(예: 서비스 인스턴스의 이름이나 해당 서비스 인스턴스를 가리키는 URL), 위치 `자격증명` 매개변수, 키워드 전용 `전송` 매개변수, 그리고 개별 HTTP 파이프라인 정책에 설정을 전달하기 위한 키워드 전용 인수를 받는 생성자를 제공하세요. `자격증명` 매개변수에 대한 자세한 내용은 [인증](#인증) 섹션을 참조할 수 있습니다.
+{% include requirement/MUST id="python-client-constructor-form" %} 위치 바인딩 매개변수(e.g. 서비스 인스턴스의 이름이나 해당 서비스 인스턴스를 가리키는 URL), 위치 `자격증명` 매개변수, 키워드 전용 `전송` 매개변수, 그리고 개별 HTTP 파이프라인 정책에 설정을 전달하기 위한 키워드 전용 인수를 받는 생성자를 제공하세요. `자격증명` 매개변수에 대한 자세한 내용은 [인증](#인증) 섹션을 참조할 수 있습니다.
 
-{% include requirement/MUSTNOT id="python-client-options-naming" %} "옵션 묶음(option bag)" 객체를 사용하여 선택적 매개변수를 그룹화하는 대신 개별 키워드 전용 인자로 전달하세요.
+{% include requirement/MUSTNOT id="python-client-options-naming" %} "옵션 묶음(options bag)" 객체를 사용하여 선택적 매개변수를 그룹화하는 대신 개별 키워드 전용 인자로 전달하세요.
 
 {% include requirement/MUST id="python-client-constructor-policy-arguments" %} 선택적인 기본 요청 옵션을 키워드 인자로 받아들이고, 이를 파이프라인 정책에 전달하세요. 추가적인 정보는 [공통 서비스 작업 매개변수](#공통-서비스-작업-매개변수)를 참조할 수 있습니다.
 
@@ -115,7 +115,7 @@ client = ExampleClient('https://contoso.com/xmpl',
 
 {% include requirement/MUST id="python-client-constructor-transport-argument" %} 사용자가 특정 전송 인스턴스를 지정할 수 있도록 키워드 전용 `전송` 인수를 전달하도록 허용해야 합니다. 기본값은 동기 클라이언트의 경우 [`RequestsTransport`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.1.1/azure.core.pipeline.transport.html?highlight=transport#azure.core.pipeline.transport.RequestsTransport), 비동기 클라이언트의 경우 [`AioHttpTransport`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.1.1/azure.core.pipeline.transport.html?highlight=transport#azure.core.pipeline.transport.AioHttpTransport)이어야 합니다.
 
-{% include requirement/MUST id="python-client-connection-string" %} 클라이언트가 연결 문자열을 지원하는 경우 연결 문자열에서 클라이언트를 생성하기 위해 별도의 팩토리 클래스 메서드 `from_connection_string`를 사용하세요. from_connection_string 팩토리 메서드는 연결 문자열에 제공된 정보를 제외하고 생성자와 동일한 인수 세트를 가져야 합니다. 생성자 (`__init__` 메서드)는 연결 문자열을 **반드시 받아들이지 않아야** 하며, 이는 `from_connection_string`를 사용하는 것이 클라이언트 인스턴스를 생성하는 유일한 지원 방법이라는 것을 의미합니다. 
+{% include requirement/MUST id="python-client-connection-string" %} 클라이언트가 연결 문자열을 지원하는 경우 연결 문자열에서 클라이언트를 생성하기 위해 별도의 팩토리 클래스 메서드 `from_connection_string`를 사용하세요. `from_connection_string` 팩토리 메서드는 연결 문자열에 제공된 정보를 제외하고 생성자와 동일한 인수 세트를 가져야 합니다. 생성자 (`__init__` 메서드)는 연결 문자열을 **반드시 받아들이지 않아야** 하며, 이는 `from_connection_string`를 사용하는 것이 클라이언트 인스턴스를 생성하는 유일한 지원 방법이라는 것을 의미합니다. 
 
 해당 메서드는 연결 문자열을 파싱하고 값과 `자격증명`을 제외한 기타 키워드 전용 인수를 생성자에 **전달해야** 합니다. Azure 포털이 귀하의 서비스에 대한 연결 문자열을 제공하는 경우에만 `from_connection_string` 팩토리 메서드를 제공하세요.
 
@@ -135,11 +135,11 @@ class ExampleClientWithConnectionString(object):
 {% include_relative _includes/example_client.py %}
 ```
 
-{% include requirement/MAY id="python-client-constructor-from-url" %} URL에서 클라이언트를 생성하기 위해 별도의 팩토리 클래스 메서드 `from_<리소스 타입>_url` (예: `from_blob_url`)를 사용하세요 (서비스가 리소스에 대한 URL 전달에 의존하는 경우 - 예: Azure Blob Storage). `from_url` 팩토리 메서드는 생성자와 동일한 선택적 키워드 인수 세트를 가져야 합니다."
+{% include requirement/MAY id="python-client-constructor-from-url" %} URL에서 클라이언트를 생성하기 위해 별도의 팩토리 클래스 메서드 `from_<리소스 타입>_url` (e.g. `from_blob_url`)를 사용하세요 (서비스가 리소스에 대한 URL 전달에 의존하는 경우 - e.g. Azure Blob Storage). `from_url` 팩토리 메서드는 생성자와 동일한 선택적 키워드 인수 세트를 가져야 합니다."
 
 ##### 서비스 버전 지정
 
-{% include requirement/MUST id="python-client-constructor-api-version-argument-1" %} 문자열 타입의 선택적 api_version 키워드 전용 인수를 사용합니다. 만약 지정되었다면, 해당 API 버전은 서비스와 상호작용할 때 반드시 사용되어야 합니다. 인자가 제공되지 않으면, 기본값은 클라이언트 라이브러리가 이해하는 가장 최신의 비 미리보기 API 버전(서비스가 비 미리보기 버전을 갖고 있는 경우) 또는 가장 최신의 미리보기 API 버전(서비스가 아직 비 미리보기 API 버전을 갖고 있지 않은 경우)이어야 합니다.
+{% include requirement/MUST id="python-client-constructor-api-version-argument-1" %} 문자열 타입의 선택적 `api_version` 키워드 전용 인수를 사용합니다. 만약 지정되었다면, 해당 API 버전은 서비스와 상호작용할 때 **반드시** 사용되어야 합니다. 인자가 제공되지 않으면, 기본값은 **반드시** 클라이언트 라이브러리가 이해하는 가장 최신의 비 미리보기 API 버전(서비스가 비 미리보기 버전을 갖고 있는 경우) 또는 가장 최신의 미리보기 API 버전(서비스가 아직 비 미리보기 API 버전을 갖고 있지 않은 경우)이어야 합니다. 이 매개변수는 서비스가 이해하는 API 버전이 하나뿐이라 하더라도 라이브러리 개발자가 상호작용할 때 예상하는 API 버전을 고정하기 위해서 **반드시** 사용 가능해야합니다.
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -173,7 +173,7 @@ specific_api_version_client = ExampleClient('https://contoso.com/xmpl',
 
 ##### 클라이언트 불변성
 
-{% include requirement/MUST id="python-client-immutable-design" %} 클라이언트를 변경할 수 없도록 설계하세요. 이는 읽기 전용 속성을 사용해야 하는 것은 아니지만 (속성은 여전히 허용됨), 호출자가 클라이언트의 속성을 변경해야 하는 시나리오가 없어야 한다는 의미입니다. 클라이언트의 속성/속성을 변경해야 하는 상황이 발생하지 않도록 주의하세요.
+{% include requirement/MUST id="python-client-immutable-design" %} 클라이언트를 변경할 수 없도록 설계하세요. 이는 읽기 전용 속성을 사용해야 하는 것은 아니지만 (속성은 여전히 허용됨), 호출자가 클라이언트의 속성을 변경해야 하는 시나리오가 없어야 한다는 의미입니다. 클라이언트의 속성/특성을 변경해야 하는 상황이 발생하지 않도록 주의하세요.
 
 #### Service methods
 
@@ -192,8 +192,8 @@ specific_api_version_client = ExampleClient('https://contoso.com/xmpl',
 |`add_\<noun>`|index, item|item|컬렉션에 항목을 추가합니다. 항목은 지정된 인덱스에 추가됩니다. |
 |`get_\<noun>`|key|item|항목이 존재하지 않는 경우 예외를 발생시킵니다. |
 |`list_\<noun>`||`azure.core.ItemPaged[Item]`|`Item`들의 반복 가능한(iterable) 항목을 반환합니다. 항목이 없을 경우, 아이템이 없는 반복 가능한(iterable) 객체를 반환합니다 (`None`을 반환하거나 예외를 발생시키지 않습니다).|
-|`\<noun>\_exists`|key|`bool`|만약 항목이 존재한다면 True를 반환합니다. 만약 메서드가 항목이 존재하는지 여부를 결정하는 데 실패한 경우 (예: 서비스가 HTTP 503 응답을 반환한 경우), 예외를 발생시켜야 합니다.|
-|`delete_\<noun>`|key|`None`|기존 항목을 삭제합니다. 항목이 존재하지 않아도 반드시 성공해야 합니다.|
+|`\<noun>\_exists`|key|`bool`|만약 항목이 존재한다면 True를 반환합니다. 만약 메서드가 항목이 존재하는지 여부를 결정하는 데 실패한 경우 (e.g. 서비스가 HTTP 503 응답을 반환한 경우), **반드시** 예외를 발생시켜야 합니다.|
+|`delete_\<noun>`|key|`None`|기존 항목을 삭제합니다. 항목이 존재하지 않아도 **반드시** 성공해야 합니다.|
 |`remove_\<noun>`|key|제거된 item or `None`|컬렉션에서 항목에 대한 참조를 제거합니다. 이 메서드는 실제 항목을 삭제하지 않고 참조만 제거합니다.|
 
 {% include requirement/MUST id="python-client-standardize-verbs" %} 여러 언어 SDK에 걸쳐 주어진 서비스에 대해 선호하는 동사 목록 외부의 동사 접두사를 표준화합니다. 만약 동사를 한 언어로 `download`라고 한다면 다른 언어로 `fetch`라고 명명하는 것은 피해야 합니다.
@@ -208,7 +208,7 @@ specific_api_version_client = ExampleClient('https://contoso.com/xmpl',
 
 논리적 개체는 응답의 프로토콜 중립적 표현입니다. HTTP의 경우, 논리적 개체는 헤더, 본문 및 상태 라인의 데이터를 결합할 수 있습니다. 예를 들어, `ETag` 헤더를 논리적 개체의 `etag` 속성으로 노출시키고 싶을 수 있습니다. 자세한 내용은 [모델 타입](#모델-타입)을 참조하세요.
 
-{% include requirement/MUST id="python-response-logical-entity" %} 총 99% 이상의 경우에 필요한 정보를 나타내는 논리적 개체를 반환하기 위해 최적화하세요.
+{% include requirement/MUST id="python-response-logical-entity" %} 주어진 요청에 대한 논리적 엔티티 반환을 최적화하세요. 논리적 엔티티는 99% 이상의 상황에 필요한 정보를 **반드시** 표현해야 합니다.
 
 {% include requirement/MUST id="python-response-exception-on-failure" %} 사용자가 지정한 작업을 수행하지 못한 경우, 메소드 호출이 실패한 경우에는 예외를 발생시키세요. 이는 서비스가 명시적으로 실패로 응답한 경우뿐만 아니라 응답을 받지 못한 경우에도 해당됩니다. 자세한 내용은 [예외](#예외)를 참조하세요.
 
@@ -244,7 +244,7 @@ if not resource:
 
 {% include requirement/MUSTNOT id="python-errors-normal-responses" %} "일반적인 응답"에 대해서는 예외를 발생시키세요.
 
-예를 들어 `exists` 메소드의 경우, 서비스가 클라이언트 오류인 404/NotFound를 반환한 경우와 요청 자체를 수행하지 못한 경우를 구분해야 합니다.
+`exists` 메소드를 고려하세요. 이 메소드는 서비스가 클라이언트 에러 404/NotFound를 반환하는 경우와 요청 자체를 보내는 데 실패하는 경우를 **반드시** 구분할 수 있어야 합니다.
 
 ```python
 # Yes
@@ -272,11 +272,10 @@ except azure.core.errors.ResourceNotFoundException:
 
 {% include requirement/MUST id="python-client-optional-arguments-keyword-only" %} 작업별 선택적 인수를 키워드 전용으로 제공하세요. 자세한 내용은 [positional and keyword-only arguments]를 참조하세요.
 
-{% include requirement/MUST id="python-client-service-per-call-args" %} 요청별 정책 옵션을 덮어쓰는 키워드 전용 인수를 제공하세요. 매개 변수의 이름은 클라이언트 생성자 또는 팩토리 메서드에 제공된 인수의 이름을 반영해야 합니다.
-
+{% include requirement/MUST id="python-client-service-per-call-args" %} 요청별 정책 옵션을 덮어쓰는 키워드 전용 인수를 제공하세요. 매개 변수의 이름은 클라이언트 생성자 또는 팩토리 메서드에 제공된 인수의 이름을 반드시 반영해야 합니다. 
 파이프라인 정책 및 전송 구성(클라이언트 생성자 및 서비스 작업별)에 사용되는 지원되는 선택적 인수의 전체 목록은 [Azure Core 개발자 설명서](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core/azure-core/CLIENT_LIBRARY_DEVELOPER.md)를 참조하세요.
 
-{% include requirement/MUST id="python-client-service-args-conflict" %} 만약 서비스의 매개변수 이름이 문서화된 파이프라인 정책이나 모든 서비스 작업 및 클라이언트 생성자와 함께 사용되는 전송 구성 옵션 중 어떤 것과 충돌한다면, 해당 서비스 매개변수 이름을 구체화하세요.
+{% include requirement/MUST id="python-client-service-args-conflict" %} 만약 서비스의 매개변수 이름이 문서화된 파이프라인 정책이나 모든 서비스 작업 및 클라이언트 생성자와 함께 사용되는 전송 구성 옵션 중 어떤 것과 충돌한다면 해당 서비스 매개변수 이름을 구체화하세요.
 
 ```python
 # Set the default number of retries to 18 and timeout to 2s for this client instance.
@@ -380,12 +379,9 @@ client.update_thing(name='hello', size=4713, thing=thing)
 
 서비스는 큰 컬렉션 내의 아이템 전체 세트를 검색하기 위해 여러 요청을 필요로 할 수 있습니다. 이는 일반적으로 서비스가 부분 결과를 반환하고 응답에 클라이언트가 아이템 세트 외에도 다음 배치의 응답을 검색하는 데 사용할 수 있는 토큰 또는 링크를 제공함으로써 이루어집니다.
 
-Azure SDK for Python 클라이언트 라이브러리에서는 이를 사용자에게 [ItemPaged](#python-core-protocol-paged) 프로토콜을 통해 제공합니다. ItemPaged 프로토콜은 사용자가 기본 페이징을 처리하는 것이 아니라 아이템 전체 세트를 검색하는 것에 최적화되어 있습니다.
-
-Azure SDK for Python 클라이언트 라이브러리에서는 이를 사용자에게 [ItemPaged]프로토콜(#python-core-protocol-paged)을 통해 제공합니다. `ItemPaged` 프로토콜은 사용자가 기본 페이징을 처리하는 것이 아니라 아이템 전체 세트를 검색하는 것에 최적화되어 있습니다.
+Azure SDK for Python 클라이언트 라이브러리에서는 이를 사용자에게 [ItemPaged 프로토콜](#python-core-protocol-paged)을 통해 제공합니다. `ItemPaged` 프로토콜은 사용자가 기본 페이징을 처리하는 것이 아니라 아이템 전체 세트를 검색하는 것에 최적화되어 있습니다.
 
 {% include requirement/MUST id="python-response-paged-protocol" %} 컬렉션을 반환하는 작업에 대해 [ItemPaged 프로토콜](#python-core-protocol-paged)을 구현하는 값을 반환합니다. [ItemPaged 프로토콜](#python-core-protocol-paged)은 사용자가 반환된 컬렉션의 모든 아이템을 반복하도록 하며, 개별 페이지에 접근할 수 있는 메소드를 제공합니다.
-return a value that implements the [ItemPaged protocol]
 
 ```python
 client = ExampleClient(...)
@@ -400,7 +396,7 @@ for page_no, page in enumerate(client.list_things().by_page()):
     print(page_no, page)
 ```
 
-{% include requirement/MAY id="python-response-paged-results" %} 서비스에서 지원하는 경우(예: OData `$top` 쿼리 파라미터) `results_per_page` 키워드 전용 매개변수를 노출합니다.
+{% include requirement/MAY id="python-response-paged-results" %} 서비스에서 지원하는 경우(e.g. OData `$top` 쿼리 파라미터) `results_per_page` 키워드 전용 매개변수를 노출합니다.
 
 {% include requirement/SHOULDNOT id="python-response-paged-continuation" %} `list_` 클라이언트 메소드에서 연속성 매개변수를 노출합니다 - 이는 `by_page()` 함수에서 지원됩니다.
 
@@ -468,9 +464,9 @@ class ChildClient:
     __init__(self, url, credentials, **kwargs) ...
 ```
 
-{% include requirement/MUST id="python-client-hier-vend" %} `get_<child>_client(self, name, **kwargs)` 메소드를 제공하여 지정된 이름의 하위 클라이언트를 가져올 수 있도록 합니다. 이 메소드는 하위 자원의 존재를 확인하기 위해 네트워크 호출을 수행하지 않아야 합니다.
+{% include requirement/MUST id="python-client-hier-vend" %} 이름이 지정된 하위 리소스에 대한 클라이언트를 검색하기 위해 `get_<child>_client(self, name, **kwargs)` 메소드를 제공하세요. 이 메소드는 하위 리소스의 존재를 확인하기 위해 네트워크 호출을 **해서는 안 됩니다**.
 
-{% include requirement/MUST id="python-client-hier-create" %} `create_<child>(...) 메소드`를 제공하여 하위 리소스를 생성합니다. 이 메소드는 새로 생성된 하위 리소스의 클라이언트를 반환해야 합니다.
+{% include requirement/MUST id="python-client-hier-create" %} `create_<child>(...) 메소드`를 제공하여 하위 리소스를 생성합니다. 이 메소드는 새로 생성된 하위 리소스의 클라이언트를 반환**해야 합니다**.
 
 {% include requirement/SHOULD id="python-client-hier-delete" %} `delete_<child>(...)` 메소드를 제공하여 하위 리소스를 삭제합니다.
 
@@ -490,12 +486,12 @@ class ChildClient:
 
 {% include requirement/MUSTNOT id="python-models-async" %} 루트와 `aio` 네임스페이스 간에 모델을 중복하여 생성합니다.
 
-응답의 왕복 흐름을 용이하게 하기 위해 (일반적으로 리소스 가져오기 -> 조건부 리소스 수정 -> 리소스 설정 작업에서 사용되는 경우) 출력 모델 타입은 가능한 경우 입력 모델 타입 (예: `ConfigurationSetting`)을 사용해야 합니다. `ConfigurationSetting` 타입은 입력 모델로 사용될 때 무시되지만, 서버에서 생성된 (읽기 전용) 속성을 포함해야 합니다.
+응답의 왕복 흐름을 용이하게 하기 위해 (일반적으로 리소스 가져오기 -> 조건부 리소스 수정 -> 리소스 설정 작업에서 사용되는 경우) 출력 모델 타입은 가능한 경우 입력 모델 타입 (e.g. `ConfigurationSetting`)을 사용해야 합니다. `ConfigurationSetting` 타입은 입력 모델로 사용될 때 무시되지만, 서버에서 생성된 (읽기 전용) 속성을 포함해야 합니다.
 
 - 모델의 부분 스키마를 반환하는 경우, 열거형이 각 항목에 대해 `<model>Item`을 사용합니다. 예를 들어, GetBlobs()는 BlobItem의 열거형을 반환하는데, 이는 Blob의 이름과 메타데이터를 포함하지만 Blob의 내용은 포함하지 않습니다.
 - 작업 결과에 대해서는 `<operation>Result`를 사용합니다. `<operation>`은 특정 서비스 작업과 연결됩니다. 동일한 결과가 여러 작업에 사용될 수 있는 경우, 적절한 명사-동사 구문을 사용합니다. 예를 들어, `UploadBlob`의 결과에는 `UploadBlobResult`를 사용하지만, Blob 컨테이너를 변경하는 다양한 메소드의 결과에는 `ContainerChangeResult`를 사용합니다.
 
-{% include requirement/MUST id="python-models-dict-result" %} 다른 API의 입력 매개변수로 `<operation>Result` 클래스를 사용하지 않는 경우, `<operation>Result` 클래스를 생성하는 대신 간단한 Mapping (예: `dict`)을 사용합니다.
+{% include requirement/MUST id="python-models-dict-result" %} 다른 API의 입력 매개변수로 `<operation>Result` 클래스를 사용하지 않는 경우, `<operation>Result` 클래스를 생성하는 대신 간단한 Mapping (e.g. `dict`)을 사용합니다.
 
 다음 표는 가능한 모델을 열거합니다:
 
@@ -532,7 +528,7 @@ class ConfigurationSetting(object):
 
 {% include requirement/MUST id="python-models-enum-string" %} 확장 가능한 열거형(Extensible Enumerations)을 사용하세요.
 
-{% include requirement/MUST id="python-models-enum-name-uppercase" %} 열거형 이름에는 대문자로 된 이름을 사용하세요
+{% include requirement/MUST id="python-models-enum-name-uppercase" %} 열거형 이름에는 **대문자**로 된 이름을 사용하세요
 
 ```python
 
@@ -559,31 +555,31 @@ class MyBadEnum(str, Enum):
 
 {% include requirement/MUST id="python-errors-rich-info" %} 예외에는 서비스별 오류 정보를 포함해야 합니다. 서비스별 오류 정보는 서비스별 속성이나 필드에 제공되어야 합니다.
 
-{% include requirement/MUST id="python-errors-documentation" %} 각 메서드에서 생성되는 오류를 문서화해야 합니다. 일반적으로 Python에서 문서화되지 않는 일반적으로 발생하는 오류 (예: `ValueError`, `TypeError`, `RuntimeError` 등)를 문서화하지 마세요.
+{% include requirement/MUST id="python-errors-documentation" %} 각 메서드에서 생성되는 오류를 문서화해야 합니다. 일반적으로 Python에서 문서화되지 않는 일반적으로 발생하는 오류 (e.g. `ValueError`, `TypeError`, `RuntimeError` 등)를 문서화하지 마세요.
 
 ### 인증
 
-{% include requirement/MUST id="python-auth-credential-azure-core" %} use the credentials classes in `azure-core` whenever possible.
-
 {% include requirement/MUST id="python-auth-policy-azure-core" %} 가능한 경우, `azure-core`의 인증(credentials) 클래스를 사용하세요.
 
-{% include requirement/MAY  id="python-auth-service-credentials" %} 서비스에 필요한 경우, [Architecture board]의 지침에 따라 필요한 경우 추가적인 인증(credentials) 타입을 추가하세요.
+{% include requirement/MUST id="python-auth-policy-azure-core" %} 가능한 한 `azure-core` 문서 내의 인증 정책 구현을 활용해야 합니다.
+
+{% include requirement/MAY  id="python-auth-service-credentials" %} 서비스에 필요한 경우, [Architecture board]()의 지침에 따라 필요한 경우 추가적인 인증(credentials) 타입을 추가하세요.
 
 {% include requirement/MUST id="python-auth-service-support" %} 서비스가 지원하는 모든 인증(authentication) 방법을 지원하세요.
 
 ### 네임스페이스
 
-다음 가이드라인에서 "네임스페이스(namespace)"라는 용어는 파이썬 패키지 또는 모듈을 의미합니다. 이는 코드에서 가져올 수 있는 것을 가리킵니다. "배포 패키지(distribution package)"라는 용어는 패키지 매니저를 통해 게시하고 설치하는 아티팩트를 설명하는 데 사용됩니다. 이는 일반적으로 pip install을 통해 설치하는 것을 의미합니다.
+다음 가이드라인에서 "네임스페이스(namespace)"라는 용어는 파이썬 패키지 또는 모듈을 의미합니다. 이는 코드에서 가져올 수 있는 것(`import`)을 가리킵니다. "배포 패키지(distribution package)"라는 용어는 패키지 매니저를 통해 게시하고 설치하는 아티팩트를 설명하는 데 사용됩니다. 이는 일반적으로 `pip install`을 통해 설치하는 것을 의미합니다.
 
 {% include requirement/MUST id="python-namespaces-prefix" %} 라이브러리를 구현할 때, `azure` 루트 네임스페이스의 하위 패키지로 라이브러리를 구성하세요.
 
-> 참고: 루트 네임스페이스로 `microsoft`를 사용해서는 안 됩니다. 다른 프로젝트 확장을 위한 정책 요구 사항(예: `opentelemetry`와 같은) 때문에 `microsoft`를 네임스페이스에 포함해야 하는 경우, 해당 패키지의 고유한 네임스페이스와 밑줄(_)로 연결하여 사용해야 합니다 (예: `microsoft_myservice`). 이러한 경우에도 `microsoft-myservice`를 배포 패키지 이름으로 사용할 수 있습니다.
+> 참고: 루트 네임스페이스로 `microsoft`를 **사용해서는 안 됩니다**. 다른 프로젝트 확장을 위한 정책 요구 사항(e.g. `opentelemetry`와 같은) 때문에 `microsoft`를 네임스페이스에 포함해야 하는 경우, 해당 패키지의 고유한 네임스페이스와 밑줄(_)로 연결하여 사용해야 합니다 (e.g. `microsoft_myservice`). 이러한 경우에도 `microsoft-myservice`를 배포 패키지 이름으로 사용할 수 있습니다.
 
 {% include requirement/MUST id="python-namespaces-naming" %} 소비자가 사용 중인 서비스와 네임스페이스를 연결할 수 있는 패키지 이름을 선택하세요. 기본적으로, 네임스페이스의 끝에 압축된 서비스 이름을 사용하세요. 네임스페이스는 제품의 브랜딩이 변경되어도 변경되지 않습니다. 변경될 수 있는 마케팅용 이름 사용을 피하세요.
 
 압축된 서비스 이름은 공백이 없는 서비스 이름입니다. 압축된 버전이 커뮤니티에서 잘 알려진 경우, 더 축약될 수도 있습니다. 예를 들어, "Azure Media Analytics"는 압축된 서비스 이름으로 `mediaanalytics`가 될 수 있고, "Azure Service Bus"는 `servicebus`로 변환됩니다. 필요한 경우 단어를 언더스코어(_)로 구분하세요. 예를 들어, `mediaanalytics`는 `media_analytics`로 구분될 수 있습니다.
 
-{% include requirement/MAY id="python-namespaces-grouping" %} 서비스 또는 서비스 그룹이 공통된 동작 (예: 공유 인증 타입)을 가지는 경우, 네임스페이스에 그룹 이름 세그먼트를 포함하세요. 예를 들어, `azure.<group>.<servicename>`과 같이 그룹 이름 세그먼트를 네임스페이스에 포함시킬 수 있습니다.
+{% include requirement/MAY id="python-namespaces-grouping" %} 서비스 또는 서비스 그룹이 공통된 동작 (e.g. 공유 인증 타입)을 가지는 경우, 네임스페이스에 그룹 이름 세그먼트를 포함하세요. 예를 들어, `azure.<group>.<servicename>`과 같이 그룹 이름 세그먼트를 네임스페이스에 포함시킬 수 있습니다.
 
 {% include requirement/MUST id="python-namespaces-grouping-dont-introduce-new-packages" %} 동일한 이름만 다른 새로운 배포 패키지를 도입하지 않도록 주의하세요. 기존 패키지의 경우, 그룹 이름을 도입하기 위해 패키지 이름을 변경하지 않아야 합니다.
 
@@ -591,7 +587,7 @@ class MyBadEnum(str, Enum):
 
 {% include tables/data_namespaces.md %}
 
-{% include requirement/MUST id="python-namespaces-mgmt" %} Azure Resource Manager (관리) API는 `mgmt` 그룹에 위치시킵니다. 네임스페이스에는 `azure.mgmt.<servicename>` 그룹을 사용합니다. 데이터 평면 API보다 제어 평면 API를 요구하는 서비스가 많기 때문에 다른 네임스페이스는 명시적으로 제어 평면에만 사용될 수 있습니다.
+{% include requirement/MUST id="python-namespaces-mgmt" %} 관리(Azure Resource Manager) API는 `mgmt` 그룹에 위치시킵니다. 네임스페이스에는 `azure.mgmt.<servicename>` 그룹을 사용합니다. 데이터 평면 API보다 제어 평면 API를 요구하는 서비스가 많기 때문에 다른 네임스페이스는 명시적으로 제어 평면에만 사용될 수 있습니다.
 
 {% include requirement/MUST id="python-namespaces-register" %} 선택한 네임스페이스를 [아키텍처 위원회]에 등록하십시오. 네임스페이스 요청을 위해 [이슈]를 열어주세요. 현재 등록된 네임스페이스 목록은 등록된 네임스페이스 목록에서 확인하실 수 있습니다.
 
@@ -730,7 +726,7 @@ from azure.storage.blob.aio import BlobServiceClient # Async client
 
 [PEP440](https://www.python.org/dev/peps/pep-0440)에서 정의된 것 이외의 사전 릴리스 세그먼트 (`aN`, `bN`, `rcN`) 외에는 사전 릴리스 세그먼트를 사용하지 마세요. 빌드 도구, 게시 도구 및 인덱스 서버는 버전을 올바르게 정렬하지 못할 수 있습니다.
 
-{% include requirement/MUST id="python-versioning-changes" %} 라이브러리에 `어떤 변경 사항이든` 발생하는 경우 버전 번호를 변경하세요.
+{% include requirement/MUST id="python-versioning-changes" %} 라이브러리에 *어떤 변경 사항이든* 발생하는 경우 버전 번호를 변경하세요.
 
 {% include requirement/MUST id="python-versioning-patch" %} 만약 패키지에 버그 수정만 추가된다면, 패치 버전을 증가시키세요.
 
@@ -754,9 +750,9 @@ GA(일반 사용 가능) 클라이언트 라이브러리의 경우, 중요한 �
 
 {% include requirement/MUSTNOT id="python-dependencies-external" %} 잘 알려진 종속성 목록 이외의 외부 종속성을 사용하지 마세요. 새로운 종속성을 추가하려면 [아키텍처 위원회]에 문의하세요.
 
-{% include requirement/MUSTNOT id="python-dependencies-vendor" %} [아키텍처 위원회]의 승인이 없는 한, 벤더 종속성을 사용하지 마세요.
+{% include requirement/MUSTNOT id="python-dependencies-vendor" %} [아키텍처 위원회]의 승인이 없는 한, 종속성을 벤더링하지 마세요.
 
-Python에서 종속성을 벤더링할 때, 다른 패키지의 소스 코드를 자신의 패키지 일부인 것처럼 포함시킵니다.
+파이썬에서 종속성을 벤더링한다는 것은, 다른 패키지의 소스 코드를 패키지의 일부인 것처럼 포함시키는 것을 의미합니다.
 
 {% include requirement/MUSTNOT id="python-dependencies-pin-version" %} 의존성의 버전에 버그가 있는 경우가 아니라면, 해당 종속성의 특정 버전을 지정하세요. 그 버전의 버그를 우회하기 위한 유일한 방법인 경우에만 다른 방법을 사용하세요.
 
@@ -813,16 +809,16 @@ def get(*args, **kwargs):
 * `API reference` - 라이브러리의 코드 내의 docstring에서 생성되며, docs.microsoft.com에 게시됩니다.
 * `Code snippets` - 라이브러리의 README, docstring 및 Quickstart에 포함된, 싱글(원자적) 작업을 보여주는 짧은 코드 예제입니다. 이는 라이브러리의 주요 시나리오를 위해 식별한 예시입니다.
 * `Quickstart` - README 내용과 유사하지만 확장된 docs.microsoft.com의 문서입니다. 일반적으로 해당 서비스의 콘텐츠 개발자가 작성합니다.
-* `Conceptual` - Quickstarts, 튜토리얼, 사용 가이드 및 기타 docs.microsoft.com의 긴 형식 문서입니다. 일반적으로 해당 서비스의 콘텐츠 개발자가 작성합니다.
+* `Conceptual` - 빠른 시작, 튜토리얼, 사용 가이드 및 기타 docs.microsoft.com의 긴 형식 문서입니다. 일반적으로 해당 서비스의 콘텐츠 개발자가 작성합니다.
 
 {% include requirement/MUST id="python-docs-content-dev" %} 라이브러리에 대한 adparch 검토에 서비스의 콘텐츠 개발자를 포함하세요. 작업할 콘텐츠 개발자를 찾으려면 팀의 프로그램 관리자와 확인하세요.
 
-{% include requirement/MUST id="python-docs-contributor-guide" %} [Azure SDK Contributors Guide]를 따르세요. (마이크로소프트 내부용)
+{% include requirement/MUST id="python-docs-contributor-guide" %} [Azure SDK Contributors Guide](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk)를 따르세요. (마이크로소프트 내부용)
 
 {% include requirement/MUST id="python-docs-style-guide" %} 공개 문서 작성 시 Microsoft 스타일 가이드에 명시된 사양을 준수하세요. 이는 README와 코드의 docstring과 같은 긴 형식의 문서에 적용됩니다. (마이크로소프트 내부용)
 
-* [Microsoft Writing Style Guide].
-* [Microsoft Cloud Style Guide].
+* [Microsoft Writing Style Guide](https://styleguides.azurewebsites.net/StyleGuide/Read?id=2700).
+* [Microsoft Cloud Style Guide](https://styleguides.azurewebsites.net/Styleguide/Read?id=2696).
 
 {% include requirement/SHOULD id="python-docs-into-silence" %} 문서화를 통해 라이브러리의 사용 방법에 대한 질문을 미리 예방하고, API를 명확히 설명함으로써 GitHub 이슈를 최소화하세요. docstring에서 서비스 제한 사항과 발생할 수 있는 오류에 대한 정보, 그리고 해당 오류를 피하고 복구하는 방법을 명시적으로 포함시키세요.
 
@@ -838,7 +834,7 @@ def get(*args, **kwargs):
 
 {% include requirement/MUST id="python-samples-runnable" %} 각 샘플 파일이 실행 가능하도록 보장하세요.
 
-{% include requirement/MUST id="python-samples-coding-style" %} 샘플을 작성할 때는 Python 3 관례를 따르세요. [`six`](https://six.readthedocs.io)와 같은 Python 2 호환 코드를 포함하지 마세요. 이는 제시하려는 내용에서 주의를 분산시킬 수 있습니다. Python 3의 기준 버전 이후에 나온 기능을 사용하는 것도 피하세요. 현재 지원되는 Python 버전은 3.6입니다.
+{% include requirement/MUST id="python-samples-coding-style" %} Python 3에서 기본적으로 지원하는 것 이상으로 새로운 기능을 사용하는 것을 피하세요. 현재 지원되는 Python 버전은 3.7입니다.
 
 {% include requirement/MUST id="python-samples-grafting" %} 문서에서 코드 샘플을 사용자의 애플리케이션에 쉽게 통합할 수 있도록 하세요. 예를 들어, 다른 샘플에서 변수 선언에 의존하지 않도록 주의하세요.
 
