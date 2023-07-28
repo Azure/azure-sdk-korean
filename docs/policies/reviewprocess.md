@@ -1,171 +1,168 @@
 ---
-title: "Policies: Review Process"
+title: "정책: 리뷰 프로세스"
 permalink: policies_reviewprocess.html
 folder: policies
 sidebar: general_sidebar
 ---
 
-## Introduction
+## 소개
 
-The Azure Developer Platform (ADP) Architecture Review Board is a board of language architects specializing in Java, Python, TS/JS, C#, C, C++, Go, Android, and iOS.
+Azure Developer Platform (ADP) 아키텍처 리뷰 보드는 Java, Python, TS/JS, C#, C, C++, Go, Android, iOS에 전문화된 언어 아키텍트들의 보드입니다.
 
-**The Architecture Board reviews Track 2 libraries only**. By definition, a Track 2 library is one that follows our [Track 2 library design guidelines and specific language guidelines](https://azure.github.io/azure-sdk/general_introduction.html). This means that libraries produced solely by a code generator do NOT follow these guidelines; engineers MUST build a layer on top of the generated code in order to produce a library that meets the guidelines. We have developed the SDK Development Training program to help you be successful in building these libraries - find out more [here!](https://dev.azure.com/azure-sdk/internal/_wiki/wikis/internal.wiki/346/Azure-SDK-Development-Training)
+아키텍처 보드는 오직 Track 2 라이브러리만을 검토합니다. 정의상, Track 2 라이브러리는 우리의 Track 2 라이브러리 디자인 가이드라인과 특정 언어 가이드라인을 준수하는 라이브러리를 의미합니다. 이는 코드 생성기만으로 제작된 라이브러리는 이러한 가이드라인을 따르지 **않음**을 의미하며, 엔지니어들은 이 가이드라인을 만족시키는 라이브러리를 제작하기 위해 생성된 코드 위에 레이어를 **반드시** 구축해야 합니다. 이러한 라이브러리를 만드는데 성공할 수 있도록 SDK 개발 교육 프로그램을 개발했습니다 - [여기서](https://dev.azure.com/azure-sdk/internal/_wiki/wikis/internal.wiki/346/Azure-SDK-Development-Training) 자세한 내용을 알아보세요!
 
-We expect all Azure client libraries to pass rigorous API reviews similar to those conducted for any other API produced by Microsoft (for example, the .NET APIs). In addition to detailed reviews of new libraries, **all changes** to an API must be approved by an architect of the specific language before release.
+우리는 모든 Azure 클라이언트 라이브러리가 Microsoft에서 생산하는 다른 API (예: .NET API)에 대해 실시하는 것과 유사한 엄격한 API 리뷰를 통과하길 기대합니다. 새로운 라이브러리의 상세한 리뷰 외에도, API에 대한 **모든 변경사항**은 릴리즈 전에 특정 언어의 아키텍트가 승인해야 합니다.
 
-Note that the library review process described here is currently an **internal** one. This document is intended to clarify the process for Azure service teams looking to have their libraries reviewed.
+여기서 설명하는 라이브러리 리뷰 프로세스는 현재 **내부적인** 프로세스입니다. 이 문서는 라이브러리를 검토하려는 Azure 서비스 팀들에게 프로세스를 명확하게 하는 데 의도되어 있습니다.
 
-## API Review Process Roadmap
+## API 리뷰 프로세스 로드맵
 
-Typically, there will be a minimum of three meetings with the Architecture Board:
+아키텍처 보드와의 회의는 일반적으로 최소 세 번 이상 진행됩니다:
 
-1.	Introductory session
-2.	API reviews
-3.	API Sign Off
+1. 소개 세션
+2. API 리뷰
+3. API 승인
 
+라이브러리 서피스와 기타 요인에 따라, 하나 이상의 API 리뷰가 필요할 수 있습니다.
 
-Depending on the library surface and other factors, more than one API reviews may be needed.
+"릴리즈를 위한 아키텍처 보드 승인 기록" 이슈 템플릿을 사용하여 에픽을 생성하고, 리뷰와 승인을 추적합니다. 릴리즈 매니저는 PLR의 일부로 이 이슈에 대한 링크를 요청할 것입니다.
 
-Create an epic using the “Record of Architecture Board Approval for Release” issue template to track reviews and approvals. The release manager will ask for a link to this issue as part of the PLR.
+라이브러리 소유자가 아키텍처 보드와 충분히 일찍 연결하여 수정 및 (때때로 상당한) API 재디자인 시간을 확보하는 것이 중요합니다. 클라이언트 라이브러리 작업의 성격과 범위에 따라, 아키텍처 보드와의 교류시 따라야 할 일련의 과정은 다음 두 가지 경로 중 하나를 따를 것입니다:
 
-It’s critical that library owners engage with the architecture board early enough to allow time for fixes and (sometimes significant) API redesign based on discussion. Depending on the nature and scope of the client library work being done, the sequence of events to follow when engaging with the architecture board will follow one of two paths:
+1. **새로운 라이브러리, 대규모 피처 작업, 및/또는 파이프라인 변경**
 
-1. **New libraries, large feature work, and/or pipeline changes**
+    이러한 변경사항은 아키텍처 보드 회의에서 최소 세 번 이상 논의되어야 합니다. 아래의 "리뷰 회의 유형 및 준비물" 섹션을 참조하십시오.
 
-    These changes should be discussed in an architecture board meeting at least three times. See “Types of Review Meetings and What to Prepare” section below.
+2. **소규모, 목표 지향적인 변경과 버그 수정**
 
+    아래의 "소규모, 목표 지향적인 변경과 버그 수정 승인 받기" 섹션을 참조하십시오.
 
-2. **Small, targeted changes and bug fixes**
+당신이 진행하는 작업에 어떤 경로가 적용되는지 확실하지 않다면, 언어 아키텍트에게 지침을 구해야 합니다.
 
-    See “Getting approval for small, targeted changes and bug fixes” section below.
+## 리뷰 회의 유형 및 준비물
 
-If you are unsure which path applies to the work you are doing, you should consult with a language architect for guidance.
+아키텍처 보드에 회의 요청을 위해 [이슈를 제출](https://github.com/Azure/azure-sdk/issues/new/choose)하십시오. 서비스가 사전 출시이며 아직 공개적으로 공개되지 않은 경우, 개인 저장소([azure-sdk-pr](https://github.com/Azure/azure-sdk-pr))를 사용하십시오. 이슈를 생성한 후, 스케줄링, 초대 목록 등과 같은 특정 요청을 전달하기 위해 [아키텍처 보드](mailto:adparch@microsoft.com)에 이메일을 보내십시오.
 
+리뷰의 유형에 따라 적절한 템플릿을 사용하여 이슈를 생성하십시오. 이슈 템플릿에서 요구하는 모든 내용을 포함하고 올바른 형식으로 작성했는지 확인하십시오.
 
-## Types of Review Meetings and What to Prepare
+### 1. 소개 세션
 
-[Submit an issue](https://github.com/Azure/azure-sdk/issues/new/choose) to the Architecture Board to request for a meeting. If the service is pre-release and not yet publicly disclosed, use the private repository ([azure-sdk-pr](https://github.com/Azure/azure-sdk-pr)). After creating the issue, email the [Architecture Board](mailto:adparch@microsoft.com) to communicate specific requests such as scheduling, invite lists, etc.
+이 세션은 순수하게 정보 제공/교육을 위한 것으로, 보드가 서비스와 라이브러리/새로운 기능에 대해 속도를 내는 데 도움이 됩니다. 이를 통해 초기 피드백을 받을 수 있으며, 서비스 디자인에 영향을 줄 수 있습니다. API 네임스페이스, 함수 이름, 타입 등의 고수준 주제가 이 첫 번째 논의에서 제안될 것입니다.
 
-Depending on the type of review, use the appropriate template to create the issue. Ensure that you included everything the issue template asks for and in the correct format.
+**준비물 (리뷰 요청을 위한 GitHub 이슈에 포함시켜야 하는 내용):**:
+* 서비스 소개 자료
+    * 서비스를 소개/설명하는 문서 링크
+    * 일부 팀들은 PowerPoint 소개를 준비하기도 합니다
+* 서비스 REST API에 대한 링크, 해당/가능한 경우.
+* 챔피언 시나리오 예시
+    * 코드는 환영하지만 선택 사항입니다. 의사코드도 괜찮습니다.
+    * "챔피언 시나리오" 섹션을 참조하십시오
+    * [샘플 예시](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples/Sample1_DetectLanguage.md)
+        * 라이브러리의 샘플 폴더에 추가해야 합니다 ([예시](https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples))
+* 퀵스타트 샘플
+  * 소개 회의 시에는 선택 사항입니다
+  * 아래의 "퀵스타트 샘플" 섹션을 참조하십시오
 
-### 1. Introductory Session
+### 2. API 리뷰
+API 리뷰 중에는 샘플 코드와 상세 API 목록을 살펴봅니다. 이러한 목록의 예시는 [여기](https://github.com/Azure/azure-sdk/blob/main/docs/dotnet/APIListingExample.md))에서 볼 수 있습니다.
 
-This purely informational/educational to let the board get up to speed with the service and the library/new features that are coming. This allows for early feedback and will potentially affect the service design. High level topics such as API namespaces, function names, and types will be suggested in this first discussion.
+API의 프로토타입이 있다면 API 목록을 생성할 수 있습니다:
 
-**What to bring (include the following in GitHub issue requesting for review)**:
-* Service introduction material
-    * Link to documentation introducing/describing the service
-    * Some teams also prepare a PowerPoint introductions
-* Link to the service REST APIs, if applicable/available.
-* Champion scenario samples
-    * Code is appreciated but optional. Pseudocode is fine.
-    * See “Champion scenarios” section below for definition
-    * [Sample example](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples/Sample1_DetectLanguage.md)
-        * Should be added to library’s sample folder ([example](https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples))
-* Quickstart samples
-  * Optional for introductory meeting
-  * See "Quickstart Samples" section below
+* .NET의 경우, DLL을 [ApiView](http://apiview.dev/) 도구에 업로드합니다.
+* Java의 경우, *-sources.jar 파일을 [ApiView] 도구에 업로드합니다 (예: azure-core-1.3.0-beta.1-sources.jar).
+* Python의 경우, 우리의 [사용자 정의 API 스텁 생성기](https://github.com/Azure/azure-sdk-tools/tree/main/packages/python-packages/api-stub-generator#generate-stub-file)를 사용하여 공개 API 서피스를 담은 단일 파일을 생성합니다. stubgen의 출력을 ApiView 도구에 업로드합니다.
+* TypeScript의 경우, [api-extractor](https://api-extractor.com/pages/setup/generating_docs/)를 사용하여 `api.json/docModel` 파일을 생성하고 [APIView](https://apiview.dev/)에 업로드합니다.
 
-### 2. API Review
-During API reviews, we look at sample code and detailed API listings. You can see an example of such listing [here](https://github.com/Azure/azure-sdk/blob/main/docs/dotnet/APIListingExample.md).
+그 외 모든 언어에 대해서는 아키텍처 보드에 요청하여 개별적으로 가장 적합한 형식을 논의하십시오.
 
-If you have a prototype of your APIs, you can generate the API listing:
+상황과 서비스에 따라 둘 이상의 API 리뷰가 필요할 수 있습니다 (예를 들어, API 버전 간에 큰 변화가 있기 때문입니다). 그런 경우에는 팀이 다른 리뷰를 준비할 때 다른 이슈를 제출하십시오.
 
-* For .NET, upload a DLL to the [ApiView](http://apiview.dev/) tool.
-* For Java, upload the `*-sources.jar` file to the [ApiView](http://apiview.dev/) tool (e.g. `azure-core-1.3.0-beta.1-sources.jar`).
-* For Python, use our [custom API stub generator](https://github.com/Azure/azure-sdk-tools/tree/main/packages/python-packages/api-stub-generator#generate-stub-file) to produce a single file with your public API surface. Upload the output of stubgen to the [ApiView](http://apiview.dev/) tool.
-* For TypeScript, use [api-extractor](https://api-extractor.com/pages/setup/generating_docs/) to generate your `api.json/docModel` file and then upload to [APIView](https://apiview.dev/).
+**준비물 (리뷰 요청을 위한 GitHub 이슈에 포함시켜야 하는 내용):**
+* 각 언어의 API 목록에 대한 링크
+  * 아키텍트가 회의 전에 리뷰할 시간이 있도록 이를 최소한 **리뷰 예정일 5일 전**에 제공하십시오.
+* 각 챔피언 시나리오에 대한 코드 샘플
+* 퀵스타트 샘플
 
-For all other languages, send a request to the Architecture Board to discuss the best format on individual basis.
+### 3. API 승인
 
-Depending on the situation and service, more than one API review may be needed (because there are major changes between API versions, for example). If that is the case, file another issue when the team is ready for another review.
+API 승인 회의의 목표는 API에 대한 논란의 여지가 있는/해결되지 않은 질문을 해결하는 것입니다. 이러한 질문은 언어 아키텍트 또는 서비스 팀에서 제기될 수 있습니다.
 
-**What to bring (include the following in GitHub issue requesting for review):**
-* Links to the API Listings for each language reviewed
-  * Be sure to provide these at least **5 business days before** the intended review date so architects have time to review before the meeting
-* Code samples for each champion scenario
-* Quickstart samples
+**모든 언어는 GA로 릴리즈되기 전에 반드시 승인을 받아야 합니다.** 두 번째 리뷰 이후 API에 대한 변경이 제한적인 경우, *아키텍트는 전체 회의가 필요 없이 이메일로 승인을 선택할 수 있습니다.*
 
-### 3. API Sign Off
+**준비물 (리뷰 요청을 위한 GitHub 이슈에 포함시켜야 하는 내용):**
+* 각 언어에 대한 API 목록 링크
+* API에 대한 미해결 질문에 대해 논의할 준비를 하십시오
 
-The goal of the API sign-off meeting is to resolve any controversial/unsettled questions about the API. These questions can come from language architects or service teams.
+### 챔피언 시나리오
 
-**All languages must be signed off before any are released as GA.** When there have been limited changes made to the API since the second review, *architects may choose to sign off over email* without the need for a full meeting.
+챔피언 시나리오는 클라이언트 라이브러리의 소비자가 일반적으로 수행할 것으로 예상되는 사용 사례입니다. 챔피언 시나리오는 일반적인 경우에 개발자 경험이 뛰어나도록 보장하는 데 사용됩니다. 챔피언 시나리오에 대한 전체 코드 샘플 (예를 들어, 에러 처리 등)을 보여줘야 합니다. 또한 라이브러리에서 **인증 워크플로우**가 어떻게 보일지도 보여주세요.
 
-**What to bring (include the following in GitHub issue requesting for review):**
-* Links to API Listings for each language
-* Prepare to talk about unresolved questions about API
+좋은 시나리오는 기술에 구애받지 않는 것입니다 (즉, 고객이 여러 가지 방법으로 동일한 작업을 수행할 수 있음), 그리고 이는 사용자의 20% 이상이 사용할 것으로 예상됩니다.
 
-### Champion Scenarios
+나쁜 시나리오의 예:
+* 클라이언트 생성 (시나리오의 일부이며, 진정한 챔피언 시나리오에서 충분히 볼 수 있음)
+* 이벤트 배치 보내기 (다시, 시나리오의 일부)
+* 페이지 블롭 생성 (사용자 기반의 충분한 부분에서 사용되지 않음)
 
-A champion scenario is a use case that the consumer of the client library is commonly expected to perform.  Champion scenarios are used to ensure the developer experience is exemplary for the common cases. You need to show the entire code sample (including error handling, as an example) for the champion scenarios. Please also show how the **authentication workflow** would look like for your library.
+### 퀵스타트 샘플
 
-Good scenarios are technology agnostic (i.e. the customer can do the same thing in multiple ways), and are expected to be used by > 20% of users.
+일반적인 방법을 보여주는 샘플:
 
-Examples of bad scenarios:
-* Create a client (it's part of a scenario, and we'll see it often enough in true champion scenarios)
-* Send a batch of events (again, part of the scenario)
-* Create a page blob (it's not used by enough of the user base)
+* 새로운 리소스 생성
+* 리소스 읽기
+* 리소스 수정
+* 리소스 삭제
+* 에러 처리
+* 경쟁 조건/동시성 문제 처리
 
-### Quickstart Samples
+## 리뷰 중 발생하는 일
 
-Samples demonstrating common how-tos:
+### 누가 참석해야 합니까?
 
-* Create a new resource
-* Read the resource
-* Modify the resource
-* Delete the resource
-* Error handling
-* Handling race conditions/concurrency issues
+API와 서비스에 익숙한 사람들 (보통 엔지니어링 및/또는 PM 리드)이 참석해야 합니다.
 
-## What Happens During Review
+### 소개 세션
+일반적인 의제는 서비스 팀이 약 30분 동안 서비스를 소개하는 것으로 시작합니다. 그 다음에 챔피언 시나리오가 제시되고, 각 시나리오에 이어서 논의가 이루어집니다. 이는 대부분의 시간을 차지합니다. 만약 Rest API가 사용 가능하다면, 시간이 허락할 경우 이에 대해 이야기합니다. 마지막으로 다음 리뷰 회의 전에 수행할 액션 아이템에 대한 짧은 요약이 있을 것입니다.
 
-### Who should be present?
+### API 리뷰
 
-The people familiar with the APIs and service (usually the Engineering and/or PM Lead) should be present.
+언어 아키텍트들은 리뷰 시점에 제공된 API 목록을 검토하였을 것입니다. 그들은 제공된 API와 샘플에 대한 논의를 바로 시작할 것입니다. 회의는 취할 액션 아이템에 대한 짧은 요약으로 끝날 것입니다.
 
-### Introductory sessions
-The typical agenda starts with service team presenting the service for about 30 minutes. Then champion scenarios will be presented, each followed by discussions. This will take up majority of the time. If there are Rest APIs available, the Board will discuss them if time allows. And finally, there’ll be a short summary of action items to be done before the next review meeting.
+### API 승인
 
-### API Reviews
+일반적으로, API에 대한 일부 미결정/논란의 여지가 있는 질문들이 있을 것입니다. 이는 API를 검토한 언어 아키텍트들 또는 발표하는 팀에서 비롯될 수 있습니다. 이 리뷰의 목표는 API를 승인하는 것이기 때문에, 보드는 보통 이러한 질문에 대한 논의를 바로 시작합니다. 리뷰는 API에 대한 최종 승인이나 API를 승인받기 위해 따라야 하는 항목들로 끝날 것입니다.
 
-Language architects will have reviewed the API Listings provided by the time of review. They’ll jump right into discussing the API and samples provided. The meeting will end with a short summary of action items to be taken.
+### 필요한 퀴럼
 
-### API Sign Off
+API가 승인되기 위해서는 아키텍처 보드 회의에서 다음 조건들이 충족되어야 합니다:
 
-Typically, there’ll be some unsettled/controversial questions on the API either from language architects who reviewed the API or from the presenting team. Since the goal of this review is to approve the API, the Board usually jumps right into discussing these questions. The review will end with a final approval of the API or follow up items to get the API to be approved.
+* 모든 Tier-1 언어 (Java, Python, TS/JS, C#), 그리고 고려 중인 모든 언어의 대표들이 참석해야 합니다.
+* 최소한 세 명의 다른 언어 그룹의 아키텍트들이 참석해야 합니다.
 
-### Required Quorum
+만약 언어 아키텍트가 회의에 참석하지 **않는다면**, 부 아키텍트가 해당 언어의 대표가 될 수 있습니다. 언어 대표 목록은 Azure SDK 그룹의 LT에 의해서만 변경될 수 있습니다.
 
-For an API to be approved, the following conditions must be met at the Architecture Board meeting:
+## 리뷰 이후에는 어떻게 되나요?
 
-* Representatives from all Tier-1 languages (Java, Python, TS/JS, C#), and all languages under consideration must be present.
-* A minimum of THREE architects from different language groups must be present.
+소개 및 API 리뷰 세션에서는 보통 다음 회의 전에 처리해야 할 작업 목록이 있습니다. 이 작업 항목을 잊지 말고 따르십시오. 때때로, 이러한 작업 항목 중 하나는 아키텍트들이 제안한 변경 사항을 반영한 후 다른 API 리뷰를 예약하는 것일 수 있습니다.
 
-If a language architect is *not* present at the meeting, a deputy architect can be the representative of that specific language instead. The list of language representatives can only be changed by the LT of the Azure SDK group.
+"Release for Architecture Board Approval" 이슈 템플릿을 사용하여 에픽을 만들어 API 리뷰 및 승인을 추적하는 것을 잊지 마세요.
 
+API Sign Off 세션 후 아키텍처 보드가 릴리스를 승인하면, SDK 팀은 Sign Off(승인) 리뷰를 요청하는 이슈에 "RELEASE FOR APPROVAL" 코멘트를 추가합니다. 승인 기록 에픽에 이슈 링크를 추가하는 것을 잊지 마세요!
 
-## What Happens After Review
+## API 변경 사항 미리보기
 
-For introductory and API review sessions, there will usually be a list of action items to take before the next meeting. Be sure to follow up on these items. Sometimes, one of these action items could be to schedule for another API review once the architects' suggested changes have been made.
+API 변경 사항은 일반적으로 GA로 출시되기 전에 일정 기간 베타 버전으로 출시됩니다. 이렇게 하면 고객들이 피드백을 제공할 수 있는 시간이 주어지며, 이 피드백을 바탕으로 GA 이전에 API에 조정이 이루어질 수 있습니다. 바로 GA로 가는 API 변경 사항은 이러한 피드백의 혜택을 받지 못하므로 고객이 사용하기 어렵고 우리가 지원하기 어려울 수 있습니다. 대부분의 경우, 전체 또는 축약된 리뷰 프로세스를 거친 API 변경 사항은 GA 전에 베타로 출시되어야 합니다.
 
-Remember to create an epic using the issue template “Record of Architecture Board Approval for Release” to keep track of API reviews and approvals.
+## 작은, 목표 지향적인 변경 사항 및 버그 수정에 대한 승인 받기
 
-If after an API Sign Off session the Architecture Board approves the release, the SDK Team will add the comment “APPROVED FOR RELEASE” to the issue requesting for the Sign Off review. Remember to add the issue's link to the record of approval epic!
+API를 수정하는 작은 또는 목표 지향적인 변경 사항 및 버그 수정의 경우, 각 언어의 아키텍트가 결합된/중앙 리뷰 없이 검토하고 승인할 수 있습니다. 이 검토를 가능한 한 빠르게 하는 것을 강력히 권장합니다. 이것은 API 차이에 대한 링크를 포함하는 GitHub 이슈를 열어 수행해야 합니다. 모든 아키텍트를 리뷰어로 포함시키십시오. 경우에 따라 API의 작은 변경 사항을 효율성을 위해 배치하는 것이 이치에 맞습니다. 언어 아키텍트가 더 깊은 토론이 필요하다고 판단하면, 해당 아키텍트와의 회의를 예약해야 합니다. 만약 이것이 크로스-언어 토론이라면, 보드 회의를 예약해야 합니다.
 
-## Previewing API Changes
+API에 대한 모든 변경 사항은 릴리스 전에 언어 아키텍트가 승인해야 함을 기억하십시오.
 
-It is expected that API changes are released in beta for a period of time before they are released as GA. This gives customers time to provide feedback which could result in adjustments to the API before it GAs. API changes that go straight to GA do not benefit from this feedback which can result in them being difficult for customers to use and for us to support. In most circumstances, API changes going through either the full or abbreviated review process should be released as beta before GA.
+## 검토가 필요한 API 변경 사항 추적
 
-## Getting Approval for Small, Targeted Changes and Bug Fixes
+API가 미리보기 상태에 있거나 GA 상태에 있을 때, API 변경 사항은 항상 명확하지 않을 수 있습니다(개발자 또는 리뷰어에게). 따라서 이런 변경사항을 식별하고 검토하여 고객들에게 최상의 SDK 라이브러리 경험을 제공하는 것이 중요합니다. 장기적으로는 API 추가, 변경, 그리고 중단을 감지하는 도구를 구축할 계획입니다. 그 때까지는, 이미 출시된 API를 수정하는 코드 변경 사항을 식별하기 위해 PR에서 "APIChange" 라벨을 사용할 것입니다. 이것은 언어 아키텍트가 변경 사항을 검토해야 함을 나타냅니다. 아키텍트가 변경 사항을 승인하면 "ArchApproved" 라벨을 추가하게 됩니다. 릴리스 전에는 라이브러리에 병합된 모든 변경 사항을 검토하여 모든 "APIChange" 라벨이 "ArchApproved" 라벨과 짝을 이루고 있는지 확인해야 합니다. 여기에 Java 라이브러리에 대한 [예제 쿼리](https://github.com/Azure/azure-sdk-for-java/pulls?utf8=%E2%9C%93&q=is%3Apr+label%3AAPIChange+)가 있습니다.
 
-For small or targeted changes and bug fixes which modify APIs, the architect in each language can review and sign off without a combined/central review. We highly recommend doing this review as early as possible. This should be done on GitHub by opening an issue with links to API diffs. Include all architects as reviewers. In some cases it makes sense for small changes to the API to be batched for efficiency. If a language architect determines there is a need for a deeper discussion, then a meeting with that architect should be scheduled. If it’s a cross-language discussion, then a board meeting should be scheduled.
-
-Remember that **all** changes to an API must be approved by the language architect before release.
-
-## Tracking API Changes That Need to be Reviewed
-While an API is in preview or after it is in GA, changes to APIs are not always obvious (to the developer or the reviewer) when they’re being made so it’s important that we identify them and review them to ensure the best SDK library experience for our customers. Long-term we will have tooling in place to detect API additions, changes, and breaks. Until then, we will use the “APIChange” label on PRs to identify code changes that included a modification to an already released API. This signals to that a language architect needs to review the change. Once they’ve approved the change they would add the “ArchApproved” label. Before release, a review of all changes merged into the library should be done to ensure that all “APIChange” labels are paired with an “ArchApproved” label. Here is an [example query](https://github.com/Azure/azure-sdk-for-java/pulls?utf8=%E2%9C%93&q=is%3Apr+label%3AAPIChange+) for the Java libraries.
-
-When the library developers indicate they’re ready to release, these should be reviewed by the architect as part of final signoff before GA. Libraries should not be released as GA (or updated to GA) if there are unresolved “APIChange” labels without a corresponding “ArchApproved” label. Once final review is requested, all “APIChange” labels will be responded to within 5 working days.
+라이브러리 개발자들이 릴리스 준비가 되었다고 표시하면, 아키텍트가 GA 이전에 최종 승인의 일부로 이를 검토해야 합니다. 해결되지 않은 "APIChange" 라벨이 있고 대응하는 "ArchApproved" 라벨이 없는 경우 라이브러리는 GA로 출시되어서는 안됩니다(또는 GA로 업데이트되어서는 안됩니다). 최종 리뷰가 요청되면, 모든 "APIChange" 라벨에는 5일 이내에 응답될 것입니다.
 
 {% include refs.md %}

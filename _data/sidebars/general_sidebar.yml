@@ -140,7 +140,7 @@ entries:
         url: /policies_pipelines.html
   - title: 정책
     folderitems:
-      - title: Review Process (영문)
+      - title: 리뷰 프로세스
         url: /policies_reviewprocess.html
       - title: Releases (영문)
         url: /policies_releases.html
