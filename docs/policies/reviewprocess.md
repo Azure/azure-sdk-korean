@@ -7,9 +7,9 @@ sidebar: general_sidebar
 
 ## 소개
 
-Azure Developer Platform (ADP) 아키텍처 리뷰 보드는 Java, Python, TS/JS, C#, C, C++, Go, Android, iOS에 전문화된 언어 아키텍트들의 보드입니다.
+Azure Developer Platform (ADP) 아키텍처 리뷰 위원회는 Java, Python, TS/JS, C#, C, C++, Go, Android, iOS에 전문화된 언어 아키텍트들의 보드입니다.
 
-아키텍처 보드는 오직 Track 2 라이브러리만을 검토합니다. 정의상, Track 2 라이브러리는 우리의 Track 2 라이브러리 디자인 가이드라인과 특정 언어 가이드라인을 준수하는 라이브러리를 의미합니다. 이는 코드 생성기만으로 제작된 라이브러리는 이러한 가이드라인을 따르지 **않음**을 의미하며, 엔지니어들은 이 가이드라인을 만족시키는 라이브러리를 제작하기 위해 생성된 코드 위에 레이어를 **반드시** 구축해야 합니다. 이러한 라이브러리를 만드는데 성공할 수 있도록 SDK 개발 교육 프로그램을 개발했습니다 - [여기서](https://dev.azure.com/azure-sdk/internal/_wiki/wikis/internal.wiki/346/Azure-SDK-Development-Training) 자세한 내용을 알아보세요!
+아키텍처 위원회는 오직 Track 2 라이브러리만을 검토합니다. 정의상, Track 2 라이브러리는 우리의 Track 2 라이브러리 디자인 가이드라인과 특정 언어 가이드라인을 준수하는 라이브러리를 의미합니다. 이는 코드 생성기만으로 제작된 라이브러리는 이러한 가이드라인을 따르지 **않음**을 의미하며, 엔지니어들은 이 가이드라인을 만족시키는 라이브러리를 제작하기 위해 생성된 코드 위에 레이어를 **반드시** 구축해야 합니다. 이러한 라이브러리를 만드는데 성공할 수 있도록 SDK 개발 교육 프로그램을 개발했습니다 - [여기](https://dev.azure.com/azure-sdk/internal/_wiki/wikis/internal.wiki/346/Azure-SDK-Development-Training) 자세한 내용을 알아보세요!
 
 우리는 모든 Azure 클라이언트 라이브러리가 Microsoft에서 생산하는 다른 API (예: .NET API)에 대해 실시하는 것과 유사한 엄격한 API 리뷰를 통과하길 기대합니다. 새로운 라이브러리의 상세한 리뷰 외에도, API에 대한 **모든 변경사항**은 릴리즈 전에 특정 언어의 아키텍트가 승인해야 합니다.
 
@@ -17,7 +17,7 @@ Azure Developer Platform (ADP) 아키텍처 리뷰 보드는 Java, Python, TS/JS
 
 ## API 리뷰 프로세스 로드맵
 
-아키텍처 보드와의 회의는 일반적으로 최소 세 번 이상 진행됩니다:
+아키텍처 위원회와의 회의는 일반적으로 최소 세 번 이상 진행됩니다:
 
 1. 소개 세션
 2. API 리뷰
@@ -52,7 +52,7 @@ Azure Developer Platform (ADP) 아키텍처 리뷰 보드는 Java, Python, TS/JS
 **준비물 (리뷰 요청을 위한 GitHub 이슈에 포함시켜야 하는 내용):**:
 * 서비스 소개 자료
     * 서비스를 소개/설명하는 문서 링크
-    * 일부 팀들은 PowerPoint 소개를 준비하기도 합니다
+    * 일부 팀들은 PowerPoint 소개를 준비하기도 합니다.
 * 서비스 REST API에 대한 링크, 해당/가능한 경우.
 * 챔피언 시나리오 예시
     * 코드는 환영하지만 선택 사항입니다. 의사코드도 괜찮습니다.
