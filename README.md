@@ -23,19 +23,13 @@ Azure SDK는 개발자가 다양한 Azure 서비스를 원하는 프로그래밍
 
 본 저장소는 Microsoft 오픈 소스에 기여하기 위한 가이드라인을 따르고 있습니다.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+이 프로젝트는 기여 및 제안을 환영합니다. 대부분의 기여는 귀하가 기여를 사용할 권리를 가지고 있으며 실제로 그러한 권리를 당사에 부여한다고 선언하는 기부자 라이센스 계약(CLA)에 동의하기를 요구합니다. 자세한 내용은 https://cla.microsoft.com 을 방문하시면 됩니다.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+pull request를 제출하면 CLA 봇이 자동으로 CLA를 제공하고 PR을 적절하게 꾸밀 필요가 있는지 여부를 결정합니다(예: 레이블, 댓글). 봇이 제공하는 지침을 따르면 됩니다. 이 작업은 CLA를 사용하여 모든 저장소에서 한 번만 수행하면 됩니다.
 
-Please see our [contributing guide](CONTRIBUTING.md) for complete instructions on how you can contribute to the Azure SDK. For instructions on how to contribute to each individual SDK, please check the CONTRIBUTING.md in each language repo.
+Azure SDK에 기여할 수 있는 방법에 대한 모든 지침은 [contributing guide](CONTRIBUTING.md)를 참조하세요. 각 개별 SDK에 기여하는 방법에 대한 지침은 각 언어 repo의 CONTRIBUTING.md를 확인하세요.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+이 프로젝트는 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/) 를 채택했습니다. 자세한 내용은 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) 를 참조하거나 추가 질문 또는 의견이 있는 경우 [opencode@microsoft.com](mailto:opencode@microsoft.com) 로 문의하시면 됩니다.
 
 [General Design Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [Design Guidelines for Android]: https://azure.github.io/azure-sdk/android_design.html
