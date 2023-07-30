@@ -130,7 +130,7 @@ entries:
         url: /ios_implementation.html
   - title: GitHub 저장소
     folderitems:
-      - title: 가이드라인 기여
+      - title: 도입 가이드라인
         url: /policies_adoption.html
       - title: 저장소 구조
         url: /policies_repostructure.html
