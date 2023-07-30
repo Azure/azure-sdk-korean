@@ -3,8 +3,6 @@ topnav:
   items:
     - title: SDK 블로그 (영문)
       external_url: https://aka.ms/azsdk/blog
-    - title: Developer Korea 블로그
-      external_url: https://microsoft.github.io/developerkorea/
 
 
 topnav_dropdowns:
