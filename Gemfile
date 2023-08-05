@@ -7,3 +7,5 @@ gem 'tzinfo-data'
 
 # Explicit versions for reported security issue
 gem 'activesupport', '>4.1.11'
+
+gem "webrick", "~> 1.8"
