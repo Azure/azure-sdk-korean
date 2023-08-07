@@ -23,9 +23,12 @@ Azure SDK는 개발자가 다양한 Azure 서비스를 원하는 프로그래밍
 
 본 저장소는 Microsoft 오픈 소스에 기여하기 위한 가이드라인을 따르고 있습니다.
 
-이 프로젝트는 기여 및 제안을 환영합니다. 대부분의 기여는 귀하가 기여를 사용할 권리를 가지고 있으며 실제로 그러한 권리를 당사에 부여한다고 선언하는 기부자 라이센스 계약(CLA)에 동의하기를 요구합니다. 자세한 내용은 https://cla.microsoft.com 을 방문하시면 됩니다.
+Note that below is Korean translation of contributing part on [Azure SDK's README.md](https://github.com/Azure/azure-sdk/blob/main/README.md#contributing).    
+아래는 [Azure SDK 저장소에 언급된 기여하기 파트](https://github.com/Azure/azure-sdk/blob/main/README.md#contributing)를 한글로 번역한 것입니다. 참고하셨으면 합니다.
 
-pull request를 제출하면 CLA 봇이 자동으로 CLA를 제공하고 PR을 적절하게 꾸밀 필요가 있는지 여부를 결정합니다(예: 레이블, 댓글). 봇이 제공하는 지침을 따르면 됩니다. 이 작업은 CLA를 사용하여 모든 저장소에서 한 번만 수행하면 됩니다.
+이 프로젝트는 기여 및 제안을 환영합니다. 대부분의 기여는 기부자가 기여를 사용할 권리를 가지고 있으며 실제로 그러한 권리를 당사에 부여한다고 선언하는 기부자 라이센스 계약(CLA)에 동의하기를 요구합니다. 자세한 내용은 https://cla.microsoft.com 을 방문하시면 됩니다.
+
+Pull request를 제출하면 CLA 봇이 자동으로 CLA를 제공하고 PR을 적절하게 꾸밀 필요가 있는지 여부를 결정합니다(예: 레이블, 댓글). 봇이 제공하는 지침을 따르면 됩니다. 이 작업은 CLA를 사용하여 모든 저장소에서 한 번만 수행하면 됩니다.
 
 Azure SDK에 기여할 수 있는 방법에 대한 모든 지침은 [contributing guide](CONTRIBUTING.md)를 참조하세요. 각 개별 SDK에 기여하는 방법에 대한 지침은 각 언어 repo의 CONTRIBUTING.md를 확인하세요.
 
