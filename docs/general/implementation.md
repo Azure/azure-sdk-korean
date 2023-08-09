@@ -222,26 +222,31 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 언어별 가이드라인은 승인된 의존성의 목록을 유지관리할 것입니다.
 
 
-## Service-specific common library code
+## 서비스별 공통 라이브러리 코드
 
-There are occasions when common code needs to be shared between several client libraries.  For example, a set of cooperating client libraries may wish to share a set of exceptions or models.
+여러 클라이언트 라이브러리 간에 공통 코드를 공유해야 하는 경우가 있습니다. 예를 들어, 서로 협력하는 클라이언트 라이브러리들의 집합이 예외 또는 모델의 한 집합을 공유하고자 할 수 있습니다.
 
-{% include requirement/MUST id="general-commonlib-approval" %} gain [Architecture Board] approval prior to implementing a common library.
+{% include requirement/MUST id="general-commonlib-approval" %} 공통 라이브러리를 구현하기 전에 [Architecture Board]의 승인을 받으세요.
 
-{% include requirement/MUST id="general-commonlib-minimize-code" %} minimize the code within a common library.  Code within the common library is available to the consumer of the client library and shared by multiple client libraries within the same namespace.
+{% include requirement/MUST id="general-commonlib-minimize-code" %} 공통 라이브러리 내의 코드를 최소화하세요. 공통 라이브러리 내의 코드는 클라이언트 라이브러리의 소비자가 사용할 수 있으며 동일한 네임스페이스 내의 여러 클라이언트 라이브러리에서 공유할 수 있습니다.
 
-{% include requirement/MUST id="general-commonlib-namespace" %} store the common library in the same namespace as the associated client libraries.
+{% include requirement/MUST id="general-commonlib-namespace" %} 공통 라이브러리를 연결된 클라이언트 라이브러리들과 동일한 네임스페이스에 저장하세요.
 
-A common library will only be approved if:
+공통 라이브러리는 다음과 같은 경우에만 승인됩니다:
 
-* The consumer of the non-shared library will consume the objects within the common library directly, AND
-* The information will be shared between multiple client libraries.
+* 공유되지 않은 라이브러리의 소비자가 공통 라이브러리 내의 객체를 직접 사용할 경우, 그리고
+* 정보가 여러 클라이언트 라이브러리들 간에 공유되는 경우.
 
-Let's take two examples:
+두 가지 예를 들어 보겠습니다:
 
-1. Implementing two Cognitive Services client libraries, we find a model is required that is produced by one Cognitive Services client library and consumed by another Coginitive Services client library, or the same model is produced by two client libraries.  The consumer is required to do the passing of the model in their code, or may need to compare the model produced by one client library vs. that produced by another client library.  This is a good candidate for choosing a common library.
+1. 두 개의 Coginitive Services 클라이언트 라이브러리를 구현하며, 한 Coginitive Services 클라이언트 라이브러리에서 생성되고 다른 Coginitive Services 클라이언트 라이브러리에서 소비되는 모델이 필요하거나, 두 클라이언트 라이브러리에서 동일한 모델이 생성되도록 하고 싶습니다. 소비자는 코드에서 모델을 전달해야 하거나, 한 클라이언트 라이브러리에서 생성된 모델과 다른 클라이언트 라이브러리에서 생성된 모델을 비교해야 할 수 있습니다. 이러한 경우는 공통 라이브러리를 선택하기에 좋은 사례입니다.
 
-2. Two Cognitive Services client libraries throw an `ObjectNotFound` exception to indicate that an object was not detected in an image.  The user might trap the exception, but otherwise will not operate on the exception.  There is no linkage between the `ObjectNotFound` exception in each client library.  This is not a good candidate for creation of a common library (although you may wish to place this exception in a common library if one exists for the namespace already).  Instead, produce two different exceptions - one in each client library.
+2. 두 개의 Cognitive Services 클라이언트 라이브러리는 이미지에서 객체를 감지하지 못했음을 나타내는 `ObjectNotFound` 예외를 던집니다. 사용자는 예외를 trap하겠지만, 그렇지 않으면 예외에 대해 작동하지 않습니다. 각 클라이언트 라이브러리에서 ObjectNotFound 예외 사이에는 연결 고리가 없습니다. (해당 네임스페이스에 이미 예외가 있는 경우 이 예외를 공통 라이브러리에 배치하고 싶을 수 있겠지만) 이러한 경우는 공통 라이브러리를 만드는 데 좋은 사례가 아닙니다. 대신, 두 개의 서로 다른 예외를 생성하세요 - 각 클라이언트 라이브러리에 하나씩.
+<!--
+'trap'에 대한 부가 설명을 넣는 게 좋을까
+ex. (software-triggered interrupt)
+--> 
+
 
 ## Testing
 
