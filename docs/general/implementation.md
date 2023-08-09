@@ -242,10 +242,6 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 1. 두 개의 Coginitive Services 클라이언트 라이브러리를 구현하며, 한 Coginitive Services 클라이언트 라이브러리에서 생성되고 다른 Coginitive Services 클라이언트 라이브러리에서 소비되는 모델이 필요하거나, 두 클라이언트 라이브러리에서 동일한 모델이 생성되도록 하고 싶습니다. 소비자는 코드에서 모델을 전달해야 하거나, 한 클라이언트 라이브러리에서 생성된 모델과 다른 클라이언트 라이브러리에서 생성된 모델을 비교해야 할 수 있습니다. 이러한 경우는 공통 라이브러리를 선택하기에 좋은 사례입니다.
 
 2. 두 개의 Cognitive Services 클라이언트 라이브러리는 이미지에서 객체를 감지하지 못했음을 나타내는 `ObjectNotFound` 예외를 던집니다. 사용자는 예외를 trap하겠지만, 그렇지 않으면 예외에 대해 작동하지 않습니다. 각 클라이언트 라이브러리에서 ObjectNotFound 예외 사이에는 연결 고리가 없습니다. (해당 네임스페이스에 이미 예외가 있는 경우 이 예외를 공통 라이브러리에 배치하고 싶을 수 있겠지만) 이러한 경우는 공통 라이브러리를 만드는 데 좋은 사례가 아닙니다. 대신, 두 개의 서로 다른 예외를 생성하세요 - 각 클라이언트 라이브러리에 하나씩.
-<!--
-'trap'에 대한 부가 설명을 넣는 게 좋을까
-ex. (software-triggered interrupt)
---> 
 
 
 ## Testing
