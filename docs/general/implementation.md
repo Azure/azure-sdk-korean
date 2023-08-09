@@ -183,10 +183,6 @@ HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 �
 ## 분산 추적
 
 분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다.  각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
-<!-- 
-These spans can then be exported to a suitable receiver as needed.
-여기서 'receiver'란 무엇인가?
--->
 
 {% include requirement/MUST id="general-tracing-opentelemetry" %} 분산 추적을 위해 [OpenTelemetry]를 지원하세요.
 
