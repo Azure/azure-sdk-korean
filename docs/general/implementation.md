@@ -244,19 +244,21 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 2. 두 개의 Cognitive Services 클라이언트 라이브러리는 이미지에서 객체를 감지하지 못했음을 나타내는 `ObjectNotFound` 예외를 던집니다. 사용자는 예외를 trap하겠지만, 그렇지 않으면 예외에 대해 작동하지 않습니다. 각 클라이언트 라이브러리에서 ObjectNotFound 예외 사이에는 연결 고리가 없습니다. (해당 네임스페이스에 이미 예외가 있는 경우 이 예외를 공통 라이브러리에 배치하고 싶을 수 있겠지만) 이러한 경우는 공통 라이브러리를 만드는 데 좋은 사례가 아닙니다. 대신, 두 개의 서로 다른 예외를 생성하세요 - 각 클라이언트 라이브러리에 하나씩.
 
 
-## Testing
+## 테스트
 
-Software testing provides developers a safety net. Investing in tests upfront saves time overall due to increased certainty over the development process that changes are not resulting in divergence from stated requirements and specifications. The intention of these testing guidelines is to focus on the complexities around testing APIs that are backed by live services when in their normal operating mode. We want to enable open source development of our client libraries, with certainty that regardless of the developer making code changes there always remains conformance to the initial design goals of the code. Additionally, our goal is to ensure that developers building atop the Azure client libraries can meaningfully test their own code, without incurring additional complexity or expense through unnecessary interactions with a live Azure service.
+소프트웨어 테스트는 개발자에게 안전망을 제공합니다. 테스트에 미리 투자하는 것은 변경 사항이 명시된 요구 사항(requirements) 및 사양(specifications)과 차이를 초래하지 않는다는 개발 프로세스에 대한 확신을 높이므로 전체적인 시간을 절약합니다. 본 테스트 가이드라인의 의도는 정상적인 운영 모드에서 라이브 서비스의 지원을 받는 API 테스트와 관련된 복잡성에 초점을 맞추는 것입니다. 우리는 개발자가 코드를 변경하더라도 코드의 초기 설계 목표에 항상 부합할 것이라는 확신을 가지고, 우리의 클라이언트 라이브러리의 오픈 소스 개발을 가능하게 하고 싶습니다.
+또한, 우리의 목표는 라이브 Azure 서비스와의 불필요한 상호 작용을 통해 추가적인 복잡성이나 비용을 발생시키지 않고도, Azure 클라이언트 라이브러리를 기반으로 빌드하는 개발자가 그들의 코드를 유의미하게 테스트할 수 있도록 보장하는 것입니다.
 
-{% include requirement/MUST id="general-testing-1" %} write tests that ensure all APIs fulfil their contract and algorithms work as specified. Focus particular attention on client functionality, and places where payloads are serialized and deserialized.
+{% include requirement/MUST id="general-testing-1" %} 모든 API가 계약을 잘 이행하고 알고리즘이 지정된 대로 잘 작동하는지 확인하는 테스트를 작성하세요. 클라이언트 기능, 그리고 페이로드(payloads)가 직렬화 및 역직렬화되는 위치에 특히나 주의를 기울이세요.
 
-{% include requirement/MUST id="general-testing-2" %} ensure that client libraries have appropriate unit test coverage, [focusing on quality tests][2], using code coverage reporting tools to identify areas where more tests would be beneficial. Each client library should define its minimum level of code coverage, and ensure that this is maintained as the code base evolves.
+{% include requirement/MUST id="general-testing-2" %} 더 많은 테스트가 유익할 영역을 식별하기 위해 코드 커버리지 보고 도구(code coverage reporting tools)를 사용하여, [품질 테스트(quality tests)에 중점을 두어][2], 클라이언트 라이브러리가 적절한 단위 테스트 커버리지를 갖는지 확인하세요. 각 클라이언트 라이브러리는 최소 수준의 코드 커버리지를 정의해야 하고, 코드 베이스가 발전함에 따라 이것이 계속 유지되는지 확인해야 합니다.
 
-{% include requirement/MUST id="general-testing-3" %} use unique, descriptive test case names so test failures in CI (especially external PRs) are readily understandable.
+{% include requirement/MUST id="general-testing-3" %} 고유(unique)하고 설명적인(descriptive) 테스트 케이스 이름을 사용하여 CI(특히 외부 PR)에서의 테스트 실패가 쉽게 이해될 수 있도록 하세요.
 
-{% include requirement/MUST id="general-testing-4" %} ensure that users can run all tests without needing access to Microsoft-internal resources. If internal-only tests are necessary, these should be a separate test suite triggered via a separate command, so that they are not executed by users who will then encounter test failures that they cannot resolve.
+{% include requirement/MUST id="general-testing-4" %} 사용자가 Microsoft 내부 리소스에 액세스하지 않고도 모든 테스트를 실행할 수 있는지 확인하세요. 내부 전용 테스트가 필요한 경우, 이러한 테스트는 별도의 명령을 통해 작동되는 별도의 테스트 묶음(suite)이어야 하며, 이에 따라 이후 해결할 수 없는 테스트 실패를 직면할 사용자에 의해 테스트가 실행되지 않도록 합니다.
 
-{% include requirement/MUSTNOT id="general-testing-5" %} rely on pre-existing test resources or infrastructure and **DO NOT** leave test resources around after tests have completed. Anything needed for a test should be initialized and cleaned up as part of the test execution (whether by running an ARM template prior to starting tests, or by setting up and tearing down resources in the tests themselves).
+{% include requirement/MUSTNOT id="general-testing-5" %} 기존의 테스트 리소스나 인프라에 의존**하지 말고** 테스트가 완료된 후에 테스트 리소스를 남겨두**지 마세요**. 테스트에 필요한 모든 것은 테스트 실행의 일부로서 초기화 및 정리되어야 합니다 (테스트를 시작하기 전에 ARM 템플릿을 실행하거나, 또는 테스트 자체에서 리소스를 설정 및 해제하는 방식으로).
+
 
 ### Recorded tests
 
