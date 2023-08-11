@@ -6,7 +6,7 @@ folder: general
 sidebar: general_sidebar
 ---
 
-(For English, please visit https://azure.github.io/azure-sdk/general_implementation.html)
+(For English, please visit [General Guidelines: Implementation])
 
 허용 가능한 API 표면을 통해 작업을 한 뒤부터는, 서비스 클라이언트의 구현을 시작하실 수 있습니다.
 
@@ -291,3 +291,5 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 [Azure Monitor]: https://azure.microsoft.com/services/monitor/
 [1]: https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s
 [2]: https://martinfowler.com/bliki/TestCoverage.html
+
+[General Guidelines: Implementation]: https://azure.github.io/azure-sdk/general_implementation.html
