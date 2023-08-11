@@ -209,7 +209,7 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 - **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
 - **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
 - **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
-- **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 베이스를 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
+- **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
 
 {% include requirement/MUST id="general-dependencies-azure-core" %} 모든 클라이언트 라이브러리에서 공통되는 기능은 Azure Core 라이브러리에 의존하세요. 이 라이브러리에는 HTTP 연결, 글로벌 구성, 자격증명 처리를 위한 API들이 포함되어 있습니다.
 
@@ -251,7 +251,7 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 
 {% include requirement/MUST id="general-testing-1" %} 모든 API가 계약을 잘 이행하고 알고리즘이 지정된 대로 잘 작동하는지 확인하는 테스트를 작성하세요. 클라이언트 기능, 그리고 페이로드(payloads)가 직렬화 및 역직렬화되는 위치에 특히나 주의를 기울이세요.
 
-{% include requirement/MUST id="general-testing-2" %} 더 많은 테스트가 유익할 영역을 식별하기 위해 코드 커버리지 보고 도구(code coverage reporting tools)를 사용하여, [품질 테스트(quality tests)에 중점을 두어][2], 클라이언트 라이브러리가 적절한 단위 테스트 커버리지를 갖는지 확인하세요. 각 클라이언트 라이브러리는 최소 수준의 코드 커버리지를 정의해야 하고, 코드 베이스가 발전함에 따라 이것이 계속 유지되는지 확인해야 합니다.
+{% include requirement/MUST id="general-testing-2" %} 더 많은 테스트가 유익할 영역을 식별하기 위해 코드 커버리지 보고 도구(code coverage reporting tools)를 사용하여, [품질 테스트(quality tests)에 중점을 두어][2], 클라이언트 라이브러리가 적절한 단위 테스트 커버리지를 갖는지 확인하세요. 각 클라이언트 라이브러리는 최소 수준의 코드 커버리지를 정의해야 하고, 코드 기반이 발전함에 따라 이것이 계속 유지되는지 확인해야 합니다.
 
 {% include requirement/MUST id="general-testing-3" %} 고유(unique)하고 설명적인(descriptive) 테스트 케이스 이름을 사용하여 CI(특히 외부 PR)에서의 테스트 실패가 쉽게 이해될 수 있도록 하세요.
 
@@ -260,17 +260,17 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 {% include requirement/MUSTNOT id="general-testing-5" %} 기존의 테스트 리소스나 인프라에 의존**하지 말고** 테스트가 완료된 후에 테스트 리소스를 남겨두**지 마세요**. 테스트에 필요한 모든 것은 테스트 실행의 일부로서 초기화 및 정리되어야 합니다 (테스트를 시작하기 전에 ARM 템플릿을 실행하거나, 또는 테스트 자체에서 리소스를 설정 및 해제하는 방식으로).
 
 
-### Recorded tests
+### 기록된 테스트 (Recorded tests)
 
-{% include requirement/MUST id="general-testing-6" %} ensure that all tests work without the need for any network connectivity or access to Azure services.
+{% include requirement/MUST id="general-testing-6" %} 모든 테스트가 네트워크 연결이나 Azure 서비스에 대한 액세스 없이도 작동하는지 확인하세요.
 
-{% include requirement/MUST id="general-testing-7" %} write tests that use a mock service implementation, with a set of recorded tests per service version supported by the client library. This ensures that the service client continues to properly consume service responses as APIs and implementations evolve. Recorded tests must be run using the language-appropriate trigger to enable the specific service version support in the client library.
+{% include requirement/MUST id="general-testing-7" %} 클라이언트 라이브러리에서 지원하는 서비스 버전별 기록된 테스트 집합을 사용하여, 목(mock) 서비스 구현을 사용하는 테스트를 작성하세요. 이는 API 및 구현이 발전함에 따라 서비스 클라이언트가 계속해서 서비스 응답을 적절하게 소비하도록 합니다. 기록된 테스트는 클라이언트 라이브러리에서 특정 서비스 버전 지원이 가능하도록 하기 위해 언어에 적합한 트리거를 사용하여 실행되어야 합니다.
 
-{% include requirement/MUST id="general-testing-8" %} recreate recorded tests for latest service version when notified by the service team of any changes to the endpoint APIs for that service version. In the absence of this notification, recordings should not be updated needlessly. When the service team requires recorded tests to be recreated, or when a recorded test begins to fail unexpectedly, notify the architecture board before recreating the tests.
+{% include requirement/MUST id="general-testing-8" %} 서비스 팀으로부터 해당 서비스 버전에 대한 엔드포인트 API의 변경 사항을 통보받으면 최신 서비스 버전에 대해 기록된 테스트를 다시 생성하세요. 이 알림이 없는 경우, 기록된 테스트가 불필요하게 업데이트돼서는 안 됩니다. 서비스 팀에서 기록된 테스트를 다시 생성하기를 요구하거나, 기록된 테스트가 예기치 않게 실패하기 시작하면, 테스트를 다시 생성하기 전에 아키텍처 보드에 알리세요.
 
-{% include requirement/MUST id="general-testing-9" %} enable all network-mocked tests to also connect to live Azure service. The test assertions should remain unchanged regardless of whether the service call is mocked or not.
+{% include requirement/MUST id="general-testing-9" %} 모든 네트워크 목(network-mocked) 테스트가 라이브 Azure 서비스에도 연결되도록 설정하세요. 테스트 단언문(assertions)은 서비스 호출의 목 여부에 관계없이 변경되지 않게 유지되어야 합니다.
 
-{% include requirement/MUSTNOT id="general-testing-10" %} include sensitive information in recorded tests.
+{% include requirement/MUSTNOT id="general-testing-10" %} 기록된 테스트에 민감한 정보를 포함하지 마세요.
 
 ### Testability
 
