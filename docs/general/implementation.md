@@ -272,17 +272,18 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 
 {% include requirement/MUSTNOT id="general-testing-10" %} 기록된 테스트에 민감한 정보를 포함하지 마세요.
 
-### Testability
 
-As outlined above, writing tests that we can run constantly is critical for confidence in our client library offering, but equally critical is enabling users of the Azure client libraries to write tests for their applications and libraries. End users want to be certain that their code is performing appropriately, and in cases where this code interacts with the Azure client libraries, end users do not want complex or costly Azure interactions to prevent their ability to test their software.
+### 테스트 가능성
 
-{% include requirement/MUST id="general-testing-mocking" %} support mocking of service client methods through standard mocking frameworks or other means.
+위에서 설명한 바와 같이, 지속적으로 실행할 수 있는 테스트를 작성하는 것은 클라이언트 라이브러리 제공에 대한 신뢰를 위해 매우 중요하지만, Azure 클라이언트 라이브러리 사용자가 그들의 애플리케이션 및 라이브러리에 대한 테스트를 작성할 수 있도록 하는 것도 마찬가지로 중요합니다. 최종 사용자는 그들의 코드가 적절하게 작동하는지 확인하기를 원하며, 이 코드가 Azure 클라이언트 라이브러리와 상호 작용하는 경우에는, 최종 사용자는 복잡하거나 비용이 많이 드는 Azure 상호 작용으로 인해 그들의 소프트웨어를 테스트할 수 없게 되는 것을 원하지 않습니다.
 
-{% include requirement/MUST id="general-testing-11" %} support the ability to instantiate and set all properties on model objects, such that users may return these from their code.
+{% include requirement/MUST id="general-testing-mocking" %} 표준 모킹 프레임워크 또는 기타 수단을 통해 서비스 클라이언트 메서드의 모킹(mocking)을 지원하세요.
 
-{% include requirement/MUST id="general-testing-12" %} support user tests to operate in a network-mocked manner without the need for network access.
+{% include requirement/MUST id="general-testing-11" %} 모델 객체의 모든 프로퍼티를 인스턴스화하고 설정하는 기능을 지원하여, 사용자가 그들의 코드에서 이를 반환할 수 있도록 하세요.
 
-{% include requirement/MUST id="general-testing-13" %} provide clear documentation on how users should instantiate the client library such that it can be mocked.
+{% include requirement/MUST id="general-testing-12" %} 네트워크에 액세스할 필요 없이 네트워크 목 방식으로 작동하는 사용자 테스트를 지원하세요.
+
+{% include requirement/MUST id="general-testing-13" %} 사용자가 클라이언트 라이브러리를 모방할 수 있도록 그것을 인스턴스화 해야 하는 방법에 대한 명확한 문서를 제공하세요.
 
 {% include refs.md %}
 
