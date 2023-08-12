@@ -1,79 +1,85 @@
 ---
-title: "General Guidelines: Implementation"
+title: "공통 가이드라인: 구현"
 keywords: guidelines
 permalink: general_implementation.html
 folder: general
 sidebar: general_sidebar
 ---
 
-Once you have worked through an acceptable API surface, you can start implementing the service clients.
+(For English, please visit https://azure.github.io/azure-sdk/general_implementation.html)
 
-## Configuration
+허용 가능한 API 표면을 통해 작업을 한 뒤부터는, 서비스 클라이언트의 구현을 시작하실 수 있습니다.
 
-When configuring your client library, particular care must be taken to ensure that the consumer of your client library can properly configure the connectivity to your Azure service both globally (along with other client libraries the consumer is using) and specifically with your client library.
+## 구성
 
-### Client configuration
+당신의 클라이언트 라이브러리를 구성할 때는, 해당 클라이언트 라이브러리를 사용하는 소비자가 Azure 서비스에 대한 연결을 (그 소비자가 사용하고 있는 다른 클라이언트 라이브러리와) 전반적으로(globally) 그리고 당신의 클라이언트 라이브러리와 특정적으로(specifically) 모두 적절하게 구성할 수 있도록 각별히 주의를 기울여야 합니다.
 
-{% include requirement/MUST id="general-config-global-config" %} use relevant global configuration settings either by default or when explicitly requested to by the user, for example by passing in a configuration object to a client constructor.
+### 클라이언트 구성
 
-{% include requirement/MUST id="general-config-for-different-clients" %} allow different clients of the same type to use different configurations.
+{% include requirement/MUST id="general-config-global-config" %} 관련 글로벌 구성 설정은 기본(default)으로 사용하거나 사용자에 의해 명시적으로 요청된 경우(예: 클라이언트 생성자에 구성 객체를 전달하는 등)에 사용하세요.
 
-{% include requirement/MUST id="general-config-optout" %} allow consumers of your service clients to opt out of all global configuration settings at once.
+{% include requirement/MUST id="general-config-for-different-clients" %} 동일 유형의 서로 다른 클라이언트들이 서로 다른 구성을 사용할 수 있도록 허용하세요.
 
-{% include requirement/MUST id="general-config-global-overrides" %} allow all global configuration settings to be overridden by client-provided options. The names of these options should align with any user-facing global configuration keys.
+{% include requirement/MUST id="general-config-optout" %} 
+서비스 클라이언트의 소비자가 모든 글로벌 구성 설정을 한 번에 취소(opt out)할 수 있도록 허용하세요.
 
-{% include requirement/MUSTNOT id="general-config-behaviour-changes" %} change behavior based on configuration changes that occur after the client is constructed. Hierarchies of clients inherit parent client configuration unless explicitly changed or overridden. Exceptions to this requirement are as follows:
+{% include requirement/MUST id="general-config-global-overrides" %} 모든 글로벌 구성 설정을 클라이언트 제공 옵션으로 재정의할 수 있도록 허용하세요. 이러한 옵션의 이름들은 사용자에게 보이는 글로벌 구성 키들과 일치해야 합니다.
 
-1. Log level, which must take effect immediately across the Azure SDK.
-2. Tracing on/off, which must take effect immediately across the Azure SDK.
+{% include requirement/MUSTNOT id="general-config-behaviour-changes" %} 클라이언트가 구성된 후에 발생하는 구성 변경사항에 따라 동작을 변경하지 마세요. 클라이언트의 계층 구조는 명시적으로 변경되거나 재정의되지 않는 한 부모 클라이언트의 구성을 상속합니다. 이 요구 사항에 대한 예외는 다음과 같습니다:
 
-### Service-specific environment variables
+1. 로그 수준 (Log level): Azure SDK 전체에 즉시 적용되어야 합니다.
+2. 추적 끄기/켜기 (Tracing on/off): Azure SDK 전체에 즉시 적용되어야 합니다.
 
-{% include requirement/MUST id="general-config-envvars-prefix" %} prefix Azure-specific environment variables with `AZURE_`.
 
-{% include requirement/MAY id="general-config-envvars-use-client-specific" %} use client library-specific environment variables for portal-configured settings which are provided as parameters to your client library. This generally includes credentials and connection details. For example, Service Bus could support the following environment variables:
+### 서비스별 환경 변수
+
+{% include requirement/MUST id="general-config-envvars-prefix" %} Azure별 환경 변수의 접두사를 `AZURE_`로 지정하세요.
+
+{% include requirement/MAY id="general-config-envvars-use-client-specific" %} 당신의 클라이언트 라이브러리별 환경 변수를 클라이언트 라이브러리에 매개변수로 제공되는 포털 구성 설정에 사용할 수 있습니다. 클라이언트 라이브러리별 환경 변수는 일반적으로 자격 증명 및 연결 세부 정보를 포함합니다. 예를 들어, 서비스 버스(Service Bus)는 다음과 같은 환경 변수를 지원할 수 있습니다:
 
 * `AZURE_SERVICEBUS_CONNECTION_STRING`
 * `AZURE_SERVICEBUS_NAMESPACE`
 * `AZURE_SERVICEBUS_ISSUER`
 * `AZURE_SERVICEBUS_ACCESS_KEY`
 
-Storage could support:
+스토리지(Storage)는 다음을 지원할 수 있습니다:
 
 * `AZURE_STORAGE_ACCOUNT`
 * `AZURE_STORAGE_ACCESS_KEY`
 * `AZURE_STORAGE_DNS_SUFFIX`
 * `AZURE_STORAGE_CONNECTION_STRING`
 
-{% include requirement/MUST id="general-config-envvars-get-approval" %} get approval from the [Architecture Board] for every new environment variable. 
+{% include requirement/MUST id="general-config-envvars-get-approval" %} 모든 새로운 환경 변수에 대해 [Architecture Board] 로부터 승인을 받으세요.
 
-{% include requirement/MUST id="general-config-envvars-format" %} use this syntax for environment variables specific to a particular Azure service:
+{% include requirement/MUST id="general-config-envvars-format" %} 특정 Azure 서비스에 특정한 환경 변수들에 대해 이 구문을 사용하세요:
 
 * `AZURE_<ServiceName>_<ConfigurationKey>`
 
-where _ServiceName_ is the canonical shortname without spaces, and _ConfigurationKey_ refers to an unnested configuration key for that client library.
+여기서 _ServiceName_은 공백이 없는 표준 단축명이고, _ConfigurationKey_는 해당 클라이언트 라이브러리에 대한 중첩되지 않은(unnested) 구성 키를 참조합니다.
 
-{% include requirement/MUSTNOT id="general-config-envvars-posix-compatible" %} use non-alpha-numeric characters in your environment variable names with the exception of underscore. This ensures broad interoperability.
+{% include requirement/MUSTNOT id="general-config-envvars-posix-compatible" %} 환경 변수 이름에는 밑줄을 제외하고 영숫자가 아닌 문자를 사용하지 마세요. 이는 광범위한 상호 운용성을 보장합니다.
 
-## Parameter validation
 
-The service client will have several methods that perform requests on the service.  _Service parameters_ are directly passed across the wire to an Azure service.  _Client parameters_ are not passed directly to the service, but used within the client library to fulfill the request.  Examples of client parameters include values that are used to construct a URI, or a file that needs to be uploaded to storage.
+## 매개변수 유효성 검사
 
-{% include requirement/MUST id="general-params-client-validation" %} validate client parameters.  This includes checks for null values for required path parameters, and checks for empty string values if a required path parameter declares a `minLength` greater than zero.
+서비스 클라이언트에는 서비스에 대한 요청을 수행하는 여러 방법들이 있을 것입니다. _서비스 매개변수_들은 유선을 통해 Azure 서비스로 직접 전달됩니다. _클라이언트 매개변수_는 서비스로 직접 전달되지 않고, 클라이언트 라이브러리 내에서 요청을 이행하는 데 사용됩니다. 클라이언트 매개변수의 예로는 URI를 구성하는 데 사용되는 값이나, 스토리지에 업로드해야 하는 파일이 있습니다.
 
-{% include requirement/MUSTNOT id="general-params-server-validation" %} validate service parameters.  This includes null checks, empty strings, and other common validating conditions. Let the service validate any request parameters.
+{% include requirement/MUST id="general-params-client-validation" %} 클라이언트 매개변수의 유효성을 검사하세요. 여기에는 필수 경로 매개변수에 대한 null 값 검사, 그리고 필수 경로 매개변수가 0보다 큰 `minLength`를 선언한 경우 빈 문자열 값 검사 등이 포함됩니다.
 
-{% include requirement/MUST id="general-params-check-devex" %} validate the developer experience when the service parameters are invalid to ensure appropriate error messages are generated by the service.  If the developer experience is compromised due to service-side error messages, work with the service team to correct prior to release.
+{% include requirement/MUSTNOT id="general-params-server-validation" %} 서비스 매개변수의 유효성을 검사하지 마세요. 여기에는 널 검사, 빈 문자열, 그리고 기타 일반적인 유효성 검사 조건들이 포함됩니다. 서비스에서 모든 요청 매개변수들의 유효성을 검사하도록 합니다.
 
-## Network requests
+{% include requirement/MUST id="general-params-check-devex" %} 서비스 매개변수가 유효하지 않은 경우 개발자 경험의 유효성을 검사하여 서비스에서 적절한 오류 메시지가 생성되는지 확인하세요. 만약 서비스 측 오류 메시지로 인해 개발자 경험이 손상된 경우 서비스 팀과 협력하여 릴리스 전에 수정하세요.
 
-Each supported language has an Azure Core library that contains common mechanisms for cross cutting concerns such as configuration and doing HTTP requests.
 
-{% include requirement/MUST id="general-requests-use-pipeline" %} use the HTTP pipeline component within Azure Core for communicating to service REST endpoints.
+## 네트워크 요청
 
-The HTTP pipeline consists of a HTTP transport that is wrapped by multiple policies. Each policy is a control point during which the pipeline can modify either the request and/or response. We prescribe a default set of policies to standardize how client libraries interact with Azure services.  The order in the list is the most sensible order for implementation.
+지원되는 각 언어에는 구성 및 HTTP 요청 수행과 같은 횡단 관심사(cross cutting concerns)를 해결하기 위한 공통 메커니즘이 포함된 Azure Core 라이브러리가 있습니다.
 
-{% include requirement/MUST id="general-requests-implement-policies" %} implement the following policies in the HTTP pipeline:
+{% include requirement/MUST id="general-requests-use-pipeline" %} 서비스 REST 엔드포인트와 통신하려면 Azure Core 내의 HTTP 파이프라인 컴포넌트를 사용하세요.
+
+HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 구성됩니다. 각 정책은 파이프라인이 요청 그리고/또는 응답을 수정할 수 있는 제어 지점입니다. 클라이언트 라이브러리가 Azure 서비스와 상호 작용하는 방식을 표준화하기 위해 기본 정책 집합을 규정합니다. 목록의 순서는 구현을 위한 가장 합리적인 순서입니다.
+
+{% include requirement/MUST id="general-requests-implement-policies" %} HTTP 파이프라인에서 다음 정책을 구현하세요:
 
 - Telemetry
 - Unique Request ID
@@ -83,91 +89,96 @@ The HTTP pipeline consists of a HTTP transport that is wrapped by multiple polic
 - Distributed tracing
 - Logging
 
-{% include requirement/SHOULD id="general-requests-use-azurecore-impl" %} use the policy implementations in Azure Core whenever possible.  Do not try to "write your own" policy unless it is doing something unique to your service.  If you need another option to an existing policy, engage with the [Architecture Board] to add the option.
+{% include requirement/SHOULD id="general-requests-use-azurecore-impl" %} 가능하면 Azure Core의 정책 구현을 사용해야 합니다. 당신의 서비스에 고유한 작업을 수행하는 경우가 아니라면 "직접" 정책을 작성하려고 시도하지 마세요. 기존 정책에 다른 옵션이 필요하다면, [Architecture Board]에 참여하여 옵션을 추가하세요.
 
-## Authentication
 
-When implementing authentication, don't open up the consumer to security holes like PII (personally identifiable information) leakage or credential leakage.  Credentials are generally issued with a time limit, and must be refreshed periodically to ensure that the service connection continues to function as expected.  Ensure your client library follows all current security recommendations and consider an independent security review of the client library to ensure you're not introducing potential security problems for the consumer.
+## 인증
 
-{% include requirement/MUSTNOT id="general-authimpl-no-persisting" %} persist, cache, or reuse security credentials.  Security credentials should be considered short lived to cover both security concerns and credential refresh situations.  
+인증을 구현할 때는 PII(개인 식별 정보) 유출이나 자격증명 유출과 같은 보안 허점에 소비자를 노출시키지 마세요. 자격 증명은 일반적으로 시간 제한이 있는 상태로 발급되며, 서비스 연결이 예상대로 계속 작동하고 있는지 확인하기 위해 주기적으로 갱신(refresh)되어야 합니다. 클라이언트 라이브러리가 현재의 모든 보안 권장 사항을 따르고 있는지 확인하고 소비자에게 잠재적인 보안 문제가 발생하지 않도록 클라이언트 라이브러리에 대한 독립적인 보안 검토를 고려하세요.
 
-If your service implements a non-standard credential system (that is, a credential system that is not supported by Azure Core), then you need to produce an authentication policy for the HTTP pipeline that can authenticate requests given the alternative credential types provided by the client library.
+{% include requirement/MUSTNOT id="general-authimpl-no-persisting" %} 보안 자격증명을 지속, 캐시 또는 재사용하지 마세요. 보안 자격증명은 보안 문제와 자격증명 갱신 상황을 모두 처리하기 위한 일시적인 것(short lived)으로 간주해야 합니다.   
 
-{% include requirement/MUST id="general-authimpl-provide-auth-policy" %} provide a suitable authentication policy that authenticates the HTTP request in the HTTP pipeline when using non-standard credentials.  This includes custom connection strings, if supported.
+만약 당신의 서비스에서 비표준 자격 증명 시스템(즉, Azure Core에서 지원하지 않는 자격증명 시스템)을 구현하는 경우라면, 당신은 클라이언트 라이브러리에서 제공하는 대체 자격증명 타입을 사용하여 요청을 인증할 수 있는 HTTP 파이프라인에 대한 인증 정책을 생성해야 합니다.
 
-## Native code
+{% include requirement/MUST id="general-authimpl-provide-auth-policy" %} 비표준 자격증명을 사용하는 경우 HTTP 파이프라인에서 HTTP 요청을 인증하는 적절한 인증 정책을 제공하세요. 여기에는 지원되는 경우 사용자 지정 연결 문자열(custom connection strings)이 포함됩니다.
 
-Some languages support the development of platform-specific native code plugins.  These cause compatibility issues and require additional scrutiny.  Certain languages compile to a machine-native format (for example, C or C++), whereas most modern languages opt to compile to an intermediary format to aid in cross-platform support.
 
-{% include requirement/SHOULD id="general-no-nativecode" %} write platform-specific / native code unless the language compiles to a machine-native format.
+## 네이티브 코드
 
-## Error handling
+일부 언어는 플랫폼별 네이티브 코드 플러그인 개발을 지원합니다. 이러한 경우 호환성 문제가 발생할 수 있으며 추가적인 검토가 필요합니다. 특정 언어는 머신 네이티브 형식(예: C 또는 C++)으로 컴파일되지만, 대부분의 현대 언어들은 크로스 플랫폼 지원을 위해 중간 형식으로 컴파일하는 방식을 선택합니다.
 
-Error handling is an important aspect of implementing a client library.  It is the primary method by which problems are communicated to the consumer.  There are two methods by which errors are reported to the consumer.  Either the method throws an exception, or the method returns an error code (or value) as its return value, which the consumer must then check.  In this section we refer to "producing an error" to mean returning an error value or throwing an exception, and "an error" to be the error value or exception object.  
+{% include requirement/SHOULD id="general-no-nativecode" %} 언어가 머신 네이티브 형식으로 컴파일되지 않는 한 플랫폼별 / 네이티브 코드를 작성해야 합니다.
 
-{% include requirement/SHOULD id="general-errors-prefer-exceptions" %} prefer the use of exceptions over returning an error value when producing an error.
 
-{% include requirement/MUST id="general-errors-for-failed-requests" %} produce an error when any HTTP request fails with an HTTP status code that is not defined by the service/Swagger as a successful status code. These errors should also be logged as errors.
+## 오류 처리
 
-{% include requirement/MUST id="general-errors-include-request-response" %} ensure that the error produced contains the HTTP response (including status code and headers) and originating request (including URL, query parameters, and headers).  
+오류 처리는 클라이언트 라이브러리의 구현에 있어 중요한 측면입니다. 이는 문제가 소비자에게 전달되는 주요 방법입니다. 오류가 소비자에게 보고되는 방법에는 두 가지가 있습니다. 메서드가 예외를 던지거나, 메서드가 그 반환값으로 오류 코드(또는 값)를 반환하면, 소비자는 이를 확인해야 합니다. 이 섹션에서는 "오류를 발생시킨다"는 것은 오류 값을 반환하거나 예외를 던지는 것을 의미하며, "오류"는 오류 값 또는 예외 객체입니다.
 
-In the case of a higher-level method that produces multiple HTTP requests, either the last exception or an aggregate exception of all failures should be produced.
+{% include requirement/SHOULD id="general-errors-prefer-exceptions" %} 오류를 생성할 때는 오류 값을 반환하는 것보다 예외를 사용하는 것을 선호해야 합니다.
 
-{% include requirement/MUST id="general-errors-rich-info" %} ensure that if the service returns rich error information (via the response headers or body), the rich information must be available via the error produced in service-specific properties/fields.
+{% include requirement/MUST id="general-errors-for-failed-requests" %} 서비스/Swagger에서 성공 상태 코드로 정의되지 않은 HTTP 상태 코드로 HTTP 요청이 실패할 경우 오류를 생성하세요. 이러한 오류들도 오류로 기록되어야 합니다.
 
-{% include requirement/SHOULDNOT id="general-errors-no-new-types" %} create a new error type unless the developer can perform an alternate action to remediate the error.  Specialized error types should be based on existing error types present in the Azure Core package.
+{% include requirement/MUST id="general-errors-include-request-response" %} 발생한 오류에 HTTP 응답 (상태 코드 및 헤더 포함)과 발신 요청 (URL, 쿼리 매개변수, 헤더 포함)이 포함되어 있는지 확인하세요.
 
-{% include requirement/MUSTNOT id="general-errors-use-system-types" %} create a new error type when a language-specific error type will suffice.  Use system-provided error types for validation.
+여러 HTTP 요청을 생성하는 상위 수준의 메서드의 경우, 마지막 예외 또는 모든 실패에 대한 집계 예외가 생성되어야 합니다.
+ 
+{% include requirement/MUST id="general-errors-rich-info" %} 서비스가 (응답 헤더 또는 바디를 통해) 풍부한 오류 정보를 반환하는 경우, 서비스별 프로퍼티/필드에서 생성된 오류를 통해 풍부한 정보를 사용할 수 있어야 합니다.
 
-{% include requirement/MUST id="general-errors-documentation" %} document the errors that are produced by each method (with the exception of commonly thrown errors that are generally not documented in the target language).
+{% include requirement/SHOULDNOT id="general-errors-no-new-types" %} 개발자가 오류를 해결하기 위한 대체 작업을 수행할 수 있는 경우가 아니라면 새로운 오류 타입을 만들어서는 안 됩니다. 특수한 오류 타입은 Azure Core 패키지에 있는 기존 오류 타입을 기반으로 해야 합니다.
 
-## Logging
+{% include requirement/MUSTNOT id="general-errors-use-system-types" %} 언어별 오류 타입으로 충분할 경우 새 오류 타입을 만들지 마세요. 유효성 검사를 위해 시스템에서 제공하는 오류 타입을 사용하세요.
 
-Client libraries must support robust logging mechanisms so that the consumer can adequately diagnose issues with the method calls and quickly determine whether the issue is in the consumer code, client library code, or service.
+{% include requirement/MUST id="general-errors-documentation" %} 각 메서드에서 생성되는 오류를 문서화하세요 (일반적으로 타깃 언어로 문서화되지 않은 흔히 발생하는 오류는 제외).
 
-In general, our advice to consumers of these libraries is to establish logging in their preferred manner at the `WARNING` level or above in production to capture problems with the application, and this level should be enough for customer support situations.  Informational or verbose logging can be enabled on a case-by-case basis to assist with issue resolution.
 
-{% include requirement/MUST id="general-logging-pluggable-logger" %} support pluggable log handlers.
+## 로깅
 
-{% include requirement/MUST id="general-logging-console-logger" %} make it easy for a consumer to enable logging output to the console. The specific steps required to enable logging to the console must be documented. 
+클라이언트 라이브러리는 소비자가 메서드 호출의 이슈를 적절히 진단하고 이슈가 소비자 코드, 클라이언트 라이브러리 코드 또는 서비스에 있는지 신속하게 판단할 수 있도록 강력한 로깅 메커니즘을 지원해야 합니다.
 
-{% include requirement/MUST id="general-logging-levels" %} use one of the following log levels when emitting logs: `Verbose` (details), `Informational` (things happened), `Warning` (might be a problem or not), and `Error`.
+일반적으로, 이러한 라이브러리를 사용하는 소비자에게는 애플리케이션의 문제를 포착하기 위해 프로덕션 환경에서 '경고(WARNING)' 수준 이상으로 원하는 방식으로 로깅을 설정할 것을 권장하며, 이 수준은 고객 지원 상황에 충분해야 합니다. 정보가 담기거나 자세한 로깅은 사례별로 이슈 해결을 도울 수 있습니다.
 
-{% include requirement/MUST id="general-logging-failure" %} use the `Error` logging level for failures that the application is unlikely to recover from (out of memory, etc.).
+{% include requirement/MUST id="general-logging-pluggable-logger" %} 연결 가능한(pluggable) 로그 핸들러를 지원하세요.
 
-{% include requirement/MUST id="general-logging-warning" %} use the `Warning` logging level when a function fails to perform its intended task. This generally means that the function will raise an exception.  Do not include occurrences of self-healing events (for example, when a request will be automatically retried).
+{% include requirement/MUST id="general-logging-console-logger" %} 소비자가 콘솔에 로깅 출력을 쉽게 할 수 있도록 하세요. 콘솔에 로깅하는 데 필요한 구체적인 단계는 문서화되어야 합니다.
 
-{% include requirement/MAY id="general-logging-slowlinks" %} log the request and response (see below) at the `Warning` when a request/response cycle (to the start of the response body) exceeds a service-defined threshold.  The threshold should be chosen to minimize false-positives and identify service issues.
+{% include requirement/MUST id="general-logging-levels" %} 로그를 내보낼 때는 다음 로그 수준 중 하나를 사용하세요: `Verbose` (세부 사항), `Informational` (발생한 사항), `Warning`(문제이거나 아닐 수도 있음), `Error`.
 
-{% include requirement/MUST id="general-logging-info" %} use the `Informational` logging level when a function operates normally.
+{% include requirement/MUST id="general-logging-failure" %} (메모리 부족 등) 애플리케이션이 복구될 가능성이 없는 실패에 대해서는 `Error` 로깅 수준을 사용하세요.
 
-{% include requirement/MUST id="general-logging-verbose" %} use the `Verbose` logging level for detailed troubleshooting scenarios. This is primarily intended for developers or system administrators to diagnose specific failures.
+{% include requirement/MUST id="general-logging-warning" %} 어떤 기능이 의도한 작업을 수행하지 못할 경우 `Warning` 로깅 수준을 사용하세요. 이는 일반적으로 함수가 예외를 발생시킬 것을 의미합니다. 자기 회복(self-healing) 이벤트의 발생(예: 요청이 자동으로 재시도되는 경우)은 포함하지 마세요.
 
-{% include requirement/MUST id="general-logging-no-sensitive-info" %} only log headers and query parameters that are in a service-provided "allow-list" of approved headers and query parameters.  All other headers and query parameters must have their values redacted.
+{% include requirement/MAY id="general-logging-slowlinks" %} (응답 본문 시작까지의) 요청/응답 주기가 서비스 정의 임계값을 초과하는 경우 당신은 `Warning`에서 요청 및 응답(아래 참조)을 로깅할 수 있습니다. 임계값은 긍정오류(false-positive)을 최소화하고 서비스 문제를 식별할 수 있도록 선택되어야 합니다.
 
-{% include requirement/MUST id="general-logging-requests" %} log request line and headers as an `Informational` message. The log should include the following information:
+{% include requirement/MUST id="general-logging-info" %} 기능이 정상적으로 작동할 경우에는 `Informational` 로깅 수준을 사용하세요.
 
-* The HTTP method.
-* The URL.
-* The query parameters (redacted if not in the allow-list).
-* The request headers (redacted if not in the allow-list).
-* An SDK provided request ID for correlation purposes.
-* The number of times this request has been attempted.
+{% include requirement/MUST id="general-logging-verbose" %} 자세한 문제 해결 시나리오가 필요한 경우 `Verbose` 로깅 수준을 사용하세요. 이는 주로 개발자 또는 시스템 관리자가 특정 실패를 진단하기 위한 것입니다.
 
-{% include requirement/MUST id="general-logging-responses" %} log response line and headers as an `Informational` message.  The format of the log should be the following:
+{% include requirement/MUST id="general-logging-no-sensitive-info" %} 승인된 헤더 및 쿼리 매개변수 중 서비스에서 제공하는 "허용 목록(allow-list)"에 있는 헤더 및 쿼리 매개변수만 로깅하세요. 다른 모든 헤더 및 쿼리 매개 변수에 대해서는 해당 값들이 편집(redacted)되어야 합니다.
 
-* The SDK provided request ID (see above).
-* The status code.
-* Any message provided with the status code.
-* The response headers (redacted if not in the allow-list).
-* The time period between the first attempt of the request and the first byte of the body.
+{% include requirement/MUST id="general-logging-requests" %} 요청 라인과 헤더를 `Informational` 메시지로 기록하세요. 로그에는 다음 정보가 포함되어야 합니다:
 
-{% include requirement/MUST id="general-logging-cancellations" %} log an `Informational` message if a service call is cancelled.  The log should include:
+* HTTP 메서드.
+* URL.
+* 쿼리 매개변수 (허용 목록에 없을 경우 삭제).
+* 요청 헤더 (허용 목록에 없을 경우 삭제).
+* 상관관계 목적으로 SDK에서 제공한 요청 ID.
+* 이 요청이 시도된 횟수.
 
-* The SDK provided request ID (see above).
-* The reason for the cancellation (if available).
+{% include requirement/MUST id="general-logging-responses" %} 응답 라인과 헤더를 `Informational` 메시지로 기록하세요. 로그 형식은 다음과 같아야 합니다:
 
-{% include requirement/MUST id="general-logging-exceptions" %} log exceptions thrown as a `Warning` level message. If the log level set to `Verbose`, append stack trace information to the message.
+* SDK에서 제공한 요청 ID (위 참조).
+* 상태 코드.
+* 상태 코드와 함께 제공된 모든 메시지.
+* 응답 헤더 (허용 목록에 없을 경우 삭제).
+* 요청의 첫 번째 시도와 본문의 첫 번째 바이트 사이의 주기.
+
+{% include requirement/MUST id="general-logging-cancellations" %} 서비스 호출이 취소된 경우 `Informational` 메세지를 기록하세요. 로그에는 다음이 포함되어야 합니다:
+
+* SDK에서 제공한 요청 ID (위 참조).
+* 취소 사유 (가능한 경우).
+
+{% include requirement/MUST id="general-logging-exceptions" %} 발생한 예외를 `Warning` 수준 메세지로 기록하세요. 만약 로그 수준이 `Verbose`로 설정되어있는 경우, 메세지에 스택 추적 정보(stack trace information)를 추가합니다.
+
 
 ## Distributed Tracing
 

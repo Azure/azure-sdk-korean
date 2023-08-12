@@ -93,7 +93,7 @@ entries:
                   external_url: https://azure.github.io/azure-sdk-for-java/storage.html#azure-storage-queue
   - title: Python 가이드라인
     folderitems:
-      - title: Design (영문)
+      - title: 디자인
         url: /python_design.html
       - title: 구현 (번역중)
         url: /python_implementation.html
@@ -126,11 +126,11 @@ entries:
     folderitems:
       - title: Design (영문)
         url: /ios_design.html
-      - title: Implementation (영문)
+      - title: Implementation
         url: /ios_implementation.html
   - title: GitHub 저장소
     folderitems:
-      - title: 가이드라인 기여
+      - title: 도입 가이드라인
         url: /policies_adoption.html
       - title: 저장소 구조
         url: /policies_repostructure.html
@@ -140,11 +140,11 @@ entries:
         url: /policies_pipelines.html
   - title: 정책
     folderitems:
-      - title: Review Process (영문)
+      - title: 리뷰 프로세스
         url: /policies_reviewprocess.html
-      - title: Releases (영문)
+      - title: 릴리즈
         url: /policies_releases.html
-      - title: Release notes (영문)
+      - title: 릴리즈 노트
         url: /policies_releasenotes.html
-      - title: Support (영문)
+      - title: 지원
         url: /policies_support.html
