@@ -4,7 +4,7 @@ topnav:
     - title: SDK 블로그 (영문)
       external_url: https://aka.ms/azsdk/blog
     - title: 릴리즈 (영문)
-      url: https://aka.ms/azsdk
+      url: https://aka.ms/azsdk/
 
 
 topnav_dropdowns:
@@ -15,7 +15,7 @@ topnav_dropdowns:
       - title: API 레퍼런스 (영문)
         folderitems:
           - title: .NET
-            external_url: https://aka.ms/net-doc
+            external_url: https://aka.ms/net-docs
           - title: Java
             external_url: https://aka.ms/java-docs
           - title: Python
