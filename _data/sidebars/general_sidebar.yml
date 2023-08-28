@@ -33,7 +33,7 @@ entries:
         url: /general_terminology.html
       - title: API 디자인
         url: /general_design.html
-      - title: 구현 (번역 중)
+      - title: 구현
         url: /general_implementation.html
       - title: 설명서
         url: /general_documentation.html
