@@ -3,7 +3,7 @@
 모든 언어의 패키지 정보는 현재 [여기](https://github.com/Azure/azure-sdk/blob/main/_data/releases/latest)에 있는 csv 파일에 저장되어 있습니다.
 각 언어별로 하나의 csv 파일을 관리하며, 매일 [자동화 파이프라인](https://github.com/Azure/azure-sdk/blob/main/eng/pipelines/version-updater.yml)이 실행되어 새로운 릴리스를 확인한 후, 해당 패키지의 csv에 버전 정보와 문서 링크를 업데이트합니다. 버전 정보는 주어진 패키지 생태계의 특정 패키지 관리자로부터 업데이트될 것이며, 우리의 모노 레포(mono repos)에서의 릴리스 태그를 통해서도 업데이트됩니다. 모노 레포에서 출시되는 항목에 대한 저장소와 문서 정보 등의 추가적인 정보도 업데이트할 수 있습니다.
 
-## CSV 팔드
+## CSV 필드
 
 - `Package` - 패키지 관리자에 표시되는 패키지의 전체 이름입니다.
 - `GroupId` - Java 전용으로 패키지의 GroupId를 포함합니다. Java의 경우 Package 필드에는 ArtifactId만 포함됩니다.
