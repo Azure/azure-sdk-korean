@@ -3,8 +3,6 @@ topnav:
   items:
     - title: SDK 블로그 (영문)
       external_url: https://aka.ms/azsdk/blog
-    - title: 릴리즈 (영문)
-      url: https://aka.ms/azsdk/
 
 
 topnav_dropdowns:
@@ -22,4 +20,3 @@ topnav_dropdowns:
             external_url: https://aka.ms/python-docs
           - title: TypeScript
             external_url: https://aka.ms/js-docs
-
