@@ -6,7 +6,7 @@ folder: general
 sidebar: general_sidebar
 ---
 
-(For English, please visit https://azure.github.io/azure-sdk/general_implementation.html)
+(For English, please visit [General Guidelines: Implementation])
 
 허용 가능한 API 표면을 통해 작업을 한 뒤부터는, 서비스 클라이언트의 구현을 시작하실 수 있습니다.
 
@@ -180,101 +180,110 @@ HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 �
 {% include requirement/MUST id="general-logging-exceptions" %} 발생한 예외를 `Warning` 수준 메세지로 기록하세요. 만약 로그 수준이 `Verbose`로 설정되어있는 경우, 메세지에 스택 추적 정보(stack trace information)를 추가합니다.
 
 
-## Distributed Tracing
+## 분산 추적
 
-Distributed tracing mechanisms allow the consumer to trace their code from frontend to backend. The distributed tracing library creates spans - units of unique work.  Each span is in a parent-child relationship.  As you go deeper into the hierarchy of code, you create more spans.  These spans can then be exported to a suitable receiver as needed.  To keep track of the spans, a _distributed tracing context_ (called a context in the remainder of this section) is passed into each successive layer.  For more information on this topic, visit the [OpenTelemetry] topic on tracing.
+분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다.  각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
 
-{% include requirement/MUST id="general-tracing-opentelemetry" %} support [OpenTelemetry] for distributed tracing.
+{% include requirement/MUST id="general-tracing-opentelemetry" %} 분산 추적을 위해 [OpenTelemetry]를 지원하세요.
 
-{% include requirement/MUST id="general-tracing-accept-context" %} accept a context from calling code to establish a parent span.
+{% include requirement/MUST id="general-tracing-accept-context" %} 부모 스팬을 설정하기 위해 호출 코드로부터 컨텍스트를 받으세요.
 
-{% include requirement/MUST id="general-tracing-pass-context" %} pass the context to the backend service through the appropriate headers (`traceparent`, `tracestate`, etc.) to support [Azure Monitor].  This is generally done with the HTTP pipeline.
+{% include requirement/MUST id="general-tracing-pass-context" %} [Azure Monitor]를 지원하기 위해 적절한 헤더 (`traceparent`, `tracestate` 등)를 통해 백엔드 서비스에 컨텍스트를 전달하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
 
-{% include requirement/MUST id="general-tracing-new-span-per-method" %} create a new span for each method that user code calls.  New spans must be children of the context that was passed in.  If no context was passed in, a new root span must be created.
+{% include requirement/MUST id="general-tracing-new-span-per-method" %} 사용자 코드가 호출한 각 메서드에 대해 새 스팬을 생성하세요. 새 스팬은 전달된 컨텍스트의 자식 스팬이어야 합니다. 전달된 컨텍스트가 없었다면, 새로운 루트 스팬이 만들어져야 합니다.
 
-{% include requirement/MUST id="general-tracing-new-span-per-rest-call" %} create a new span (which must be a child of the per-method span) for each REST call that the client library makes.  This is generally done with the HTTP pipeline.
+{% include requirement/MUST id="general-tracing-new-span-per-rest-call" %} 클라이언트 라이브러리에서 일으키는 각 REST 호출에 대해 새 스팬 (메서드별 스팬의 자식 스팬이어야 함)을 생성하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
+
+클라이언트 라이브러리가 수행하는 각 REST 호출에 대해 새 범위(메소드별 범위의 자식이어야 함)를 생성합니다. 이 작업은 일반적으로 HTTP 파이프라인을 사용하여 수행됩니다.
 
 Some of these requirements will be handled by the HTTP pipeline.  However, as a client library writer, you must handle the incoming context appropriately.
 
-## Dependencies
+이러한 요구사항들 중 일부는 HTTP 파이프라인에서 처리될 것입니다. 그러나, 클라이언트 라이브러리 작성자로서, 당신은 들어오는 컨텍스트를 적절하게 처리해야 합니다.
 
-Dependencies bring in many considerations that are often easily avoided by avoiding the 
-dependency. 
 
-- **Versioning** - Many programming languages do not allow a consumer to load multiple versions of the same package. So, if we have an client library that requires v3 of package Foo and the consumer wants to use v5 of package Foo, then the consumer cannot build their application. This means that client libraries should not have dependencies by default. 
-- **Size** - Consumer applications must be able to deploy as fast as possible into the cloud and move in various ways across networks. Removing additional code (like dependencies) improves deployment performance.
-- **Licensing** - You must be conscious of the licensing restrictions of a dependency and often provide proper attribution and notices when using them.
-- **Compatibility** - Often times you do not control a dependency and it may choose to evolve in a direction that is incompatible with your original use.
-- **Security** - If a security vulnerability is discovered in a dependency, it may be difficult or time consuming to get the vulnerability corrected if Microsoft does not control the dependency's code base.
+## 의존성
 
-{% include requirement/MUST id="general-dependencies-azure-core" %} depend on the Azure Core library for functionality that is common across all client libraries.  This library includes APIs for HTTP connectivity, global configuration, and credential handling.
+의존성은 의존성을 피함으로써 쉽게 피할 수 있는 많은 고려 사항들을 불러일으킵니다.
 
-{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} be dependent on any other packages within the client library distribution package. Dependencies are by-exception and need a thorough vetting through architecture review.  This does not apply to build dependencies, which are acceptable and commonly used.
+- **버전 관리** - 많은 프로그래밍 언어에서는 소비자가 동일한 패키지의 여러 버전들을 로드하는 것을 허용하지 않습니다. 예를 들어, 클라이언트 라이브러리는 버전 3의 Foo 패키지를 필요로 하고 소비자는 버전 5의 Foo 패키지 사용을 원하는 경우, 소비자는 애플리케이션을 빌드할 수 없습니다. 이는 클라이언트 라이브러리는 기본적으로 의존성을 가지지 않아야 한다는 것을 의미합니다.
+- **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
+- **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
+- **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
+- **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
 
-{% include requirement/SHOULD id="general-dependencies-vendoring" %} consider copying or linking required code into the client library in order to avoid taking a dependency on another package that could conflict with the ecosystem. Make sure that you are not violating any licensing agreements and consider the maintenance that will be required of the duplicated code. ["A little copying is better than a little dependency"][1] (YouTube).
+{% include requirement/MUST id="general-dependencies-azure-core" %} 모든 클라이언트 라이브러리에서 공통되는 기능은 Azure Core 라이브러리에 의존하세요. 이 라이브러리에는 HTTP 연결, 글로벌 구성, 자격증명 처리를 위한 API들이 포함되어 있습니다.
 
-{% include requirement/MUSTNOT id="general-dependencies-concrete" %} depend on concrete logging, dependency injection, or configuration technologies (except as implemented in the Azure Core library).  The client library will be used in applications that might be using the logging, DI, and configuration technologies of their choice.
+{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} 클라이언트 라이브러리 배포 패키지 내의 다른 패키지에 의존하지 마세요. 의존성은 예외적인 경우이며 아키텍처 검토를 통해 철저한 심사가 필요합니다. 이는 허용 가능하고 일반적으로 사용되는, 빌드 의존성에는 적용되지 않습니다.
 
-Language specific guidelines will maintain a list of approved dependencies.
+{% include requirement/SHOULD id="general-dependencies-vendoring" %} 생태계(ecosystem)와 충돌할 수 있는 다른 패키지에 의존성을 갖지 않으려면 클라이언트 라이브러리에 필요한 코드를 복사하거나 연결(link)하는 것을 고려해야 합니다. 라이선스 계약을 위반하지 않았는지 확인하고 복제된 코드에 필요할 유지보수를 고려하세요. ["A little copying is better than a little dependency"][1] (YouTube).
 
-## Service-specific common library code
+{% include requirement/MUSTNOT id="general-dependencies-concrete" %} 구체적인 로깅, 의존성 주입, 또는 구성 기술에 의존하지 마세요 (Azure Core 라이브러리에서 구현된 경우 제외). 클라이언트 라이브러리는 애플리케이션에서 자체적으로 선택한 로깅, 의존성 주입(DI), 구성 기술을 사용할 애플리케이션에서 사용될 것입니다.
 
-There are occasions when common code needs to be shared between several client libraries.  For example, a set of cooperating client libraries may wish to share a set of exceptions or models.
+언어별 가이드라인은 승인된 의존성의 목록을 유지관리할 것입니다.
 
-{% include requirement/MUST id="general-commonlib-approval" %} gain [Architecture Board] approval prior to implementing a common library.
 
-{% include requirement/MUST id="general-commonlib-minimize-code" %} minimize the code within a common library.  Code within the common library is available to the consumer of the client library and shared by multiple client libraries within the same namespace.
+## 서비스별 공통 라이브러리 코드
 
-{% include requirement/MUST id="general-commonlib-namespace" %} store the common library in the same namespace as the associated client libraries.
+여러 클라이언트 라이브러리 간에 공통 코드를 공유해야 하는 경우가 있습니다. 예를 들어, 서로 협력하는 클라이언트 라이브러리들의 집합이 예외 또는 모델의 한 집합을 공유하고자 할 수 있습니다.
 
-A common library will only be approved if:
+{% include requirement/MUST id="general-commonlib-approval" %} 공통 라이브러리를 구현하기 전에 [Architecture Board]의 승인을 받으세요.
 
-* The consumer of the non-shared library will consume the objects within the common library directly, AND
-* The information will be shared between multiple client libraries.
+{% include requirement/MUST id="general-commonlib-minimize-code" %} 공통 라이브러리 내의 코드를 최소화하세요. 공통 라이브러리 내의 코드는 클라이언트 라이브러리의 소비자가 사용할 수 있으며 동일한 네임스페이스 내의 여러 클라이언트 라이브러리에서 공유할 수 있습니다.
 
-Let's take two examples:
+{% include requirement/MUST id="general-commonlib-namespace" %} 공통 라이브러리를 연결된 클라이언트 라이브러리들과 동일한 네임스페이스에 저장하세요.
 
-1. Implementing two Cognitive Services client libraries, we find a model is required that is produced by one Cognitive Services client library and consumed by another Coginitive Services client library, or the same model is produced by two client libraries.  The consumer is required to do the passing of the model in their code, or may need to compare the model produced by one client library vs. that produced by another client library.  This is a good candidate for choosing a common library.
+공통 라이브러리는 다음과 같은 경우에만 승인됩니다:
 
-2. Two Cognitive Services client libraries throw an `ObjectNotFound` exception to indicate that an object was not detected in an image.  The user might trap the exception, but otherwise will not operate on the exception.  There is no linkage between the `ObjectNotFound` exception in each client library.  This is not a good candidate for creation of a common library (although you may wish to place this exception in a common library if one exists for the namespace already).  Instead, produce two different exceptions - one in each client library.
+* 공유되지 않은 라이브러리의 소비자가 공통 라이브러리 내의 객체를 직접 사용할 경우, 그리고
+* 정보가 여러 클라이언트 라이브러리들 간에 공유되는 경우.
 
-## Testing
+두 가지 예를 들어 보겠습니다:
 
-Software testing provides developers a safety net. Investing in tests upfront saves time overall due to increased certainty over the development process that changes are not resulting in divergence from stated requirements and specifications. The intention of these testing guidelines is to focus on the complexities around testing APIs that are backed by live services when in their normal operating mode. We want to enable open source development of our client libraries, with certainty that regardless of the developer making code changes there always remains conformance to the initial design goals of the code. Additionally, our goal is to ensure that developers building atop the Azure client libraries can meaningfully test their own code, without incurring additional complexity or expense through unnecessary interactions with a live Azure service.
+1. 두 개의 Coginitive Services 클라이언트 라이브러리를 구현하며, 한 Coginitive Services 클라이언트 라이브러리에서 생성되고 다른 Coginitive Services 클라이언트 라이브러리에서 소비되는 모델이 필요하거나, 두 클라이언트 라이브러리에서 동일한 모델이 생성되도록 하고 싶습니다. 소비자는 코드에서 모델을 전달해야 하거나, 한 클라이언트 라이브러리에서 생성된 모델과 다른 클라이언트 라이브러리에서 생성된 모델을 비교해야 할 수 있습니다. 이러한 경우는 공통 라이브러리를 선택하기에 좋은 사례입니다.
 
-{% include requirement/MUST id="general-testing-1" %} write tests that ensure all APIs fulfil their contract and algorithms work as specified. Focus particular attention on client functionality, and places where payloads are serialized and deserialized.
+2. 두 개의 Cognitive Services 클라이언트 라이브러리는 이미지에서 객체를 감지하지 못했음을 나타내는 `ObjectNotFound` 예외를 던집니다. 사용자는 예외를 trap하겠지만, 그렇지 않으면 예외에 대해 작동하지 않습니다. 각 클라이언트 라이브러리에서 ObjectNotFound 예외 사이에는 연결 고리가 없습니다. (해당 네임스페이스에 이미 예외가 있는 경우 이 예외를 공통 라이브러리에 배치하고 싶을 수 있겠지만) 이러한 경우는 공통 라이브러리를 만드는 데 좋은 사례가 아닙니다. 대신, 두 개의 서로 다른 예외를 생성하세요 - 각 클라이언트 라이브러리에 하나씩.
 
-{% include requirement/MUST id="general-testing-2" %} ensure that client libraries have appropriate unit test coverage, [focusing on quality tests][2], using code coverage reporting tools to identify areas where more tests would be beneficial. Each client library should define its minimum level of code coverage, and ensure that this is maintained as the code base evolves.
 
-{% include requirement/MUST id="general-testing-3" %} use unique, descriptive test case names so test failures in CI (especially external PRs) are readily understandable.
+## 테스트
 
-{% include requirement/MUST id="general-testing-4" %} ensure that users can run all tests without needing access to Microsoft-internal resources. If internal-only tests are necessary, these should be a separate test suite triggered via a separate command, so that they are not executed by users who will then encounter test failures that they cannot resolve.
+소프트웨어 테스트는 개발자에게 안전망을 제공합니다. 테스트에 미리 투자하는 것은 변경 사항이 명시된 요구 사항(requirements) 및 사양(specifications)과 차이를 초래하지 않는다는 개발 프로세스에 대한 확신을 높이므로 전체적인 시간을 절약합니다. 본 테스트 가이드라인의 의도는 정상적인 운영 모드에서 라이브 서비스의 지원을 받는 API 테스트와 관련된 복잡성에 초점을 맞추는 것입니다. 우리는 개발자가 코드를 변경하더라도 코드의 초기 설계 목표에 항상 부합할 것이라는 확신을 가지고, 우리의 클라이언트 라이브러리의 오픈 소스 개발을 가능하게 하고 싶습니다.
+또한, 우리의 목표는 라이브 Azure 서비스와의 불필요한 상호 작용을 통해 추가적인 복잡성이나 비용을 발생시키지 않고도, Azure 클라이언트 라이브러리를 기반으로 빌드하는 개발자가 그들의 코드를 유의미하게 테스트할 수 있도록 보장하는 것입니다.
 
-{% include requirement/MUSTNOT id="general-testing-5" %} rely on pre-existing test resources or infrastructure and **DO NOT** leave test resources around after tests have completed. Anything needed for a test should be initialized and cleaned up as part of the test execution (whether by running an ARM template prior to starting tests, or by setting up and tearing down resources in the tests themselves).
+{% include requirement/MUST id="general-testing-1" %} 모든 API가 계약을 잘 이행하고 알고리즘이 지정된 대로 잘 작동하는지 확인하는 테스트를 작성하세요. 클라이언트 기능, 그리고 페이로드(payloads)가 직렬화 및 역직렬화되는 위치에 특히나 주의를 기울이세요.
 
-### Recorded tests
+{% include requirement/MUST id="general-testing-2" %} 더 많은 테스트가 유익할 영역을 식별하기 위해 코드 커버리지 보고 도구(code coverage reporting tools)를 사용하여, [품질 테스트(quality tests)에 중점을 두어][2], 클라이언트 라이브러리가 적절한 단위 테스트 커버리지를 갖는지 확인하세요. 각 클라이언트 라이브러리는 최소 수준의 코드 커버리지를 정의해야 하고, 코드 기반이 발전함에 따라 이것이 계속 유지되는지 확인해야 합니다.
 
-{% include requirement/MUST id="general-testing-6" %} ensure that all tests work without the need for any network connectivity or access to Azure services.
+{% include requirement/MUST id="general-testing-3" %} 고유(unique)하고 설명적인(descriptive) 테스트 케이스 이름을 사용하여 CI(특히 외부 PR)에서의 테스트 실패가 쉽게 이해될 수 있도록 하세요.
 
-{% include requirement/MUST id="general-testing-7" %} write tests that use a mock service implementation, with a set of recorded tests per service version supported by the client library. This ensures that the service client continues to properly consume service responses as APIs and implementations evolve. Recorded tests must be run using the language-appropriate trigger to enable the specific service version support in the client library.
+{% include requirement/MUST id="general-testing-4" %} 사용자가 Microsoft 내부 리소스에 액세스하지 않고도 모든 테스트를 실행할 수 있는지 확인하세요. 내부 전용 테스트가 필요한 경우, 이러한 테스트는 별도의 명령을 통해 작동되는 별도의 테스트 묶음(suite)이어야 하며, 이에 따라 이후 해결할 수 없는 테스트 실패를 직면할 사용자에 의해 테스트가 실행되지 않도록 합니다.
 
-{% include requirement/MUST id="general-testing-8" %} recreate recorded tests for latest service version when notified by the service team of any changes to the endpoint APIs for that service version. In the absence of this notification, recordings should not be updated needlessly. When the service team requires recorded tests to be recreated, or when a recorded test begins to fail unexpectedly, notify the architecture board before recreating the tests.
+{% include requirement/MUSTNOT id="general-testing-5" %} 기존의 테스트 리소스나 인프라에 의존**하지 말고** 테스트가 완료된 후에 테스트 리소스를 남겨두**지 마세요**. 테스트에 필요한 모든 것은 테스트 실행의 일부로서 초기화 및 정리되어야 합니다 (테스트를 시작하기 전에 ARM 템플릿을 실행하거나, 또는 테스트 자체에서 리소스를 설정 및 해제하는 방식으로).
 
-{% include requirement/MUST id="general-testing-9" %} enable all network-mocked tests to also connect to live Azure service. The test assertions should remain unchanged regardless of whether the service call is mocked or not.
 
-{% include requirement/MUSTNOT id="general-testing-10" %} include sensitive information in recorded tests.
+### 기록된 테스트 (Recorded tests)
 
-### Testability
+{% include requirement/MUST id="general-testing-6" %} 모든 테스트가 네트워크 연결이나 Azure 서비스에 대한 액세스 없이도 작동하는지 확인하세요.
 
-As outlined above, writing tests that we can run constantly is critical for confidence in our client library offering, but equally critical is enabling users of the Azure client libraries to write tests for their applications and libraries. End users want to be certain that their code is performing appropriately, and in cases where this code interacts with the Azure client libraries, end users do not want complex or costly Azure interactions to prevent their ability to test their software.
+{% include requirement/MUST id="general-testing-7" %} 클라이언트 라이브러리에서 지원하는 서비스 버전별 기록된 테스트 집합을 사용하여, 목(mock) 서비스 구현을 사용하는 테스트를 작성하세요. 이는 API 및 구현이 발전함에 따라 서비스 클라이언트가 계속해서 서비스 응답을 적절하게 소비하도록 합니다. 기록된 테스트는 클라이언트 라이브러리에서 특정 서비스 버전 지원이 가능하도록 하기 위해 언어에 적합한 트리거를 사용하여 실행되어야 합니다.
 
-{% include requirement/MUST id="general-testing-mocking" %} support mocking of service client methods through standard mocking frameworks or other means.
+{% include requirement/MUST id="general-testing-8" %} 서비스 팀으로부터 해당 서비스 버전에 대한 엔드포인트 API의 변경 사항을 통보받으면 최신 서비스 버전에 대해 기록된 테스트를 다시 생성하세요. 이 알림이 없는 경우, 기록된 테스트가 불필요하게 업데이트돼서는 안 됩니다. 서비스 팀에서 기록된 테스트를 다시 생성하기를 요구하거나, 기록된 테스트가 예기치 않게 실패하기 시작하면, 테스트를 다시 생성하기 전에 아키텍처 보드에 알리세요.
 
-{% include requirement/MUST id="general-testing-11" %} support the ability to instantiate and set all properties on model objects, such that users may return these from their code.
+{% include requirement/MUST id="general-testing-9" %} 모든 네트워크 목(network-mocked) 테스트가 라이브 Azure 서비스에도 연결되도록 설정하세요. 테스트 단언문(assertions)은 서비스 호출의 목 여부에 관계없이 변경되지 않게 유지되어야 합니다.
 
-{% include requirement/MUST id="general-testing-12" %} support user tests to operate in a network-mocked manner without the need for network access.
+{% include requirement/MUSTNOT id="general-testing-10" %} 기록된 테스트에 민감한 정보를 포함하지 마세요.
 
-{% include requirement/MUST id="general-testing-13" %} provide clear documentation on how users should instantiate the client library such that it can be mocked.
+
+### 테스트 가능성
+
+위에서 설명한 바와 같이, 지속적으로 실행할 수 있는 테스트를 작성하는 것은 클라이언트 라이브러리 제공에 대한 신뢰를 위해 매우 중요하지만, Azure 클라이언트 라이브러리 사용자가 그들의 애플리케이션 및 라이브러리에 대한 테스트를 작성할 수 있도록 하는 것도 마찬가지로 중요합니다. 최종 사용자는 그들의 코드가 적절하게 작동하는지 확인하기를 원하며, 이 코드가 Azure 클라이언트 라이브러리와 상호 작용하는 경우에는, 최종 사용자는 복잡하거나 비용이 많이 드는 Azure 상호 작용으로 인해 그들의 소프트웨어를 테스트할 수 없게 되는 것을 원하지 않습니다.
+
+{% include requirement/MUST id="general-testing-mocking" %} 표준 모킹 프레임워크 또는 기타 수단을 통해 서비스 클라이언트 메서드의 모킹(mocking)을 지원하세요.
+
+{% include requirement/MUST id="general-testing-11" %} 모델 객체의 모든 프로퍼티를 인스턴스화하고 설정하는 기능을 지원하여, 사용자가 그들의 코드에서 이를 반환할 수 있도록 하세요.
+
+{% include requirement/MUST id="general-testing-12" %} 네트워크에 액세스할 필요 없이 네트워크 목 방식으로 작동하는 사용자 테스트를 지원하세요.
+
+{% include requirement/MUST id="general-testing-13" %} 사용자가 클라이언트 라이브러리를 모방할 수 있도록 그것을 인스턴스화 해야 하는 방법에 대한 명확한 문서를 제공하세요.
 
 {% include refs.md %}
 
@@ -282,3 +291,5 @@ As outlined above, writing tests that we can run constantly is critical for conf
 [Azure Monitor]: https://azure.microsoft.com/services/monitor/
 [1]: https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s
 [2]: https://martinfowler.com/bliki/TestCoverage.html
+
+[General Guidelines: Implementation]: https://azure.github.io/azure-sdk/general_implementation.html
