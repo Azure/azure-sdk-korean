@@ -203,23 +203,24 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 
 ## 의존성
 
-의존성은 의존성을 피함으로써 쉽게 피할 수 있는 많은 고려 사항들을 불러일으킵니다.
+Dependencies bring in many considerations that are often easily avoided by avoiding the 
+dependency. 
 
-- **버전 관리** - 많은 프로그래밍 언어에서는 소비자가 동일한 패키지의 여러 버전들을 로드하는 것을 허용하지 않습니다. 예를 들어, 클라이언트 라이브러리는 버전 3의 Foo 패키지를 필요로 하고 소비자는 버전 5의 Foo 패키지 사용을 원하는 경우, 소비자는 애플리케이션을 빌드할 수 없습니다. 이는 클라이언트 라이브러리는 기본적으로 의존성을 가지지 않아야 한다는 것을 의미합니다.
-- **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
-- **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
-- **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
-- **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
+- **Versioning** - Many programming languages do not allow a consumer to load multiple versions of the same package. So, if we have an client library that requires v3 of package Foo and the consumer wants to use v5 of package Foo, then the consumer cannot build their application. This means that client libraries should not have dependencies by default. 
+- **Size** - Consumer applications must be able to deploy as fast as possible into the cloud and move in various ways across networks. Removing additional code (like dependencies) improves deployment performance.
+- **Licensing** - You must be conscious of the licensing restrictions of a dependency and often provide proper attribution and notices when using them.
+- **Compatibility** - Often times you do not control a dependency and it may choose to evolve in a direction that is incompatible with your original use.
+- **Security** - If a security vulnerability is discovered in a dependency, it may be difficult or time consuming to get the vulnerability corrected if Microsoft does not control the dependency's code base.
 
-{% include requirement/MUST id="general-dependencies-azure-core" %} 모든 클라이언트 라이브러리에서 공통되는 기능은 Azure Core 라이브러리에 의존하세요. 이 라이브러리에는 HTTP 연결, 글로벌 구성, 자격증명 처리를 위한 API들이 포함되어 있습니다.
+{% include requirement/MUST id="general-dependencies-azure-core" %} depend on the Azure Core library for functionality that is common across all client libraries.  This library includes APIs for HTTP connectivity, global configuration, and credential handling.
 
-{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} 클라이언트 라이브러리 배포 패키지 내의 다른 패키지에 의존하지 마세요. 의존성은 예외적인 경우이며 아키텍처 검토를 통해 철저한 심사가 필요합니다. 이는 허용 가능하고 일반적으로 사용되는, 빌드 의존성에는 적용되지 않습니다.
+{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} be dependent on any other packages within the client library distribution package. Dependencies are by-exception and need a thorough vetting through architecture review.  This does not apply to build dependencies, which are acceptable and commonly used.
 
-{% include requirement/SHOULD id="general-dependencies-vendoring" %} 생태계(ecosystem)와 충돌할 수 있는 다른 패키지에 의존성을 갖지 않으려면 클라이언트 라이브러리에 필요한 코드를 복사하거나 연결(link)하는 것을 고려해야 합니다. 라이선스 계약을 위반하지 않았는지 확인하고 복제된 코드에 필요할 유지보수를 고려하세요. ["A little copying is better than a little dependency"][1] (YouTube).
+{% include requirement/SHOULD id="general-dependencies-vendoring" %} consider copying or linking required code into the client library in order to avoid taking a dependency on another package that could conflict with the ecosystem. Make sure that you are not violating any licensing agreements and consider the maintenance that will be required of the duplicated code. ["A little copying is better than a little dependency"][1] (YouTube).
 
-{% include requirement/MUSTNOT id="general-dependencies-concrete" %} 구체적인 로깅, 의존성 주입, 또는 구성 기술에 의존하지 마세요 (Azure Core 라이브러리에서 구현된 경우 제외). 클라이언트 라이브러리는 애플리케이션에서 자체적으로 선택한 로깅, 의존성 주입(DI), 구성 기술을 사용할 애플리케이션에서 사용될 것입니다.
+{% include requirement/MUSTNOT id="general-dependencies-concrete" %} depend on concrete logging, dependency injection, or configuration technologies (except as implemented in the Azure Core library).  The client library will be used in applications that might be using the logging, DI, and configuration technologies of their choice.
 
-언어별 가이드라인은 승인된 의존성의 목록을 유지관리할 것입니다.
+Language specific guidelines will maintain a list of approved dependencies.
 
 
 ## 서비스별 공통 라이브러리 코드
