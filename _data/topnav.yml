@@ -4,7 +4,7 @@ topnav:
     - title: SDK 블로그 (영문)
       external_url: https://aka.ms/azsdk/blog
     - title: 릴리즈 (영문)
-      url: https://aka.ms/azsdk/
+      external_url: https://aka.ms/azsdk/
 
 
 topnav_dropdowns:
