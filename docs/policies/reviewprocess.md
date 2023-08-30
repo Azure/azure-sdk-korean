@@ -46,10 +46,11 @@ Azure Developer Platform (ADP) 아키텍처 리뷰 위원회는 Java, Python, TS
 
 이 세션은 순수하게 정보 제공/교육을 위한 것으로, Azure SDK 아키텍처 위원회가 서비스와 라이브러리/새로운 기능의 동향을 파악할 수 있도록 합니다. 이를 통해 초기 피드백을 받을 수 있으며, 서비스 디자인에 영향을 줄 수 있습니다. API 네임스페이스, 함수 이름, 타입 등의 고수준 주제가 이 첫 번째 논의에서 제안될 것입니다.
 
-**준비물**:
-|제목 | 중요도 | 간단한 설명 | 예시 및 지원 문서 |
-|--|--|--|--|
-| 주요 시나리오 | 필수 | 서비스가 활용되는 주요 시나리오 들| 주요 시나리오를 식별하는 방법에 대한 가이드라인 - [링크](https://github.com/Azure/azure-sdk-pr/blob/24384df0202021ab86ee37fcb14e9554182cd014/training/azure-sdk-apis/principles/approachable/README.md#hero-scenarios)<br><br> [예시](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples/Sample1_DetectLanguage.md) |
+**준비물:**
+
+|제목| 중요도 | 간단한 설명 | 예시 및 지원 문서 |
+|----------------------|----------------------|----------------------|----------------------|
+| 주요 시나리오 | 필수 | 서비스가 활용되는 주요 시나리오들| 주요 시나리오를 식별하는 방법에 대한 가이드라인 - [링크](https://github.com/Azure/azure-sdk-pr/blob/24384df0202021ab86ee37fcb14e9554182cd014/training/azure-sdk-apis/principles/approachable/README.md#hero-scenarios)<br><br> [예시](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/textanalytics/Azure.AI.TextAnalytics/samples/Sample1_DetectLanguage.md) |
 | 핵심 개념 | 권장 | 명사 및 동사의 용어집 | [예시](https://github.com/Azure/azure-sdk-pr/blob/main/onboarding/Core_Concepts.pdf) |
 | APIView | 권장 | 생성된 SDK용 APIView | [예시](https://apiview.dev/Assemblies/Review/8b7f5312697a458ab9e65c2fd9cdc2dd)  |
 | REST API 스펙 | 권장 | [azure/azure-rest-api-specs-pr (직원 액세스)](https://github.com/azure/azure-rest-api-specs-pr) 또는 [azure/azure-rest-api-specs](https://github.com/azure/azure-rest-api-specs) 저장소의 검토된 REST API 사양 정의에 대한 링크 | [예시](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json) |
@@ -61,9 +62,10 @@ API 리뷰 중에는 샘플 코드와 상세 API 목록을 살펴봅니다. 이�
 
 **모든 SDK API 언어는 stable 릴리스 이전에 승인을 받아야 합니다.** 이전 검토 이후 SDK API에 제한적인 변경이 있었을 경우, *아키텍트는 전체 회의가 필요하지 않은 경우 이메일로 승인*할 수 있습니다.
 
-**준비물:**
+**준비물:**  
+
 |제목 | 중요도 |간단한 설명 | 예시 및 지원 문서 |
-|--|--|--|--|
+|----------------------|----------------------|----------------------|----------------------|
 | APIView | 필수 | 각 SDK에 대한 APIView. 아키텍트가 회의 전에 검토할 시간이 확보되도록 검토 예정일로부터 **적어도 5 영업일 전**에 제공해야 합니다. | [예시](https://apiview.dev/Assemblies/Review/8b7f5312697a458ab9e65c2fd9cdc2dd)  |
 | 주요 시나리오 | 권장 | 서비스가 활용되는 최상의 시나리오들. 각 시나리오에 해당하는 코드 샘플이 포함되어 있어야 합니다. 샘플은 APIView에 추가될 수 있습니다. | 주요 시나리오를 식별하는 방법에 대한 가이드라인 - [링크](https://github.com/Azure/azure-sdk-pr/blob/24384df0202021ab86ee37fcb14e9554182cd014/training/azure-sdk-apis/principles/approachable/README.md#hero-scenarios)<br><br> [예시](https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/appconfiguration/Azure.Data.AppConfiguration#examples) |
 | REST API 스펙 | 권장 | [azure/azure-rest-api-specs-pr (직원 액세스)](https://github.com/azure/azure-rest-api-specs-pr) 또는 [azure/azure-rest-api-specs](https://github.com/azure/azure-rest-api-specs) 저장소의 검토된 REST API 사양 정의에 대한 링크 | [예시](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json) |
