@@ -203,24 +203,31 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 
 ## 의존성
 
-Dependencies bring in many considerations that are often easily avoided by avoiding the 
-dependency. 
+Azure 서비스는 고객에게 HTTP와 JSON(여기서 JSON 문자열은 "순수" 문자열이거나 RFC 3339 날짜/시간, UUID, 또는 Base-64 인코딩 바이트로 분석(parseable)/형식화(formattable) 가능)보다 더 많은 것을 사용하도록 요구해서는 안 됩니다. 이는 고객의 학습 곡선을 최소화하고, 잠재 고객의 범위를 늘리며, 뿐만 아니라 Microsoft의 지원 비용을 줄이기 위한 것입니다 (Azure 검토 위원회가 감독 및 관리를 위해 위임한 신조). Azure SDK 언어들은 이미 이러한 기술을 지원할 라이브러리를 선택했습니다.
 
-- **Versioning** - Many programming languages do not allow a consumer to load multiple versions of the same package. So, if we have an client library that requires v3 of package Foo and the consumer wants to use v5 of package Foo, then the consumer cannot build their application. This means that client libraries should not have dependencies by default. 
-- **Size** - Consumer applications must be able to deploy as fast as possible into the cloud and move in various ways across networks. Removing additional code (like dependencies) improves deployment performance.
-- **Licensing** - You must be conscious of the licensing restrictions of a dependency and often provide proper attribution and notices when using them.
-- **Compatibility** - Often times you do not control a dependency and it may choose to evolve in a direction that is incompatible with your original use.
-- **Security** - If a security vulnerability is discovered in a dependency, it may be difficult or time consuming to get the vulnerability corrected if Microsoft does not control the dependency's code base.
+만약 서비스에 이미 선택된 기술 이외의 기술이 필요한 경우, 다음 프로세스를 사용할 수 있습니다:
 
-{% include requirement/MUST id="general-dependencies-azure-core" %} depend on the Azure Core library for functionality that is common across all client libraries.  This library includes APIs for HTTP connectivity, global configuration, and credential handling.
+* 먼저, 서비스 팀은 Azure API Stewardship Board에 클라이언트 측 컴포넌트를 필요로 하는 기술을 승인해 달라고 청원할 수 있습니다. 이 작업은 설계 프로세스 초기에 수행되어야 합니다. 청원 팀은 중대한 비즈니스 필요성(예: 경쟁 우위, 커뮤니티에서의 광범위한 채택 및/또는 지원, 성능 향상 등)을 정당화하기 위해 관련 데이터를 수집해야 하며, 왜 이러한 요구 사항이 REST 및 JSON을 통해서는 합리적으로 충족될 수 없는지의 이유, 기술의 향후 실행 가능성 및 지속 가능성, 뿐만 아니라 새로운 기술의 사용을 명시한 사례/조건에 대한 문서를 제공해야 합니다. 평가에는 모든 언어, 특히 Azure SDK에서 지원하는 언어 전반에 걸친 영향에 대한 논의가 포함됩니다.
 
-{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} be dependent on any other packages within the client library distribution package. Dependencies are by-exception and need a thorough vetting through architecture review.  This does not apply to build dependencies, which are acceptable and commonly used.
+* 승인을 받은 후, Microsoft가 소유하지 않고 제어할 수 없는 코드의 버전 관리, 품질, 보안 문제와 같은 서드파티 라이브러리에 대한 SDK의 하드 의존성 문제를 방지하기 위해, SDK는 최종 고객이 원하는 서드파티 라이브러리와 버전을 SDK에 통합할 수 있도록 하는 확장 포인트를 제공할 수 있습니다. 이런 경우, SDK의 문서에는 고객에게 각 SDK 언어에 대해 올바르게 수행하는 방법을 보여주는 예제가 있어야 합니다.
 
-{% include requirement/SHOULD id="general-dependencies-vendoring" %} consider copying or linking required code into the client library in order to avoid taking a dependency on another package that could conflict with the ecosystem. Make sure that you are not violating any licensing agreements and consider the maintenance that will be required of the duplicated code. ["A little copying is better than a little dependency"][1] (YouTube).
+다음은 추가 기술을 포함하기 위한 모든 청원에서 논의될 고려사항입니다:
 
-{% include requirement/MUSTNOT id="general-dependencies-concrete" %} depend on concrete logging, dependency injection, or configuration technologies (except as implemented in the Azure Core library).  The client library will be used in applications that might be using the logging, DI, and configuration technologies of their choice.
+* **버전 관리** - 많은 프로그래밍 언어에서는 소비자가 동일한 패키지의 여러 버전들을 로드하는 것을 허용하지 않습니다. 예를 들어, 클라이언트 라이브러리는 버전 3의 Foo 패키지를 필요로 하고 소비자는 버전 5의 Foo 패키지 사용을 원하는 경우, 소비자는 애플리케이션을 빌드할 수 없습니다. 이는 클라이언트 라이브러리는 기본적으로 의존성을 가지지 않아야 한다는 것을 의미합니다.
+* **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
+* **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
+* **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
+* **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
 
-Language specific guidelines will maintain a list of approved dependencies.
+{% include requirement/MUST id="general-dependencies-azure-core" %} 모든 클라이언트 라이브러리에서 공통되는 기능은 Azure Core 라이브러리에 의존하세요. 이 라이브러리에는 HTTP 연결, 글로벌 구성, 자격증명 처리를 위한 API들이 포함되어 있습니다.
+
+{% include requirement/MUSTNOT id="general-dependencies-approved-only" %} 클라이언트 라이브러리 배포 패키지 내의 다른 패키지에 의존하지 마세요. 의존성은 예외적인 경우이며 아키텍처 검토를 통해 철저한 심사가 필요합니다. 이는 허용 가능하고 일반적으로 사용되는, 빌드 의존성에는 적용되지 않습니다.
+
+{% include requirement/SHOULD id="general-dependencies-vendoring" %} 생태계(ecosystem)와 충돌할 수 있는 다른 패키지에 의존성을 갖지 않으려면 클라이언트 라이브러리에 필요한 코드를 복사하거나 연결(link)하는 것을 고려해야 합니다. 라이선스 계약을 위반하지 않았는지 확인하고 복제된 코드에 필요할 유지보수를 고려하세요. ["A little copying is better than a little dependency"][1] (YouTube).
+
+{% include requirement/MUSTNOT id="general-dependencies-concrete" %} 구체적인 로깅, 의존성 주입, 또는 구성 기술에 의존하지 마세요 (Azure Core 라이브러리에서 구현된 경우 제외). 클라이언트 라이브러리는 애플리케이션에서 자체적으로 선택한 로깅, 의존성 주입(DI), 구성 기술을 사용할 애플리케이션에서 사용될 것입니다.
+
+위의 고려사항은 언어마다 정도가 다를 수 있으므로, 설계 단계 초기에 특정 언어에 대해 승인된 종속성 및 지침을 확인하는 것이 중요합니다. (또한, 일부 드문 경우이지만, 상당한 검토를 거친 결과, 이사회가 그렇게 함으로써 지속적인 방식으로 고객을 지원하는 데 극히 적은 위험만이 존재한다고 판단한 경우 Azure SDK Architecture Board가 추가 서드파티 라이브러리에 대한 하드 종속성을 채택할 수도 있음에 유념하세요.)
 
 
 ## 서비스별 공통 라이브러리 코드
