@@ -6,17 +6,17 @@ folder: python
 sidebar: general_sidebar
 ---
 
-## API implementation
+## API 구현
 
-### Service client
+### 서비스 클라이언트
 
-#### Http pipeline
+#### Http 파이프라인
 
-Since the client library generally wraps one or more HTTP requests, it's important to support standard network capabilities. Although not widely understood, asynchronous programming techniques are essential in developing resilient web services. Many developers prefer synchronous method calls for their easy semantics when learning how to use a technology. The HTTP pipeline is a component in the `azure-core` library that assists in providing connectivity to HTTP-based Azure services.
+클라이언트 라이브러리는 일반적으로 하나 이상의 HTTP 요청을 래핑하기 때문에 표준 네트워크 기능을 지원하는 것이 중요합니다. 널리 알려져 있지는 않지만 탄력적인 웹 서비스를 개발하는 데는 비동기 프로그래밍 기술이 필수적입니다. 많은 개발자들은 기술 사용 방법을 배울 때 쉬운 의미론을 위해 동기식 메서드 호출을 선호합니다. HTTP 파이프라인은 HTTP 기반의 Azure 서비스에 대한 연결을 지원하는 `azure-core` 라이브러리의 구성 요소입니다.
 
-{% include requirement/MUST id="python-network-http-pipeline" %} use the [HTTP pipeline] to send requests to service REST endpoints.
+{% include requirement/MUST id="python-network-http-pipeline" %} [HTTP 파이프라인]을 사용하여 서비스 REST endpoints에 요청을 보냅니다.
 
-{% include requirement/SHOULD id="python-network-use-policies" %} include the following policies in the HTTP pipeline:
+{% include requirement/SHOULD id="python-network-use-policies" %} HTTP 파이프라인에 다음 정책들을 포함시킵니다:
 
 - Unique Request ID (`azure.core.pipeline.policies.RequestIdPolicy`)
 - Headers (`azure.core.pipeline.policies.HeadersPolicy`)
@@ -74,37 +74,37 @@ class ExampleClient(object):
 
 ```
 
-##### Custom policies
+##### 사용자 지정 정책
 
-Some services may require custom policies to be implemented. For example, custom policies may implement fall back to secondary endpoints during retry, request signing, or other specialized authentication techniques.
+일부 서비스는 사용자 지정 정책을 구현하도록 요구할 수 있습니다. 예를 들어, 사용자 지정 정책은 재시도, 요청 서명 또는 다른 특수 인증 기법 중에 보조 엔드포인트로 폴백기능을 구현할 수 있습니다.
 
-{% include requirement/SHOULD id="python-pipeline-core-policies" %} use the policy implementations in `azure-core` whenever possible.
+{% include requirement/SHOULD id="python-pipeline-core-policies" %} 가능하면 `azure-core`의 구현 정책을 준용해야합니다.
 
-{% include requirement/MUST id="python-custom-policy-review" %} review the proposed policy with the Azure SDK [Architecture Board]. There may already be an existing policy that can be modified/parameterized to satisfy your need.
+{% include requirement/MUST id="python-custom-policy-review" %} Azure SDK [Architecture Board]를 참고하여 제안된 정책을 검토합니다. 당신의 요구를 만족할 수 있는 수정/매개 변수화할 수 있는 기존 정책이 이미 정의되어 있을 수 있습니다.
 
-{% include requirement/MUST id="python-custom-policy-base-class" %} derive from [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/[AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (if you need to make network calls) or [SansIOHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (if you do not).
+{% include requirement/MUST id="python-custom-policy-base-class" %} [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/ [AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (네트워크 호출이 필요한 경우) 또는 [SansIOHTTPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (네트워크 호출이 필요하지 않는 경우)에서 파생되어야 합니다.
 
-{% include requirement/MUST id="python-custom-policy-thread-safe" %} ensure thread-safety for custom policies. A practical consequence of this is that you should keep any per-request or connection bookkeeping data in the context rather than in the policy instance itself.
+{% include requirement/MUST id="python-custom-policy-thread-safe" %} 사용자 지정 정책에 대한 스레드 안전성을 보장해야 합니다. 이로 인한 실질적인 결과는 요청별 또는 연결 부기 데이터를 정책 인스턴스 자체가 아닌 컨텍스트에 유지해야 한다는 것입니다.
 
-{% include requirement/MUST id="python-pipeline-document-policies" %} document any custom policies in your package. The documentation should make it clear how a user of your library is supposed to use the policy.
+{% include requirement/MUST id="python-pipeline-document-policies" %} 패키지의 사용자 지정 정책을 문서화해야 합니다. 해당 문서에는 라이브러리의 사용자가 정책을 준용하는 방법이 명확하게 기재되어야 합니다.
 
-{% include requirement/MUST id="python-pipeline-policy-namespace" %} add the policies to the `azure.<package name>.pipeline.policies` namespace.
+{% include requirement/MUST id="python-pipeline-policy-namespace" %} 정책을 `azure.<package name>.pipeline.policies` 네임스페이스에 추가해야 합니다.
 
-#### Service Methods
+#### 서비스 메소드
 
-##### Parameter validation
+##### 매개 변수 유효성 검사
 
-{% include requirement/MUSTNOT id="python-client-parameter-validation" %} use `isinstance` to validate parameter value types other than for [built-in types](https://docs.python.org/3/library/stdtypes.html) (e.g. `str` etc). For other types, use [structural type checking].
+{% include requirement/MUSTNOT id="python-client-parameter-validation" %} `isinstance`를 사용하여 [built-in types](https://docs.python.org/3/library/stdtypes.html) (예: 'str' 등) 이외의 매개 변수 값 유형의 유효성을 검사하면 안됩니다. 다른 유형의 경우 [structural type checking]를 사용해야 합니다.
 
-### Supporting types
+### 지원하는 타입(types)
 
-{% include requirement/MUST id="python-models-repr" %} implement `__repr__` for model types. The representation **must** include the type name and any key properties (that is, properties that help identify the model instance).
+{% include requirement/MUST id="python-models-repr" %} 모델 유형에 대해 `__repr__`을 구현해야 합니다. 표현에는 **반드시** 유형 이름과 모든 키 속성(즉, 모델 인스턴스 식별에 도움이 되는 속성)이 포함되어야 합니다.
 
-{% include requirement/MUST id="python-models-repr-length" %} truncate the output of `__repr__` after 1024 characters.
+{% include requirement/MUST id="python-models-repr-length" %}  `__repr__`의 출력중 1024자 이후로 넘어가는 부분은 생략해야합니다.
 
-##### Extensible enumerations
+##### 확장 가능한 열거형(Enumerations)
 
-Any Enums defined in the SDK should be interchangable with case-insensitive strings. This is achieved by using the `CaseInsensitiveEnumMeta` class defined in `azure-core`.
+SDK에 정의된 모든 Enums은 대소문자를 구분하지 않는 문자열로 교체될 수 있어야 합니다. 이는 `azure-core`에 정의된 `CaseInsensitiveEnumMeta` 클래스를 사용하여 수행됩니다.
 
 ```python
 from enum import Enum
@@ -117,7 +117,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
     BAR = 'bar'
 ```
 
-### SDK Feature implementation
+### SDK 기능 구현
 
 #### Configuration
 
