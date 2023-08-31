@@ -182,21 +182,27 @@ HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 �
 
 ## 분산 추적
 
-분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다.  각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
+분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다. 각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
 
 {% include requirement/MUST id="general-tracing-opentelemetry" %} 분산 추적을 위해 [OpenTelemetry]를 지원하세요.
 
 {% include requirement/MUST id="general-tracing-accept-context" %} 부모 스팬을 설정하기 위해 호출 코드로부터 컨텍스트를 받으세요.
 
-{% include requirement/MUST id="general-tracing-pass-context" %} [Azure Monitor]를 지원하기 위해 적절한 헤더 (`traceparent`, `tracestate` 등)를 통해 백엔드 서비스에 컨텍스트를 전달하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
+{% include requirement/MUST id="general-tracing-pass-context" %} [Azure Monitor]를 지원하기 위해 적절한 헤더([W3C 추적-컨텍스트](https://www.w3.org/TR/trace-context/) 표준에 따른 `traceparent`와 `tracestate`)를 통해 백엔드 서비스에 컨텍스트를 전달하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
 
-{% include requirement/MUST id="general-tracing-new-span-per-method" %} 사용자 코드가 호출한 각 메서드에 대해 새 스팬을 생성하세요. 새 스팬은 전달된 컨텍스트의 자식 스팬이어야 합니다. 전달된 컨텍스트가 없었다면, 새로운 루트 스팬이 만들어져야 합니다.
+{% include requirement/MUST id="general-tracing-new-span-per-method" %} 사용자 코드가 호출하는 클라이언트 메서드에 대해 오직 하나의 스팬만을 생성하세요. 새 스팬은 전달된 컨텍스트의 자식 스팬이어야 합니다. 만약 전달된 컨텍스트가 없었다면, 새로운 루트 스팬이 만들어져야 합니다.
+
+{% include requirement/MUST id="general-tracing-suppress-client-spans-for-inner-methods" %} 클라이언트 메서드가 새 스팬을 생성하고 동일하거나 다른 Azure SDK의 다른 공개(public) 클라이언트 메서드를 내부적으로 호출하는 경우, 내부 클라이언트 메서드에 대해 생성된 스팬은 반드시 억제되어야 하며, 해당 속성 및 이벤트는 무시되어야 합니다.  REST 호출을 위해 만들어진 중첩된 스팬은 외부 클라이언트 호출 스팬의 자식이어야 합니다. 억제(Suppression)는 일반적으로 Azure Core에 의해 수행됩니다.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-conventions" %} [Tracing Conventions]에 따라 스팬 속성을 채우세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-naming" %} 네임스페이스 또는 비동기 접미사 없이 메서드별 스팬의 이름으로 `<client> <method>`를 사용해주세요. 대소문자(casing) 또는 구분자에 대한 언어별 규칙을 따르세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-duration" %} 요청을 전송하거나 실패할 수 있는 시간 소요가 큰 코드를 호출하기 전에 메서드별 스팬을 시작하세요. 모든 네트워크, IO 또는 기타 불안정하고 시간 소모가 많은 작업이 완료된 후에만 스팬을 종료하세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-failure" %} 메서드가 예외를 던진 경우, 스팬에 예외를 기록하세요. 예외가 서비스 메서드 내에서 처리되는 경우에는 예외를 기록하지 마세요.
 
 {% include requirement/MUST id="general-tracing-new-span-per-rest-call" %} 클라이언트 라이브러리에서 일으키는 각 REST 호출에 대해 새 스팬 (메서드별 스팬의 자식 스팬이어야 함)을 생성하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
-
-클라이언트 라이브러리가 수행하는 각 REST 호출에 대해 새 범위(메소드별 범위의 자식이어야 함)를 생성합니다. 이 작업은 일반적으로 HTTP 파이프라인을 사용하여 수행됩니다.
-
-Some of these requirements will be handled by the HTTP pipeline.  However, as a client library writer, you must handle the incoming context appropriately.
 
 이러한 요구사항들 중 일부는 HTTP 파이프라인에서 처리될 것입니다. 그러나, 클라이언트 라이브러리 작성자로서, 당신은 들어오는 컨텍스트를 적절하게 처리해야 합니다.
 
@@ -291,5 +297,6 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 [Azure Monitor]: https://azure.microsoft.com/services/monitor/
 [1]: https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s
 [2]: https://martinfowler.com/bliki/TestCoverage.html
+[Tracing Conventions]: {{ site.baseurl }}{% link docs/tracing/distributed-tracing-conventions.md %}
 
 [General Guidelines: Implementation]: https://azure.github.io/azure-sdk/general_implementation.html
