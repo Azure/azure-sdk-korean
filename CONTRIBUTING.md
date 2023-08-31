@@ -28,8 +28,10 @@ Codespaces is new technology that allows you to use a container as your developm
 1. Execute the following command and `Ctrl+Click` the link generated.  A new window will open with the Azure SDK website.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+Note: If you encounter a `Not Found` error while accessing the website, try adding `/azure-sdk-korean/` to the end of the URL.
 
 ### VS Code Codespaces
 
@@ -39,8 +41,10 @@ Codespaces is new technology that allows you to use a container as your developm
 1. Press `Ctrl+Shift+T` or execute the following command and `Ctrl+Click` the link generated.  A new window will open with the Azure SDK website.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+Note: If you encounter a `Not Found` error while accessing the website, try adding `/azure-sdk-korean/` to the end of the URL.
 
 ## Full Local Setup
 
