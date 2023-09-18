@@ -62,7 +62,7 @@ sidebar: general_sidebar
 
 ## 매개변수 유효성 검사
 
-서비스 클라이언트에는 서비스에 대한 요청을 수행하는 여러 방법들이 있을 것입니다. _서비스 매개변수_들은 유선을 통해 Azure 서비스로 직접 전달됩니다. _클라이언트 매개변수_는 서비스로 직접 전달되지 않고, 클라이언트 라이브러리 내에서 요청을 이행하는 데 사용됩니다. 클라이언트 매개변수의 예로는 URI를 구성하는 데 사용되는 값이나, 스토리지에 업로드해야 하는 파일이 있습니다.
+서비스 클라이언트에는 서비스로 요청을 보내는 메서드가 있을 것입니다. 이러한 메서드에는 두 가지 종류의 매개변수를 사용합니다: _서비스 매개변수_ 그리고 _클라이언트 매개변수_. _서비스 매개변수_ 는 URL 세그먼트, 쿼리 매개변수, 요청 헤더 값, 그리고 요청 본문(일반적으로 JSON 또는 XML)으로서 유선을 통해 서비스로 전송됩니다. _클라이언트 매개변수_ 는 클라이언트 라이브러리 내에서만 사용되며 서비스로 전송되지 않습니다; 경로 매개변수, 취소 토큰(CancellationTokens) 또는 파일 경로가 그 예입니다. 만약, 예를 들어, 경로 매개변수의 유효성을 검사하지 않으면, 잘못된 URI로 요청이 전송되어, 서비스가 그에 대한 유효성 검사를 수행할 기회를 갖지 못할 수 있습니다.
 
 {% include requirement/MUST id="general-params-client-validation" %} 클라이언트 매개변수의 유효성을 검사하세요. 여기에는 필수 경로 매개변수에 대한 null 값 검사, 그리고 필수 경로 매개변수가 0보다 큰 `minLength`를 선언한 경우 빈 문자열 값 검사 등이 포함됩니다.
 
@@ -182,34 +182,48 @@ HTTP 파이프라인은 여러 정책에 의해 감싸지는 HTTP 전송으로 �
 
 ## 분산 추적
 
-분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다.  각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
+분산 추적 메커니즘은 소비자가 프론트엔드에서 백엔드까지 코드를 추적할 수 있도록 합니다. 분산 추적 라이브러리는 고유한 작업 단위인 스팬(span)을 생성합니다. 각 스팬은 부모-자식 관계에 있습니다. 코드의 계층 구조가 깊어질수록 더 많은 스팬이 생성됩니다. 이후에 이러한 스팬은 필요에 따라 적절한 수신기로 내보내질 수 있습니다. 스팬을 추적하기 위해, _분산 추적 컨텍스트_ (이하 컨텍스트)가 각각의 연속된 레이어에 전달됩니다. 이 항목에 대한 자세한 내용은, 추적에 대한 [OpenTelemetry] 항목을 참조하세요.
 
 {% include requirement/MUST id="general-tracing-opentelemetry" %} 분산 추적을 위해 [OpenTelemetry]를 지원하세요.
 
 {% include requirement/MUST id="general-tracing-accept-context" %} 부모 스팬을 설정하기 위해 호출 코드로부터 컨텍스트를 받으세요.
 
-{% include requirement/MUST id="general-tracing-pass-context" %} [Azure Monitor]를 지원하기 위해 적절한 헤더 (`traceparent`, `tracestate` 등)를 통해 백엔드 서비스에 컨텍스트를 전달하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
+{% include requirement/MUST id="general-tracing-pass-context" %} [Azure Monitor]를 지원하기 위해 적절한 헤더([W3C 추적-컨텍스트](https://www.w3.org/TR/trace-context/) 표준에 따른 `traceparent`와 `tracestate`)를 통해 백엔드 서비스에 컨텍스트를 전달하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
 
-{% include requirement/MUST id="general-tracing-new-span-per-method" %} 사용자 코드가 호출한 각 메서드에 대해 새 스팬을 생성하세요. 새 스팬은 전달된 컨텍스트의 자식 스팬이어야 합니다. 전달된 컨텍스트가 없었다면, 새로운 루트 스팬이 만들어져야 합니다.
+{% include requirement/MUST id="general-tracing-new-span-per-method" %} 사용자 코드가 호출하는 클라이언트 메서드에 대해 오직 하나의 스팬만을 생성하세요. 새 스팬은 전달된 컨텍스트의 자식 스팬이어야 합니다. 만약 전달된 컨텍스트가 없었다면, 새로운 루트 스팬이 만들어져야 합니다.
+
+{% include requirement/MUST id="general-tracing-suppress-client-spans-for-inner-methods" %} 클라이언트 메서드가 새 스팬을 생성하고 동일하거나 다른 Azure SDK의 다른 공개(public) 클라이언트 메서드를 내부적으로 호출하는 경우, 내부 클라이언트 메서드에 대해 생성된 스팬은 반드시 억제되어야 하며, 해당 속성 및 이벤트는 무시되어야 합니다.  REST 호출을 위해 만들어진 중첩된 스팬은 외부 클라이언트 호출 스팬의 자식이어야 합니다. 억제(Suppression)는 일반적으로 Azure Core에 의해 수행됩니다.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-conventions" %} [Tracing Conventions]에 따라 스팬 속성을 채우세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-naming" %} 네임스페이스 또는 비동기 접미사 없이 메서드별 스팬의 이름으로 `<client> <method>`를 사용해주세요. 대소문자(casing) 또는 구분자에 대한 언어별 규칙을 따르세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-duration" %} 요청을 전송하거나 실패할 수 있는 시간 소요가 큰 코드를 호출하기 전에 메서드별 스팬을 시작하세요. 모든 네트워크, IO 또는 기타 불안정하고 시간 소모가 많은 작업이 완료된 후에만 스팬을 종료하세요.
+
+{% include requirement/MUST id="general-tracing-new-span-per-method-failure" %} 메서드가 예외를 던진 경우, 스팬에 예외를 기록하세요. 예외가 서비스 메서드 내에서 처리되는 경우에는 예외를 기록하지 마세요.
 
 {% include requirement/MUST id="general-tracing-new-span-per-rest-call" %} 클라이언트 라이브러리에서 일으키는 각 REST 호출에 대해 새 스팬 (메서드별 스팬의 자식 스팬이어야 함)을 생성하세요. 이는 일반적으로 HTTP 파이프라인에서 수행됩니다.
-
-클라이언트 라이브러리가 수행하는 각 REST 호출에 대해 새 범위(메소드별 범위의 자식이어야 함)를 생성합니다. 이 작업은 일반적으로 HTTP 파이프라인을 사용하여 수행됩니다.
-
-Some of these requirements will be handled by the HTTP pipeline.  However, as a client library writer, you must handle the incoming context appropriately.
 
 이러한 요구사항들 중 일부는 HTTP 파이프라인에서 처리될 것입니다. 그러나, 클라이언트 라이브러리 작성자로서, 당신은 들어오는 컨텍스트를 적절하게 처리해야 합니다.
 
 
 ## 의존성
 
-의존성은 의존성을 피함으로써 쉽게 피할 수 있는 많은 고려 사항들을 불러일으킵니다.
+Azure 서비스는 고객에게 HTTP와 JSON(여기서 JSON 문자열은 "순수" 문자열이거나 RFC 3339 날짜/시간, UUID, 또는 Base-64 인코딩 바이트로 분석(parseable)/형식화(formattable) 가능)보다 더 많은 것을 사용하도록 요구해서는 안 됩니다. 이는 고객의 학습 곡선을 최소화하고, 잠재 고객의 범위를 늘리며, 뿐만 아니라 Microsoft의 지원 비용을 줄이기 위한 것입니다 (Azure 검토 위원회가 감독 및 관리를 위해 위임한 신조). Azure SDK 언어들은 이미 이러한 기술을 지원할 라이브러리를 선택했습니다.
 
-- **버전 관리** - 많은 프로그래밍 언어에서는 소비자가 동일한 패키지의 여러 버전들을 로드하는 것을 허용하지 않습니다. 예를 들어, 클라이언트 라이브러리는 버전 3의 Foo 패키지를 필요로 하고 소비자는 버전 5의 Foo 패키지 사용을 원하는 경우, 소비자는 애플리케이션을 빌드할 수 없습니다. 이는 클라이언트 라이브러리는 기본적으로 의존성을 가지지 않아야 한다는 것을 의미합니다.
-- **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
-- **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
-- **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
-- **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
+만약 서비스에 이미 선택된 기술 이외의 기술이 필요한 경우, 다음 프로세스를 사용할 수 있습니다:
+
+* 먼저, 서비스 팀은 Azure API Stewardship Board에 클라이언트 측 컴포넌트를 필요로 하는 기술을 승인해 달라고 청원할 수 있습니다. 이 작업은 설계 프로세스 초기에 수행되어야 합니다. 청원 팀은 중대한 비즈니스 필요성(예: 경쟁 우위, 커뮤니티에서의 광범위한 채택 및/또는 지원, 성능 향상 등)을 정당화하기 위해 관련 데이터를 수집해야 하며, 왜 이러한 요구 사항이 REST 및 JSON을 통해서는 합리적으로 충족될 수 없는지의 이유, 기술의 향후 실행 가능성 및 지속 가능성, 뿐만 아니라 새로운 기술의 사용을 명시한 사례/조건에 대한 문서를 제공해야 합니다. 평가에는 모든 언어, 특히 Azure SDK에서 지원하는 언어 전반에 걸친 영향에 대한 논의가 포함됩니다.
+
+* 승인을 받은 후, Microsoft가 소유하지 않고 제어할 수 없는 코드의 버전 관리, 품질, 보안 문제와 같은 서드파티 라이브러리에 대한 SDK의 하드 의존성 문제를 방지하기 위해, SDK는 최종 고객이 원하는 서드파티 라이브러리와 버전을 SDK에 통합할 수 있도록 하는 확장 포인트를 제공할 수 있습니다. 이런 경우, SDK의 문서에는 고객에게 각 SDK 언어에 대해 올바르게 수행하는 방법을 보여주는 예제가 있어야 합니다.
+
+다음은 추가 기술을 포함하기 위한 모든 청원에서 논의될 고려사항입니다:
+
+* **버전 관리** - 많은 프로그래밍 언어에서는 소비자가 동일한 패키지의 여러 버전들을 로드하는 것을 허용하지 않습니다. 예를 들어, 클라이언트 라이브러리는 버전 3의 Foo 패키지를 필요로 하고 소비자는 버전 5의 Foo 패키지 사용을 원하는 경우, 소비자는 애플리케이션을 빌드할 수 없습니다. 이는 클라이언트 라이브러리는 기본적으로 의존성을 가지지 않아야 한다는 것을 의미합니다.
+* **크기** - 소비자 애플리케이션은 가능한 한 빠르게 클라우드에 배포하고 네트워크를 통해 다양한 방식으로 이동할 수 있어야 합니다. 부가적인 코드(예: 의존성)의 제거는 배포 성능을 향상시킵니다.
+* **라이선스** - 의존성의 라이선스 제한을 인지하고 있어야 하며 사용할 때 적절한 저작자표시(attribution)와 고지사항(notices)를 제공해야 합니다.
+* **호환성** - 종종 의존성을 제어하지 않아 원래의 사용과 호환되지 않는 방향으로 비약할 수 있습니다.
+* **보안** - 의존성에서 보안 취약점이 발견되었다면, Microsoft가 의존성의 코드 기반(code base)을 제어하지 않는 경우 취약점을 수정하는 데 어려움이 있거나 시간이 오래 걸릴 수 있습니다.
 
 {% include requirement/MUST id="general-dependencies-azure-core" %} 모든 클라이언트 라이브러리에서 공통되는 기능은 Azure Core 라이브러리에 의존하세요. 이 라이브러리에는 HTTP 연결, 글로벌 구성, 자격증명 처리를 위한 API들이 포함되어 있습니다.
 
@@ -219,7 +233,7 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 
 {% include requirement/MUSTNOT id="general-dependencies-concrete" %} 구체적인 로깅, 의존성 주입, 또는 구성 기술에 의존하지 마세요 (Azure Core 라이브러리에서 구현된 경우 제외). 클라이언트 라이브러리는 애플리케이션에서 자체적으로 선택한 로깅, 의존성 주입(DI), 구성 기술을 사용할 애플리케이션에서 사용될 것입니다.
 
-언어별 가이드라인은 승인된 의존성의 목록을 유지관리할 것입니다.
+위의 고려사항은 언어마다 정도가 다를 수 있으므로, 설계 단계 초기에 특정 언어에 대해 승인된 종속성 및 지침을 확인하는 것이 중요합니다. (또한, 일부 드문 경우이지만, 상당한 검토를 거친 결과, 이사회가 그렇게 함으로써 지속적인 방식으로 고객을 지원하는 데 극히 적은 위험만이 존재한다고 판단한 경우 Azure SDK Architecture Board가 추가 서드파티 라이브러리에 대한 하드 종속성을 채택할 수도 있음에 유념하세요.)
 
 
 ## 서비스별 공통 라이브러리 코드
@@ -291,5 +305,6 @@ Some of these requirements will be handled by the HTTP pipeline.  However, as a 
 [Azure Monitor]: https://azure.microsoft.com/services/monitor/
 [1]: https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s
 [2]: https://martinfowler.com/bliki/TestCoverage.html
+[Tracing Conventions]: {{ site.baseurl }}{% link docs/tracing/distributed-tracing-conventions.md %}
 
 [General Guidelines: Implementation]: https://azure.github.io/azure-sdk/general_implementation.html
