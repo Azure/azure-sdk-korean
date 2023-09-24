@@ -217,7 +217,7 @@ X-MS-AZSDK-Telemetry: class=BlobClient;method=DownloadFile;blobType=Block
 
 {% include requirement/MUST id="python-testing-pytest" %} [pytest](https://docs.pytest.org/en/latest/)를 테스트 프레임워크로 사용해야 합니다.
 
-{% include requirement/SHOULD id="python-testing-async" %} 비동기 코드를 테스트하려면 [pytest-syncccio](https://github.com/pytest-dev/pytest-asyncio)를 사용해야 합니다.
+{% include requirement/SHOULD id="python-testing-async" %} 비동기 코드를 테스트하려면 [pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio)를 사용해야 합니다.
 
 {% include requirement/MUST id="python-testing-live" %} 라이브 서비스들에 대해 시나리오 테스트를 실행할 수 있도록 해야 합니다. 시나리오 테스트를 위해서는 [Python Azure-DevTools](https://github.com/Azure/azure-sdk-for-python/tree/main/tools/azure-devtools) 패키지를 사용하는 것을 강력히 고려합니다.
 
