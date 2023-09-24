@@ -338,7 +338,7 @@ class ResponseHook(Protocol):
 
 {% include requirement/MUST id="python-codestyle-consistency" %} 동일한 서비스에 대해서는 다른 라이브러리보다 다른 Python 구성 요소와의 일관성을 선호해야 합니다.
 
-It's more likely that a developer will use many different libraries using the same language than a developer will use the same service from many different languages.개발자가 여러 언어의 동일한 서비스를 사용하는 것보다 동일한 언어를 사용하는 여러 다른 라이브러리를 사용할 가능성이 더 높습니다.
+개발자는 여러 언어의 동일한 서비스를 사용하는 것보다 동일한 언어를 사용하는 여러 다른 라이브러리를 사용할 가능성이 더 높습니다.
 
 ### 오류 처리
 
