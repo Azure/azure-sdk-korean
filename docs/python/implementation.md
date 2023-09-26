@@ -127,7 +127,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 
 #### 로깅
 
-{% include requirement/MUST id="python-logging-usage" %} Python 표준 [python module](https://docs.python.org/3/library/logging.html) 을 준용해야 합니다.
+{% include requirement/MUST id="python-logging-usage" %} Python 표준 [logging module](https://docs.python.org/3/library/logging.html) 을 준용해야 합니다.
 
 {% include requirement/MUST id="python-logging-nameed-logger" %} 라이브러리에 이름이 지정된 로거를 제공해야 합니다.
 
@@ -186,7 +186,7 @@ class MyCustomEnum(with_metaclass(CaseInsensitiveEnumMeta, str, Enum)):
 - `<application_id>`: 선택적 응용 프로그램별 문자열입니다. 슬래시를 포함할 수 있지만 공백을 포함할 수는 없습니다. "AzCopy/10.0.4-Preview" 같은 문자열은 클라이언트 라이브러리의 사용자에 의해 제공됩니다.
 - `<package_name>`: 슬래시를 대시로 바꾸고 Azure 지시자를 제거하는 클라이언트 라이브러리(배포) 패키지 이름입니다. 예를 들어 "azure-keyvault-secrets"는 "azsdk-python-keyvault-secrets"를 지정합니다.
 - `<package_version>`: 패키지 버전입니다. 참고: 서비스 버전이 아닙니다.
-- `<platform_info>`: 현재 실행 중인 언어 런타임 및 OS에 대한 정보입니다(예시: "Python/3.8.4(Windows-10-10.0.19041-SP0)").
+- `<platform_info>`: 현재 실행 중인 언어 런타임 및 OS에 대한 정보입니다(예시: "Python/3.8.4 (Windows-10-10.0.19041-SP0)").
 
 예를 들어, Azure Blob Storage 클라이언트 라이브러리를 사용하여 Python으로 `AzCopy`를 다시 작성한 경우 다음과 같은 사용자-에이전트(user-agent) 문자열로 끝날 수 있습니다:
 
@@ -231,7 +231,7 @@ X-MS-AZSDK-Telemetry: class=BlobClient;method=DownloadFile;blobType=Block
 
 {% include requirement/MUST id="python-tooling-pylint" %} 코드 정적 분석을 위해 [pylint](https://www.pylint.org/)를 사용해야 합니다. [repository의 root](https://github.com/Azure/azure-sdk-for-python/blob/main/pylintrc) 에서 pylintrc 파일을 사용합니다.
 
-{% include requirement/MUST id="python-tooling-flake8" %} 문서 comment를 확인하려면 [docs8-docstrings](https://gitlab.com/pycqa/flake8-docstrings)를 사용해야 합니다.
+{% include requirement/MUST id="python-tooling-flake8" %} 문서 comment를 확인하려면 [flake8-docstrings](https://gitlab.com/pycqa/flake8-docstrings)를 사용해야 합니다.
 
 {% include requirement/MUST id="python-tooling-black" %} 코드를 포매팅하려면 [Black](https://black.readthedocs.io/en/stable/)을 사용해야 합니다.
 
