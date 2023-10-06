@@ -28,19 +28,23 @@ Codespaces is new technology that allows you to use a container as your developm
 1. Execute the following command and `Ctrl+Click` the link generated.  A new window will open with the Azure SDK website.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+Note: If you encounter a `Not Found` error while accessing the website, try adding `/azure-sdk-korean/` to the end of the URL.
 
 ### VS Code Codespaces
 
 1. Install the [VS Code Remote Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-1. When you open the Azure SDK repo in VS Code, it will prompt you to open the project in the Dev Container. If it does not prompt you, then hit CTRL+P, and select "Remote-Containers: Open Folder in Container..."
+1. When you open the Azure SDK repo in VS Code, it will prompt you to open the project in the Dev Container. If it does not prompt you, then hit `Ctrl+Shift+P`, and select "Remote-Containers: Open Folder in Container...". And you can create a Dev Container by using a container configuration template in Jekyll.
 1. Open a Terminal
 1. Press `Ctrl+Shift+T` or execute the following command and `Ctrl+Click` the link generated.  A new window will open with the Azure SDK website.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+Note: If you encounter a `Not Found` error while accessing the website, try adding `/azure-sdk-korean/` to the end of the URL.
 
 ## Full Local Setup
 
