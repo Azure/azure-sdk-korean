@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Jekyll site folder
 _site/
+
+# MacOS folder attributes
+.DS_Store
