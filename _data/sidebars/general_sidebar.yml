@@ -95,7 +95,7 @@ entries:
     folderitems:
       - title: 디자인
         url: /python_design.html
-      - title: 구현 (번역중)
+      - title: 구현
         url: /python_implementation.html
       - title: 문서
         url: /python_documentation.html

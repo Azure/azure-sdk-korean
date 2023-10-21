@@ -32,8 +32,10 @@ Azure SDK 프로젝트는 기여와 제안을 환영합니다. 대부분의 기�
 1. 아래의 명령어를 실행하고 생성된 링크를 `Ctrl+Click` 합니다. 새 창이 열리면서 Azure SDK 웹사이트가 표시됩니다.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+Note: If you encounter a `Not Found` error while accessing the website, try adding `/azure-sdk-korean/` to the end of the URL.
 
 ### VS Code 기반 Codespaces
 
@@ -43,8 +45,10 @@ Azure SDK 프로젝트는 기여와 제안을 환영합니다. 대부분의 기�
 4. `Ctrl+Shift+T`를 누르거나 아래 명령어를 실행하고 생성된 링크를 `Ctrl+Click`합니다. 새 창이 열리면서 Azure SDK 웹사이트가 표시됩니다.
 
     ```bash
+    bundle install
     bundle exec jekyll serve
     ```
+참고: 웹사이트에 접근하면서 Not Found 에러를 만나게 된다면, URL 끝에 /azure-sdk-korean/를 추가해보세요.
 
 ## 완전한 로컬 설정
 

@@ -51,6 +51,18 @@ def get(*args, **kwargs):
     return request("GET", *args, **kwargs)
 ```
 
+{% include requirement/MUST id="python-docstrings-defaults" %} Sphinx에서 권장하는 형식을 사용하여 docstrings의 일부로 기본값을 문서화하세요.
+
+예시:
+```python
+def get(*args, **kwargs):
+    """Calls `request` with the method "GET" and forwards all other arguments.
+    :keyword str value_param: A value param, defaults to "cat".
+    :keyword class type_param: A type param, defaults to :py:class:`namespace.TypeName`
+    """
+    return request("GET", *args, **kwargs)
+```
+
 {% include requirement/MUST id="python-docstrings-exceptions" %} 메서드안에 명시적으로 제기될 수 있는 document exceptions 및 호출된 방법에 의해 제기되는 예외입니다.
 
 ### Code snippets
