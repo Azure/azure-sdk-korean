@@ -84,7 +84,7 @@ class ExampleClient(object):
 
 {% include requirement/MUST id="python-custom-policy-base-class" %} [HTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.HTTPPolicy)/ [AsyncHTTPPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.AsyncHTTPPolicy) (네트워크 호출이 필요한 경우) 또는 [SansIOHTTPolicy](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-core/1.9.0/azure.core.pipeline.policies.html#azure.core.pipeline.policies.SansIOHTTPPolicy) (네트워크 호출이 필요하지 않는 경우)에서 파생되어야 합니다.
 
-{% include requirement/MUST id="python-custom-policy-thread-safe" %} 사용자 지정 정책에 대한 스레드 안전성을 보장해야 합니다. 이로 인한 실질적인 결과는 요청별 또는 연결 부기 데이터를 정책 인스턴스 자체가 아닌 컨텍스트에 유지해야 한다는 것입니다.
+{% include requirement/MUST id="python-custom-policy-thread-safe" %} 사용자 지정 정책에 대한 스레드 안전성을 보장해야 합니다. 이로 인한 실질적인 결과는 요청별 또는 연결별 관리 데이터(bookkeeping)를 정책 인스턴스 자체가 아닌 컨텍스트에 유지해야 한다는 것입니다.
 
 {% include requirement/MUST id="python-pipeline-document-policies" %} 패키지의 사용자 지정 정책을 문서화해야 합니다. 해당 문서에는 라이브러리의 사용자가 정책을 준용하는 방법이 명확하게 기재되어야 합니다.
 
