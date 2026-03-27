@@ -24,7 +24,7 @@ sidebar: general_sidebar
 : 다양한 유형의 개발자들을 구분하기 위해 우리는 앱에서 클라이언트 라이브러리를 사용하여 애저 서비스에 연결하는 개발자를 표시하기 위해 _consumer_라는 용어를 사용합니다. 
 
 Docstrings
-: 구현중인 API 표면을 설명하는 코드에 포함된 주석입니다. 빌드 중에 _docstrings_를 추출하고 사전 처리하여 API 참조 문서를 생성합니다.
+: 구현 중인 API 표면을 설명하는 코드에 포함된 주석입니다. 빌드 중에 _docstrings_를 추출하고 사전 처리하여 API 참조 문서를 생성합니다.
 
 라이브러리 개발자
 : 다양한 유형의 개발자들을 구분하기 위해 우리는 클라이언트 라이브러리를 작성하는 개발자를 표시하기 위해 _library developer_라는 용어를 사용합니다.
@@ -42,9 +42,9 @@ Docstrings
 
 이 문서의 요구사항들은 라벨로 표시되어 있고 상대적 중요성을 나타내기 위해 색상으로 구분되어 있습니다. 중요도가 높은 순으로 작성되었습니다:
 
-{% include requirement/MUST %} 클라이언트 라이브러리에 요구사항을 사용해주세요. 만약 예외가 필요하다면 구현전에 [Architecture Board]와 상의해주세요.
+{% include requirement/MUST %} 클라이언트 라이브러리에 요구사항을 사용해 주세요. 만약 예외가 필요하다면 구현 전에 [Architecture Board]와 상의해 주세요.
 
-{% include requirement/MUSTNOT %} 클라이언트 라이브러리에 요구사항을 사용하지 말아주세요. 만약 예외가 필요하다면 구현전에 [Architecture Board]와 상의해주세요.
+{% include requirement/MUSTNOT %} 클라이언트 라이브러리에 요구사항을 사용하지 말아 주세요. 만약 예외가 필요하다면 구현 전에 [Architecture Board]와 상의해 주세요.
 
 {% include requirement/SHOULD %} 클라이언트 라이브러리에 요구사항을 강력하게 고려해야합니다. 만약 이 권장사항을 따르지 않을 경우, **반드시** [Architecture Board] 디자인 리뷰를 할 때 차이를 공개해야합니다.
 
