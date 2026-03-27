@@ -22,6 +22,14 @@ Azure SDK는 개발자가 다양한 Azure 서비스를 원하는 프로그래밍
 | JavaScript  |[Design Guidelines for TypeScript]           |[JavaScript Packages] |[azure-sdk-for-js Repository]     | [JavaScript Documentation]       |
 | Python      |[Design Guidelines for Python]               |[Python Packages]     |[azure-sdk-for-python Repository] | [Python Documentation]           |
 
+## 프로젝트 문서 (Project Documentation)
+
+- **[PRD.md](PRD.md)** - 프로젝트 비전, 목표, 로드맵
+- **[TDD.md](TDD.md)** - 기술 스택, 빌드 시스템, 워크플로우
+- **[ARCH.md](ARCH.md)** - 시스템 아키텍처, 설계 결정 기록
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - 기여 가이드 (번역 워크플로우, 커밋 컨벤션)
+- **[AGENTS.md](AGENTS.md)** - AI 에이전트를 위한 프로젝트 컨텍스트
+
 # 기여하기 (Contributing)
 
 본 저장소는 Microsoft 오픈 소스에 기여하기 위한 가이드라인을 따르고 있습니다.
