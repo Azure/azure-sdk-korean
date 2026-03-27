@@ -1,5 +1,8 @@
 # Azure SDK Documentation for Korean
 
+[![Build Status](https://github.com/Azure/azure-sdk-korean/actions/workflows/pages.yml/badge.svg)](https://github.com/Azure/azure-sdk-korean/actions/workflows/pages.yml)
+[![GitHub Pages](https://img.shields.io/badge/docs-live-brightgreen)](https://azure.github.io/azure-sdk-korean/)
+
 (For English, please visit https://github.com/Azure/azure-sdk repository)
 
 Azure SDK는 개발자가 다양한 Azure 서비스를 원하는 프로그래밍 언어로 활용할 수 있는 플랫폼을 제공하고 있습니다. 각 언어에 대한 소스 저장소에 해당 클라이언트 라이브러리에 대한 소스 코드가 있습니다. 이 저장소는 해당 프로그래밍 언어 별 저장소를 가리키며, 한글로 보다 자세한 설명을 공유하고자 합니다. 구체적인 이슈는 각 SDK 저장소를 통해 확인하실 수 있습니다.
