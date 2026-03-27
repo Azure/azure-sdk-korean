@@ -1,0 +1,33 @@
+{% comment %}
+Usage in markdown files:
+{% include metadata_table.html 
+   original_title="Azure SDK Design Guidelines" 
+   original_link="https://azure.github.io/azure-sdk/general_introduction.html"
+   last_updated="2024-03-27"
+%}
+{% endcomment %}
+
+<div class="metadata-table" markdown="1">
+
+| Original Title | Original Link | Last Updated |
+| -------------- | ------------- | ------------ |
+| {{ include.original_title }} | [원본 문서]({{ include.original_link }}) | {{ include.last_updated }} |
+
+</div>
+
+<style>
+.metadata-table {
+  margin-bottom: 2em;
+  padding: 1em;
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+}
+
+.metadata-table table {
+  margin-bottom: 0;
+}
+
+.metadata-table td, .metadata-table th {
+  padding: 0.5em;
+}
+</style>

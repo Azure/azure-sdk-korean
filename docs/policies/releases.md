@@ -5,6 +5,12 @@ folder: policies
 sidebar: general_sidebar
 ---
 
+{% include metadata_table.html 
+   original_title="Policies: Releases" 
+   original_link="https://azure.github.io/azure-sdk/policies_releases.html"
+   last_updated="2023-10-15" 
+%}
+
 Azure SDK에 대한 릴리스 정책은 기본 서비스의 배포 주기에 따라 다른 SDK 패키지를 릴리스해야 하는 필요성을 수용합니다.
 
 ## Exit Criteria
