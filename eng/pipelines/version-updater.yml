@@ -24,13 +24,15 @@ steps:
     pwsh: true
     filePath: $(AzureSDKClonePath)/eng/scripts/Query-Azure-Packages.ps1
 
+- template: /eng/common/pipelines/templates/steps/login-to-github.yml
+
 - task: PowerShell@2
   displayName: Update packages from sdk release data
   inputs:
     pwsh: true
     filePath: $(AzureSDKClonePath)/eng/scripts/Update-Release-Versions.ps1
     arguments: >
-      -github_pat '$(azuresdk-github-pat)'
+      -github_pat '$(GH_TOKEN)'
 
 - task: PowerShell@2
   displayName: Update release DevOps work-items
@@ -38,12 +40,12 @@ steps:
     pwsh: true
     filePath: $(AzureSDKClonePath)/eng/scripts/Update-DevOps-WorkItems.ps1
     arguments: >
-      -github_pat '$(azuresdk-github-pat)'
+      -github_pat '$(GH_TOKEN)'
       -devops_pat '$(azuresdk-azure-sdk-devops-release-work-item-pat)'
 
 - pwsh: |
     # Some steps, like release notes, require this remote all the time so lets always setup even if there are no changes
-    git remote add azure-sdk-fork "https://$(azuresdk-github-pat)@github.com/azure-sdk/azure-sdk.git"
+    git remote add azure-sdk-fork "https://$(GH_TOKEN)@github.com/azure-sdk/azure-sdk.git"
   displayName: Setup azure-sdk-fork remote
   workingDirectory: $(AzureSDKClonePath)
 
@@ -68,7 +70,7 @@ steps:
 - template: template/steps/generate-releasenotes.yml
 
 - pwsh: |
-    git clone https://$(azuresdk-github-pat)@github.com/MicrosoftDocs/azure-dev-docs-pr $(System.DefaultWorkingDirectory)/azure-dev-docs-pr
+    git clone https://$(GH_TOKEN)@github.com/MicrosoftDocs/azure-dev-docs-pr $(System.DefaultWorkingDirectory)/azure-dev-docs-pr
   displayName: Clone azure-dev-docs-pr repo
 
 - task: PowerShell@2

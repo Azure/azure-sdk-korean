@@ -55,10 +55,12 @@ steps:
       -ForkRepoOwner "Azure" -RepoName "azure-sdk" -BranchPrefix '${{ parameters.PrBranchName }}' -AuthToken $(azuresdk-github-pat)
     displayName: Clean Up Stale Branches
 
+  - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+
   - pwsh: |
       git clone https://github.com/Azure/azure-sdk.git $(AzureSDKReleaseNotesClonePath)
       cd $(AzureSDKReleaseNotesClonePath)
-      git remote add azure-sdk-fork "https://$(azuresdk-github-pat)@github.com/azure-sdk/azure-sdk.git"
+      git remote add azure-sdk-fork "https://$(GH_TOKEN)@github.com/azure/azure-sdk.git"
     displayName: Clone azure-sdk for release notes
     condition: and(succeeded(), ne(variables['AzureSDKReleaseNotesClonePath'], variables['AzureSDKClonePath']))
 
@@ -101,7 +103,7 @@ steps:
           -commonScriptPath $(AzureSDKToolsScriptsPath)
           -releaseDirectory $(AzureSDKReleaseNotesClonePath)/_data/releases
           -repoLanguage ${{ repo.value.Language }}
-          -github_pat '$(azuresdk-github-pat)'
+          -github_pat '$(GH_TOKEN)'
 
     - template: eng/common/pipelines/templates/steps/create-pull-request.yml@azure-sdk-tools
       parameters:
